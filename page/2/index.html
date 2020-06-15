@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/page/2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-TECH/Session &amp; Cookie" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/TECH/Session%20&%20Cookie/" class="article-date">
+  <time datetime="2020-06-15T02:31:18.137Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/14/TECH/Session%20&%20Cookie/">TECH/Session &amp; Cookie</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- wp:paragraph -->
+<p>Mục tiêu của các cuộc tấn công như XSS  là lấy được session và cookie của nạn nhận. Vậy chúng là gì và tại sao là chúng mà không phải là username, password. Ok chúng ta cùng tìm hiểu nha.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>COOKIE</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Đầu tiên chúng ta cùng đến với cookie</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:media-text {"mediaType":"image"} -->
+<div class="wp-block-media-text alignwide is-stacked-on-mobile"><figure class="wp-block-media-text__media"><img src="https://www.cookingclassy.com/wp-content/uploads/2014/06/chocolate-chip-cookie-16.jpg" alt="One Chocolate Chip Cookie - Cooking Classy"/></figure><div class="wp-block-media-text__content"><!-- wp:paragraph {"placeholder":"Content…","fontSize":"large"} -->
+<p class="has-large-font-size">Cookie</p>
+<!-- /wp:paragraph --></div></div>
+<!-- /wp:media-text -->
+
+<!-- wp:paragraph -->
+<p>Cookie là một tệp tin chứa các thông tin nhỏ và hỗn tạp như id, username, timestamp ... (mỗi giá trị này sẽ có một <strong>key-value</strong> ví dụ như <span style="text-decoration: underline;"><em><strong>uuid</strong></em></span>=12345 ) của người dùng vì vậy nó được ví như bánh cookie .Nó được tạo ra khi người dùng truy cập đến các trang web, server sẽ gửi nó đến browser và lưu trên máy tính của chúng ta. Nó sẽ được lưu tạm thời trong một khoảng thời gian (timeout) có thể là vài tuần hoặc tháng  .Khi người dùng truy cập đến trang web lần sau , browser sẽ gửi lại các thông tin này đến server .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Dựa vào tính chất có thể phân ra làm 2 loại cookie là Persistent cookie  và Session cookie, nó cũng chính là cookie và session. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Mục đích của cookie để làm gì ?</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Cookie được xem là thành phần không thể thiếu đối với những website có lượng lớn dữ liệu, số lượng người dùng đông. Tác dụng đầu tiên có thể kể đến ở đây là cookie có thể dùng để duy trì trạng thái đăng nhập. Thay vì cứ mỗi lần truy cập vào trang web bạn phải đăng nhập lại thì cookie sẽ làm giúp bạn điều này . Hay làm việc với web site sẽ nhanh hơn bằng cách lấy thông tin từ cookie thay vì vào cơ sở dữ liệu .  Ngoài ra với cookie, các website còn có thể xác định các hành vi của người dùng như số khách hàng truy cập đến , tần xuất truy cập của một khách hàng vào trang, khách hàng mới hay khách hàng cũ, khách hàng đã xem cái gì. Vì vậy nó rất có ích và tiện lợi cho các web site thương mại điện tử.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Chắc bạn cũng thắc mắc tại sao khi mình truy cập vào các trang web A  xem cách sản phẩm sau đó truy cập vào các trang web B thì thấy nó quảng cáo sẩn phẩm A như kiểu mình bị theo dõi vậy haha. Nó là do website B sử dụng cookie của website A tạo ra  nó gọi là cookie bên thứ 3 (third party). Nó đôi khi khó chịu nhưng thôi cũng kệ !!!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Cookies cũng thường được sử dụng trong việc tạo ra Session.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Cookie có cần bảo mật không ?</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Tất nhiên là có, nó rất quan trọng ấy chứ!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Nhiều cookie lưu trữ các dữ liệu nhạy cảm vi nó chứa các thông tin của người dùng . Vì vậy để tránh bị tiết  lộ rộng rãi , chỉ cho phép website chứa cookie  mới có thể xem được thông tin này. Một số trình duyệt hiện tại có chức năng ngân chặn bên thứ 3 hoặc yêu cầu người dùng phải cấp quyền đọc cookie.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>SESSION</h2>
+<!-- /wp:heading -->
+
+<!-- wp:image {"align":"center"} -->
+<div class="wp-block-image"><figure class="aligncenter"><img src="https://media.hoclaptrinh.vn/images/session-la-gi-5c370b6a76d46.gif" alt="Session Là Gì?"/></figure></div>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Session hay dân ta gọi là phiên làm việc hay trạng thái làm việc, một session bắt đầu khi client gửi request đến server, nó tồn tại xuyên suốt từ trang này đến trang khác trong ứng dụng web và chỉ kết thúc khi hết thời gian timeout hoặc khi bạn đóng ứng dụng. Với mỗi session sẽ được cấp phát một định danh duy nhất SessionID .Sẽ không có chuyện trùng lặp nha các bạn kể cả cùng một tài khoản đăng nhập trên hai trình duyệt . Và một điều nữa, khác với cookie , Session sẽ được lưu lại ở phía server.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Có bạn sẽ thắc mắc là " Ơ thế sao tôi lại thấy session ở trong cookie gửi từ client lên?" hoặc "làm sao để server xác định session đó là của client nào?"</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":272,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/04/image-12.png" alt="" class="wp-image-272"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Thông thường session được tạo ra sẽ tương ứng với cookie được gửi đến server, đồng thời nó tạo ra một tệp tin chứa id session gọi là session cookie lưu trên bộ nhớ cache của trình duyệt. Điều này cũng đồng nghĩa với việc  id session sẽ  mất khi người dùng đóng trình duyệt. Khi người dùng mở  lại trình duyệt và request đến trang web sẽ chỉ còn têp tin persistent cookie được gửi lên và như vậy session mới sẽ được tạo. Còn làm sao để xác thực thì bạn biết rồi đấy, nó đi cùng cookie mà nhưng cũng chính vì điều này mà hacker có thể chiếm session của bạn.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Thế mục đích của Session để làm gì ?</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Một session có thể lưu trữ tạm thời thông tin liên quan đến các hoạt động ở của người dùng  trong khi kết nối . Ví dụ như bạn click vào sản phẩm, thêm sản phẩm vào mục xem sau, ... . Nó chỉ có tác dụng kiểm tra khi 1 phiên bắt đầu và kết thúc tại thời điểm nào .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Tùy vào mục đích công việc mà bạn nên sử dụng session hợp lý nhất nhằm mang lại hiệu quả tối đa. Dưới đây là những lĩnh vực cần:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Các ứng dụng thương mại điện tử</strong>: Có thể xem xét các phiên để xem người dùng mất bao lâu để chuyển đổi hoặc thời gian trung bình của người dùng theo từng trang. Mục đích này sẽ giúp họ biết được sản phẩm nào được người dùng chú ý.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Các nhà phát triển trò chơi, game online</strong>: Có thể phân tích thời lượng phiên của họ để xem liệu người dùng có đầu tư đủ thời gian vào trò chơi để tận hưởng trải nghiệm được cung cấp hay không.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Các ứng dụng truyền thông xã hội</strong>: Có thể kiểm tra số phiên trong suốt một ngày để xem liệu người dùng có biến công cụ này thành một phần thiết yếu trong cuộc sống hàng ngày của họ hay không.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Nhưng giống với cookie, session cũng có thể dùng để duy trì trạng thái đăng nhập nhưng chỉ trong thời gian ngắn. Và đây là nguyên nhân hacker  muốn chiến session bạn.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Bảo mật cho session ?</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Ngoài việc server tạo các session có thể dễ đoán ra thì bình thường nó vẫn rất an toàn, an toàn hơn nhiều so với cookie. Bởi nó  không thể thay đổi giá trị  khi được lưu trữ trên server. Hacker chỉ có thể tìm cách là ăn trộm nó qua các lỗ hổng như XSS, Session hijacking.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Bây giờ chúng ta cùng Cùng so sánh các điểm khác biệt giữa chúng nha.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:table -->
+<figure class="wp-block-table"><table><tbody><tr><td>                          <strong>Cookie</strong></td><td>                         <strong>Session</strong></td></tr><tr><td>Cookie được lưu trữ trên trình duyệt của người dùng.</td><td>Session không được lưu trữ trên trình duyệt.</td></tr><tr><td>Dữ liệu cookie được lưu trữ ở phía client.</td><td>Dữ liệu session được lưu trữ ở phía server.</td></tr><tr><td>Dữ liệu cookie dễ dàng sửa đổi hoặc đánh cắp khi chúng được lưu trữ ở phía client.</td><td>Dữ liệu session không dễ dàng sửa đổi vì chúng được lưu trữ ở phía máy chủ.</td></tr><tr><td>Dữ liệu cookie có sẵn trong trình duyệt đến khi expired.</td><td>Sau khi đóng trình duyệt sẽ hết phiên làm việc (session)</td></tr></tbody></table></figure>
+<!-- /wp:table -->
+
+<!-- wp:paragraph -->
+<p>Ok như vậy là mình dã trình bày một số kiển thức về session và token. Các bạn có ý kiến gì hãy để lại comment cho minh nhé!</p>
+<!-- /wp:paragraph -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/14/TECH/Session%20&%20Cookie/" data-id="ckbfvsod4000h77jmhr361vt2" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-TECH/Session vs Token-Based Authentication" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/TECH/Session%20vs%20Token-Based%20Authentication/" class="article-date">
+  <time datetime="2020-06-15T02:24:50.933Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/14/TECH/Session%20vs%20Token-Based%20Authentication/">TECH/Session vs Token-Based Authentication</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- wp:paragraph -->
+<p>Xin chào các bạn, bài viết này mĩnh sẽ nói về 2 cơ chế xác thực người dùng dựa vào session và token. Chắc nhiều bạn thấy chúng rât nhiều nhưng cũng chưa rõ nó hoạt động như thế nào .Ok chúng ta cùng tìm hiểu nào.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Tại sao lại dùng session hay token để xác thực người dùng ?</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Như các bạn đã biết việc giao tiếp giữa trình duyệt web (user) với  với máy chủ sẽ sử dụng giao thức truyền siêu văn bản  HTTP (Hypertext Transfer Protocol) . Mà HTTP là một giao thức phi trạng thái (Stateless) - phiên kết nối (TCP session) sẽ mất khi gói tin đến đích . Điều đó đồng nghĩa với việc mỗi lần user request đến tài nguyên cần xác thực họ sẽ phải đăng nhập một lần. Oh Bully sh!t ! Vì vậy người ta cần tìm cách để có thể xác thực và duy trì trạng thái đăng nhập cho người dùng và đó là lí do  dùng đến session và token. Thực ra ngoài hai phương thức này còn một phương thức cổ điển nữa mà thỉnh thoảng ta vẫn hay gặp đó là HTTP basic authentication nhưng nó rất đơn giản, thô và thường chỉ sử dụng trong nội bộ nên mình sẽ bỏ qua. Ok tiếp tục nào !</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Session based Authentication</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Trong bài viết trước của mình có giải thích về session , bạn nào chưa biết có thể tham khảo. Session sẽ được tạo ra khi user request đến server và server sẽ gửi sessionid về browser và lưu trữ ở cache browser. Các request tiếp theo từ browser lên server thì sessionid được đính kèm dưới dạng cookie . Server sẽ thực hiện so sánh giá trị sessionid và trả response về.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://images.viblo.asia/full/fdd3546f-1ee6-4ea7-afa4-d07189532c30.png" alt=""/></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading {"level":3} -->
+<h3><strong>Ưu điểm:</strong></h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p><strong>Thông tin được giấu kín, an toàn:</strong>&nbsp;Client chỉ được biết tới&nbsp;<strong>Session ID</strong>&nbsp;thường là 1 chuỗi random hoặc đã được băm không có thông tin gì của người dùng, còn mọi thông tin khác của phiên đăng nhập hay người dùng hiện tại đều được lưu phía server nên cơ chế này giữ kín được thông tin của người dùng trong quá trình truyền tải.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Fully-controlled session:</strong>&nbsp;Tính chất này có thể cho phép hệ thống quản trị được&nbsp;<strong>TẤT CẢ</strong>&nbsp;các hoạt động liên quan tới phiên đăng nhập của người dùng như thời gian login, force logout,...</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Nhược điểm</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p><strong>Chiếm nhiều bộ nhớ:</strong>&nbsp;Với mỗi phiên làm việc của user, server sẽ lại phải tạo ra một session và lưu vào bộ nhớ trên server. Số data này có thể còn lớn hơn cả user database của bạn do mỗi user có thể có vài session khác nhau. Do vậy việc tra cứu đối với các hệ thống lớn nhiều người dùng sẽ là vấn đề.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Khả năng bị  tấn công CSRF:</strong>&nbsp;Nói nôm na là do&nbsp;Session ID&nbsp;thường được lưu vào&nbsp;cookie mà  cookie được&nbsp;tự động&nbsp;gắn vào các request tới domain của bạn.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Không có khả năng mở rộng (Scalability)  với các flatform khác:</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Bây giờ hãy thử tưởng tượng chúng ta đang có một trang web hoạt động ngon lành với Session rồi, nhưng tới một ngày chúng ta phải làm thêm các Native Apps (ứng dụng di động) cho hệ thống là IOS hoặc Android, và cùng sử dụng chung một Database với ứng dụng web hiện tại thì như thế nào?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Rõ ràng lúc này chúng ta sẽ không thể xác thực người dùng sử dụng Native app bằng Session được vì Native app không có Cookie, chỉ Browser mới có mà thôi.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Vậy nên Token-Based Authentication - JWT mới được sinh ra trên thế giới lập trình này để giải quyết vấn đề trên và hiện nay nó luôn được ưu tiên lựa chọn mỗi khi bắt đầu làm một dự án mới.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p> Mặc dù vậy, hiện tại Session-based Authentication thường được dùng trong các website thương mại ,nhỏ vừa (tham khảo phần mục đích của session trong bài viết của mình) và những ứng dụng web làm việc chủ yếu với browser, những hệ thống monolithic do cần sự tập trung trong việc lưu session data và sự hạn chế về domain.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Token-Based Authentication</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Token-Based Authentication đã ra mắt cũng  được vài năm, nó đề xuất bởi OAuth 2.0 Framework. Cách thức hoạt động của kĩ thuật này khá giống với với Session-Based Authentication nhưng các công nghệ ngày nay vẫn ưu tiên sử dụng nó hơn, tại sao nhỉ?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Điều đầu tiên cần nhớ, Token-Based Authentication là statefull (khác với session ) vì vậy server sẽ không lưu trữ hồ sơ về việc người dùng đã đăng nhập hay token đã được tạo. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Dựa vào định dạng sẽ có 3 loại token chính là SAML ( Security Markup  Assertion Language), SWT ( Simple Web Token) và JWT (Json Web Token). Chi tiết về các loại này mình sẽ có bài viết riêng và trong bài này mĩnh sẽ lấy JWT để nói vì nó được chấp nhận và sử dụng rộng rãi như một tiêu chuẩn của các nền tảng web hiện đại (<a href="https://tools.ietf.org/html/rfc7519" target="_blank" rel="noopener">RFC 7519</a>) . </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Nói qua một chút về JWT  để các bạn có hiểu rõ hơn về quy trình xác thực của nó (Chi tiết sẽ có bài viết riêng). JWT token định nghĩa là cách thức xác thực giữa các ứng dụng bằng một đối tượng&nbsp;JSON<strong>,</strong>nó bao gồm 3 phần lầ header, payload và chữ ký (signature). JWT sử dụng chữ kí số để đảm bảo tính toàn vẹn của token được tạo, phần payload sẽ chứa các thông tin của người dùng để xác thực , còn header để chỉ định thuật toán để mã hóa.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p> Dưới đây là Flow của Token-based Authentication:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://images.viblo.asia/17eeed29-52cf-4b4c-92b4-17c9adeb249a.png" alt="Session và Token Based Authentication - Viblo"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Đầu tiên user submit username/password , sau khi check thông tin hợp lệ server sẽ tạo token và trả lại token trong response cho người dùng. Phía client sẽ thực hiện lưu trữ, nếu như là trình duyệt web thì JWT có thể lưu vào Local Storage, IOS app thì sẽ là Keychain và Android app sẽ lưu vào SharedPreferences. Các request tiếp theo token sẽ được thêm vào request ở các vị trí như là Athorization header , URL , Cookie header hoặc request body. Server sẽ check token bằng cách kiểm tra chữ kí số (signature) , đảm bảo thông tin trong token là chính xác và token đó do server tạo ra. Response sẽ  được trả về nếu thành công hoặc thông báo lỗi xác thực nếu thất bại.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":292,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/04/image-13.png" alt="" class="wp-image-292"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading {"level":4} -->
+<h4><strong>Ưu điểm</strong>:</h4>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul><li><strong><strong>Phù hợp với nhiều loại client:</strong>&nbsp;</strong>Nên nhớ, cookie là một concept được&nbsp;các browser&nbsp;áp dụng tự động, còn với các client sử dụng Web API như mobile, IoT device, server,... thì việc sử dụng cookie lại rất hạn chế. Sử dụng token trong header hay URL,... sẽ dễ dàng hơn cho client trong việc lưu lại token và truyền tải token.</li><li><strong>Scalability:</strong> Dễ dàng mở rộng server hơn. Điều này là nhờ tính stateless của JWT, server không cần phải lưu session state, nên trong trường hợp phía server sử dụng cơ chế load balancing, bất kỳ máy server nào cũng có thể handle request và vẫn có được state của user thay vì chỉ server mà user đã login.</li><li><strong>Chống CSRF:</strong>&nbsp;Thông thường thì token được thêm vào URL hoặc Authorization header và request body ( kèm trong cookie rất ít ) nên sẽ phòng chống được các trường hợp tấn công như với trường hợp session/cookie. Ngoài ra ,theo như RFC thì token cũng có nhiều loại trong đó có lại chỉ sử dụng một lần hoặc chỉ dùng cho một hành động.</li></ul>
+<!-- /wp:list -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Nhược điểm:</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p><strong>Phức tạp cho phía client</strong>: Cơ chế sử dụng token thường yêu cầu client phải có xử lý liên quan tới lưu token, gửi token, do vậy sẽ không phù hợp với những website kiểu cũ, sử dụng nhiều server render html và phần javascript hạn chế.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Thông tin dễ lộ:</strong> JWT&nbsp;nó&nbsp;không ẩn, không làm mờ, không che giấu dữ liệu gì cả, mà nó được sử dụng để&nbsp;chứng minh rằng dữ liệu được tạo ra bởi một nguồn xác thực. Dữ liệu trong payload chỉ được Encoded bằng base64urlencode chứ không phải Encrypted. Chính vì vậy, thông thường người ta chỉ lưu 1 số thông tin thiết yếu như user_id, username mà không lưu những thông tin nhạy cảm như password vào token vgiao thức mã hóa đường truyền HTTPS để tránh tấn công MITM .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ok minh đã trình bày tổng quát về 2 các xác thực dựa vào session và token. Các bạn muốm tìm hiểu sâu hơn có thể tham khảo link mình đã đểm bên dưới. Cảm ơn các bạn đã đọc bài !</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Tham khảo</h2>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul><li><a href="https://kipalog.com/posts/Authentication-story-part-2--Authentication-co-ban" target="_blank" rel="noopener">https://kipalog.com/posts/Authentication-story-part-2--Authentication-co-ban</a></li><li><a href="https://wp-rocket.me/blog/difference-json-web-tokens-vs-session-cookies/" target="_blank" rel="noopener">https://wp-rocket.me/blog/difference-json-web-tokens-vs-session-cookies/</a></li><li><a href="https://trungquandev.com/hieu-sau-ve-jwt-json-web-tokens/" target="_blank" rel="noopener">https://trungquandev.com/hieu-sau-ve-jwt-json-web-tokens/</a></li><li>Token-Based vs Session-Based Authentication: A survey</li><li>Pro ASP.NET Web API Security Securing ASP.NET Web API by by Badrinarayanan Lakshmiraghavan</li></ul>
+<!-- /wp:list -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/14/TECH/Session%20vs%20Token-Based%20Authentication/" data-id="ckbfvow62000c77jm7si8d0yy" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-TECH/csp" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/TECH/csp/" class="article-date">
+  <time datetime="2020-06-15T02:01:03.969Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/14/TECH/csp/">TECH/csp</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- wp:heading -->
+<h2><strong>Content&nbsp;Security&nbsp;Policy&nbsp;(CSP)&nbsp;là&nbsp;gì&nbsp;?</strong>&nbsp;</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Content Security Policy (CSP) là chính sách bảo mật nội dung, được sử dụng để xác định các nguồn nội dung an toàn trên website mà trình duyệt có thể tải về cho người dùng.CSP là biện pháp đối phó rất hiệu quả với các cuộc tấn công Cross Site Scripting (XSS) và các kiểu injection tương tự.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://datahouse.asia/wp-content/uploads/2020/04/content-security-policy-1024x414.png" alt="Does Security Matter to Front End Developers and Tips To Not Get ..."/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Tưởng tượng một chút, chúng ta ó 2 hướng cho các cuộc tấn công chèn script độc hại vào các website, đó là thông qua:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li>Inline Script: attacker đặt script của chúng trực tiếp vào trang web của bạn</li><li>Trình duyệt sẽ Load script từ các domain khác (của attacker) trên website đang truy cập .</li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Với hướng thứ 2,  attacker ưa dùng hơn vì dễ dàng truền tải script độc hại và có thể tùy ý thay đổi nội dung của script mà trình duyệt load. Nó có thể thay đổi trang web mà không cần tương tác.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":316,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/05/image-5.png" alt="" class="wp-image-316"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Nhiệm vụ của CSP lúc này là không cho phép trình duyệt load script từ domain khác ,như thế kế hoạch của attacker sẽ bị hỏng. Vậy CSP đã làm thế nào ? </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2><strong>Cách&nbsp;hoạt&nbsp;động&nbsp;của&nbsp;SCP</strong>&nbsp;</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Bằng cách sử dụng các chỉ thị của CSP phù hợp ở trong các tiêu đề phản hồi HTTP, bạn có thể chọn lọc, chỉ định nguồn dữ liệu nào sẽ được phép sử dụng trong ứng dụng web của mình. Ví dụ như:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li>Chỉ định thực thi script đến từ domain của mình (ví dụ: mydomain.com)</li><li>Chỉ định thực thi các script đến từ một domain khác đáng tin cậy hay subdomain (ví dụ: * .mydomain.com, google.com)</li><li>Chỉ định chỉ thực thi tệp duy nhất mydomain.com/script.min.js</li><li>Không thực thi bất kì mã JavaScript nào</li><li>Chỉ hiển thị hình ảnh đến từ cdn.securecdn.com</li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Cách chỉ định chính sách , đó là thêm header HTTP dưới đây vào repsonse , nó có dạng là</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Content-Security-Policy: [chinh sách]</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":311,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/05/image-2.png" alt="" class="wp-image-311"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Để&nbsp;viết&nbsp;chính&nbsp;sách,&nbsp;bạn&nbsp;cần&nbsp;biết&nbsp;các&nbsp;chỉ&nbsp;thị&nbsp;cho&nbsp;các&nbsp;đối&nbsp;tượng&nbsp;&nbsp;</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":312,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/05/image-3.png" alt="" class="wp-image-312"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Ví dụ như img-src áp dụng các hình ảnh được hiển thị trên trang web, nó sẽ chỉ định nguồn hình ảnh đươc phép lấy về, default-src đóng vai trò dự phòng để tìm nạp CSP khác nếu nó bị thiếu . Để biết thêm và chi tiết các chỉ thị các bạn có thể tham khảo nội <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy" target="_blank">ở đây</a>  .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Cùng với các chị thị còn có các thuộc tính của các chỉ thị hoặc có thể gọi là các keywords/values bổ trợ, Ví dụ như :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li>"none" không cho phép các đối tượng liên quan đến chỉ thị được thực thi.</li><li>"self " cho phép thực thi đối với domain của bạn (ko tính subdomain) hoặc những domain được chỉ định.</li><li>"unsafe-inline" cho phép thực thi các đoạn mã CSS hoặc Javascript được nhúng trực tiếp vào mã nguồn. Thiết lập này không được khuyến khích sử dụng nhưng trong nhiều trường hợp chúng ta vẫn phải dùng đến.</li><li>"unsafe-eval" cho phép chạy hàm eval(), đây là một hàm khá nguy hiểm của Javascript.</li><li>"*" áp dụng cho tất cả ví dụ như 'Https: // *' sẽ cho phép tất cả các tài nguyên đang truyền tải qua HTTPS.</li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Bạn&nbsp;có&nbsp;thể&nbsp;tham&nbsp;khảo&nbsp;thêm&nbsp;<a rel="noreferrer noopener" href="https://content-security-policy.com/" target="_blank">ở đây</a>&nbsp;</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3><strong>VÍ DỤ MỘT VÀI CHÍNH SÁCH</strong></h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>&nbsp;CSP chỉ cho phép JavaScript , cái mà được lưu trữ trong trang web của bạn</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>Content-Security-Policy: script-src 'self'</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Cho phép các các nội dung thuộc domain và subdomain của example.com và được truyền tải thông qua cả 2 giao thức http , https</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>Content-Security-Policy: default-src *://*.example.com  </code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Chỉ cho phép JavaScript , cái mà được lưu trữ trên trang web của bạn và cdn.trustyorigin.net nhưng hình ảnh thì ở bất kì chỗ nào</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>Content-Security-Policy: script-src 'self' cdn.trustedorigin.net; img-src *; </code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Chặn tất cả các form submit</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>Content-Security-Policy form-action 'none'; </code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Chỉ cho phép thực thi js trong tập tin script.js trên https://trustyorigin.net/ và mặc định các giá trị của child-src, connect-src, font-src, frame-src, img-src, manifest-src, media-src, media-src, object-src, script-src, style-src và worker-src đều là self - các nội dung liên quan đến chỉ thị đều lấy từ nguồn của URL hiện tại</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>Content-Security-Policy default-src ‘self’; script-src https://trustedorigin.net/script.js; </code></pre>
+<!-- /wp:code -->
+
+<!-- wp:heading -->
+<h2><strong>Triển&nbsp;khai&nbsp;CSP</strong>&nbsp;</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Để triển khai CSP, ta cần định cấu hình máy chủ web của mình để trả về Content-Security-Policy header HTTP (đôi khi bạn sẽ thấy nó với header X-Content-Security-Policytiêu đề, nhưng đó là phiên bản cũ hơn và bây giờ không cần đề cập đến nó nữa). Ví dụ: nếu bạn sử dụng Apache, bạn có thể xác định CSP trong tệp httpd.conf , Virtualhost hoặc .htaccess của trang web của bạn.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":313,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/05/image-4.png" alt="" class="wp-image-313"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Ngày nay ,CSP cũng được hỗ trợ bởi tất cả các trình duyệt hiện đại  và đã được nhiều năm chỉ riêng không được hỗ trợ trong Internet Explorer, nó chỉ dùng sandbox.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":319,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/05/image-6.png" alt="" class="wp-image-319"/><figcaption>Level ở đây các bạn có thể hiểu như là thế hệ của CSP</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Ngoài ra cấu hình trên server, bạn cũng có thể cung cấp các chỉ thị cụ thể bằng cách sử dụng thẻ &lt;meta&gt;- thẻ HTML , được gọi là CSP Page-level. Dưới đây, một ví dụ đặt ra chính sách tương tự như trên:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>&lt;meta http-equiv="Content-Security-Policy" content="default-src 'self' "> </code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Để sử dụng các chỉ thị này sẽ cần đến Sanboxing của trình duyệt</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Một vấn đề nữa, nếu như các trình duyệt không hỗ trợ CSP nó vẫn hoạt động với các máy chủ triển khai nó và ngược lại, các trình duyệt không hỗ trợ CSP chỉ cần bỏ qua nó, hoạt động như bình thường, và mặc định Same-origin là policy cho nội dung web. Nếu trang web không cung cấp CSP header , các trình duyệt cũng sử dụng Same-origin làm policy .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Bypass CSP</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Có lẽ đây là mục mà ae pentest yêu thích nhất, bất kì phương thức bảo mật nào đều có lỗ hổng và CSP cũng không ngoại lệ. CSP giống như whitelist, vì vậy đôi lúc nó sẽ khổng thể đáp ứng được toàn bộ ưu cầu về các tính bảo mật. Các bạn có thểm tham khảo các bài viết dưới đây :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li><a href="http://blog.innerht.ml/csp-2015/" target="_blank" rel="noopener">"CSP 2015". XSS&nbsp;Jigsaw.&nbsp;Retrieved&nbsp;December&nbsp;12, 2015.&nbsp;</a></li><li><a href="http://sebastian-lekies.de/csp/bypasses.php" target="_blank" rel="noopener">Lekies,&nbsp;Sebastian. "Collection&nbsp;of&nbsp;CSP&nbsp;bypasses".&nbsp;Retrieved&nbsp;2017-06-05.&nbsp;</a></li><li><a href="http://www.slideshare.net/x00mario/an-abusive-relationship-with-angularjs" target="_blank" rel="noopener">"An&nbsp;Abusive&nbsp;Relationship&nbsp;with&nbsp;AngularJS".&nbsp;Retrieved&nbsp;January&nbsp;5, 2016.&nbsp;</a></li><li><a href="https://www.youtube.com/watch?v=p07acPBi-qw" target="_blank" rel="noopener">OWASP (2017-05-25),&nbsp;AppSec&nbsp;EU 2017&nbsp;Don't&nbsp;Trust&nbsp;The DOM:&nbsp;Bypassing&nbsp;XSS&nbsp;Mitigations&nbsp;Via&nbsp;Script&nbsp;Gadgets&nbsp;by&nbsp;Sebastian&nbsp;Lekies,&nbsp;retrieved&nbsp;2017-06-05&nbsp;</a></li><li><a rel="noreferrer noopener" href="https://portswigger.net/research/bypassing-csp-with-policy-injection" target="_blank">https://portswigger.net/research/bypassing-csp-with-policy-injection</a>&nbsp;</li><li><a rel="noreferrer noopener" href="https://lab.wallarm.com/how-to-trick-csp-in-letting-you-run-whatever-you-want-73cb5ff428aa/" target="_blank">https://lab.wallarm.com/how-to-trick-csp-in-letting-you-run-whatever-you-want-73cb5ff428aa/</a>&nbsp;</li><li><a href="https://book.hacktricks.xyz/pentesting-web/content-security-policy-csp-bypass" target="_blank" rel="noopener">https://book.hacktricks.xyz/pentesting-web/content-security-policy-csp-bypass</a></li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Ngay từ đầu mk cũng đề cập , CSP giúp giảm thiểu các cuộc tấn công xss và các kiểu tấn công tương tự nhưng nó lại không có tác dụng một người ae họ hàng gần với nó là HTML injection.  Bạn có thể tham khảo chi tiết <a rel="noreferrer noopener" href="https://blog.detectify.com/2019/07/11/content-security-policy-csp-explained-including-common-bypasses/" target="_blank">ở đây</a>  và xem bài thuyết trình về CSP (Tóm tắt một chút cho các bạn đó là anh Matt Brunt đã trình bày các khái niệm, mối đe dọa từ xss, triển khai CSP một cách hợp lí để vừa ngăn ngừa tấn công vừa tránh bị phá hỏng web site bởi chính CSP, và cuối cùng đó là các vấn đề và sự hữu ích của tính  năng auto report của CSP - "report-only" cho các quản trị). OK cùng xem nào ! và hẹn các bạn ở bài viết sau.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:core-embed/youtube {"url":"https://www.youtube.com/watch?v=mr230uotw-Y","type":"video","providerNameSlug":"youtube","className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+https://www.youtube.com/watch?v=mr230uotw-Y
+</div></figure>
+<!-- /wp:core-embed/youtube -->
+
+<!-- wp:heading -->
+<h2>Tham khảo</h2>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul><li><a href="https://en.wikipedia.org/wiki/Content_Security_Policy" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Content_Security_Policy</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP</a></li><li><a href="https://w3c.github.io/webappsec-csp/#framework" target="_blank" rel="noopener">https://w3c.github.io/webappsec-csp/#framework</a><a href="https://www.netsparker.com/blog/web-security/content-security-policy/" target="_blank" rel="noopener">https://www.netsparker.com/blog/web-security/content-security-policy/</a></li><li><a href="https://blog.sucuri.net/2018/04/content-security-policy.html" target="_blank" rel="noopener">https://blog.sucuri.net/2018/04/content-security-policy.html</a></li><li><a href="https://content-security-policy.com/" target="_blank" rel="noopener">https://content-security-policy.com/</a></li></ul>
+<!-- /wp:list -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/14/TECH/csp/" data-id="ckbfvow65000e77jmclgqdkd8" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-TECH/oath" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/TECH/oath/" class="article-date">
+  <time datetime="2020-06-15T01:20:34.000Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/14/TECH/oath/">Oauth</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- wp:image -->
+<figure class="wp-block-image"><img src="https://img.codehub.vn/post/1577243102_c5b006c20d8069e8e61f3291be2f43b8.jpeg" alt="OpenID và OAuth Khác Nhau Như Thế Nào"/><figcaption>Ảnh từ codehub.vn</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Xin chào các bạn mình đã quay trở lại với ... bài viết dài , thôi vào nội dung luôn .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Khái&nbsp;niệm&nbsp;&nbsp;</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p><strong>OAuth</strong> (Open Authorization) là một phương thức ủy quyền để cung cấp khả năng truy cập các tài nguyên qua giao thức HTTP . OAuth cho phép các trang web hoặc ứng dụng (Customer) truy cập tài nguyên được bảo vệ từ dịch vụ web (Service Provider) thông qua API mà không yêu cầu người dùng tiết lộ thông tin đăng nhập được cấp bởi nhà cung cấp dịch vụ cho bên thứ ba. Nó hoạt động như một trung gian thay mặt cho người dùng cuối, cấp quyền sử dụng thông tin của tài khoản được chia sẻ cho dịch vụ của bên thứ ba với access token.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Lịch&nbsp;sử&nbsp;</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>OAuth được phát hành lần đầu tiên vào năm 2007 là phương thức ủy quyền sử dụng cho Twitter application program interface (API) với tên gọi là OpenID . Năm 2010, OAuth 1.0 Revision được xuất bản đê giải quyết về vấn đề session fixation tồn tại. Năm 2012, Nhóm làm việc OAuth của IETF đã xuất bản bản thảo đầu tiên của giao thức OAuth 2.0. Giống như OAuth ban đầu, OAuth 2.0 cung cấp cho người dùng khả năng cấp quyền truy cập ứng dụng của bên thứ ba vào tài nguyên web mà không cần chia sẻ mật khẩu. Tuy nhiên, đây là một giao thức hoàn toàn mới và không tương thích ngược với OAuth 1.0. Các tính năng được cập nhật bao gồm uồng cấp mã ủy quyền mới để áp dụng cho các ứng dụng di động, chữ ký được đơn giản hóa và token tồn tại trong thời gian ngắn với các ủy quyền tồn tại lâu dài. Và hiện tại OAuth đãng triển khai , phát triển phiên bản OAuth 2.1.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Trong bài viết này mình sẽ chỉ trình bày các thứ liên quan đến phiên bản OAuth2 bởi một phần OAuth 2 đã được sử dụng phổ biến hơn và  nếu mk trình bày cả OAuth1 nữa rất là dài. cực kì nhiều thứ nên các bạn có thể tham khảo bên ngoài hoặc đợi một ngày nào đó mình sẽ viết về nó.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Các&nbsp;thuật&nbsp;ngữ&nbsp;sử&nbsp;dụng&nbsp;&nbsp;</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p><strong>Resource owner</strong> (User) Một thực thể có khả năng cấp quyền truy cập vào một tài nguyên được bảo vệ. Khi chủ sở hữu tài nguyên là một người , nó được gọi là một người dùng cuối.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Client</strong> (Application) Một ứng dụng thực hiện các yêu cầu đến tài nguyên được bảo vệ thay mặt cho chủ sở hữu tài nguyên và với sự ủy quyền của nó . Hiểu một cách đơn giản hơn là những ứng dụng mong muốn truy cập vào dữ liệu người dùng.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Authorization server</strong> (API) Máy chủ cấp phát access token cho client sau khi xác thực thành công với chủ sở hữu tài nguyên và có được ủy quyền.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Resource Server</strong> (API) Máy chủ lưu trữ các tài nguyên được bảo vệ, có quyền chấp nhận và phản hồi các requests có chứa access token đến tài nguyên được bảo vệ, hay chính là xác thực ủy quyền</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Resource Server và Authorization Server là một điểm khác biệt giữa OAuth2 và OAuth1 khi tách biệt hai thao tác: cấp mã ủy quyền (access token) và xác thực ủy quyền (Authentication) thành 2 Server còn OAuth1 thực hiện trên cùng một server gọi là <strong>Sevice Provider</strong>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>OAuth&nbsp;hoạt&nbsp;động&nbsp;như&nbsp;thế&nbsp;nào&nbsp;?&nbsp;</h2>
+<!-- /wp:heading -->
+
+<!-- wp:image {"id":345,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="https://hydrasky.ml/wp-content/uploads/2020/06/image.png" alt="" class="wp-image-345"/><figcaption>Ảnh từ Viblo.asia</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:list {"ordered":true} -->
+<ol><li>Client sẽ yêu cầu ủy quyền truy cập các Protected Resource từ Resource owner (User). Cient có thể trực tiếp thực hiện yêu cầu ủy quyền tới Resource owner hoặc thông qua Authorization server enpoint để User cho phép truy cập.</li><li>User sẽ xác thực và ủy quyền truy cập tới Resource cho client , lúc này Ứng dụng sẽ nhận được Cấp phép (Authorization Grant) . Sẽ có 4 kiểu cấp quyền nên việc cấp như thế nào client sẽ phụ thuộc vào loại ứng dụng dùng để truy cập vào tài nguyên. Đây được coi như là chứng chỉ đại diện cho sự ủy quyền của Resource Owner.</li><li>Ứng dụng client yêu cầu access token từ Authorization Server bằng cách chuyển Authorization Grant cùng với các thông tin khác để xác thực, chẳng hạn như <strong>client ID</strong>, <strong>client secret</strong>, and <strong>grant_type</strong>.</li><li>Khi xác thực thành công, Authorization Server sẽ phát hành <strong>Access Token</strong> và <strong>Refresh Token</strong> cho ứng dụng client.</li><li>Ứng dụng yêu cầu quyền truy cập vào Protected Resource từ Resource Server và xác thực bằng cách đưa ra Access Token .</li><li>Khi xác thực thành công yêu cầu của máy khách, Resource Server sẽ trả về tài nguyên được yêu cầu.</li></ol>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Mục đích <strong>Refresh token</strong> ở đây là dùng để xác thực với Authorization Server thay vì nhờ User như trên để lấy Access token mới khi Access token cũ đã bị hết hạn. Lưu ý là không phải  <strong>Grant Types</strong> nào cũng hỗ trợ refresh_token và việc có nhận, sử dụng nó là không bắt buộc, là tùy chọn của bạn.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>grant_type=refresh_token&amp;refresh_token=tGzv3JOkF0XG5Qx2TlKWIA</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:heading -->
+<h2><strong>Authorization&nbsp;grant&nbsp;types</strong>&nbsp;</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>OAuth 2.0 Authorization Framework đã đưa ra 4 luồng để lấy Access Token, các luồng này được gọi là "<strong>Grant types</strong>" .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Authorization&nbsp;Code&nbsp;Flow</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Đây là một hình thức ủy quyền được dùng phổ biến nhất hiện nay, thường được sử dụng bởi các ứng dụng web triển khai trên máy chủ và nó có thể cung cấp cả Access Token và Refresh Token. Authentization Code thuộc kiểu <strong>redirection-based flow</strong> nên Client có thể tương tác với resource owner và có khả năng nhận các yêu cầu đến từ Authorization Server .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Flow</h4>
+<!-- /wp:heading -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://i2.wp.com/blogs.innovationm.com/wp-content/uploads/2019/07/blog-open1.png?resize=625%2C348" alt="Oauth2 authorization code flow "/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Đầu tiên, chọn đăng nhập thông qua một bên thứ 3 nào đấy , ví dụ trong hình "Login in with Google"</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ứng dụng (Client)  sẽ chuyển hướng người dùng đến Authorization Server (/authorize endpoint) .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>https:&#47;&#47;accounts.google.com/oauth/authorize?response_type=code&amp;client_id=CLIENT_ID&amp;redirect_uri=yelp.com/callback&amp;scope=profile_contact 
+Trong đó : 
+- response_type là tham số  chỉ định ứng dụng đang yêu cầu nhận authorization_code 
+- client_id là ID của ứng dụng đăng kí với service bên thứ 3 đó, Authorization Server sẽ biết khách hàng của ứng dụng nào đang yêu cầu xin ủy quyền.
+- redirect_uri là nơi sẽ truyển hướng về khi nhận code
+- scope : là phạm vi quyền truy cập</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Authorization Server sẽ chuyến hướng User đến mục đăng nhập nếu như bạn chưa đăng nhập và lời nhắc có cho chép ủy quyền hay không? </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Sau khi User cho phép , Authorization Server sẽ tiếp tục chuyến hướng người dùng quay trở lại ứng dụng  (Client) với Authorization <strong>CODE</strong> .( Các bước sau không còn cần tác nhân User)</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>https:&#47;&#47;yelp.com/callback?code=AUTHORIZATION_CODE</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Sau khi nhận được, Client sẽ thực hiện một request POST gửi Authorization <strong>CODE</strong> đó đến Authorization Server (/oauth/token endpoint) cùng với lại các tham số CLIENT ID và CLIENT SECRET của ứng dụng để Server xác thực . </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>https:&#47;&#47;accounts.goole.com/oauth/token?client_id=CLIENT_ID&amp;client_secret=CLIENT_SECRET&amp;grant_type=authorization_code&amp;code=AUTHORIZATION_CODE&amp;redirect_uri=CALLBACK_URL
+Trong đó : 
+CLIENT SECRET ở đây là một giá trị bí mật chỉ cho phép APP và Authorization Server biết.</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:group -->
+<div class="wp-block-group"><div class="wp-block-group__inner-container"><!-- wp:paragraph -->
+<p>Phía Authorization Server sẽ thực hiện xác thức các giá trị được gửi.</p>
+<!-- /wp:paragraph --></div></div>
+<!-- /wp:group -->
+
+<!-- wp:group -->
+<div class="wp-block-group"><div class="wp-block-group__inner-container"><!-- wp:group -->
+<div class="wp-block-group"><div class="wp-block-group__inner-container"><!-- wp:paragraph -->
+<p>Nếu như thành công , Authorization Server trả về &nbsp;ID Token và Access Token ( Refresh Token).</p>
+<!-- /wp:paragraph --></div></div>
+<!-- /wp:group --></div></div>
+<!-- /wp:group -->
+
+<!-- wp:group -->
+<div class="wp-block-group"><div class="wp-block-group__inner-container"><!-- wp:paragraph -->
+<p>Bây giờ ứng dụng  có thể sử dụng Access Token để truy cập thông tin  của người dùng User thông qua API.</p>
+<!-- /wp:paragraph --></div></div>
+<!-- /wp:group -->
+
+<!-- wp:paragraph -->
+<p>Grant Type này còn thường được dùng cho mobile apps nhưng có đôi chút khác biệt trong quá trình xin ủy quyền. Nguyên nhân là do native apps hay Single-page apps  không thể lưu trữ hay đảm bảo được tính bí mật cho <strong>CLIENT SECRET</strong>  nên không thể sử dụng cái giá trị này để Authorization Server xác thực định danh ứng dụng. Và đó là lí do Flow sẽ bị thay đổi với cái tên là Authorization Code Flow với <strong>Proof Key for Code Exchange (PKCE)</strong>. Lúc này thay vì sử dụng CLIENT SECRET  nó sẽ sử dụng <strong>CODE VERIF</strong>IER và <strong>Challenge</strong>. Chi tiết hơn bạn có thể tham khảo <a href="https://auth0.com/docs/flows/concepts/auth-code-pkce" target="_blank" rel="noreferrer noopener">tại đây</a> .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Implicit Flow</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Loại ủy quyền này thường được sử dụng cho các ứng dụng chạy trên trình duyệt (VD: Chrome Extension) và có thể ấp dụng cho các ứng dụng mà không sử dụng Client Secret nhưng người ta vẫn khuyến cáo bạn nên dùng <strong><strong>PKCE</strong></strong> hơn bởi Implicit không quá bảo mật .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Khác với lại Authorization code , Authorization Server sẽ trả về Access Token luôn thay vì tiến hành trao đổi như Authorization code ,thứ 2 Implicit là  chỉ dùng để lấy access token và không hỗ trợ  Refresh Token.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>FLow</h4>
+<!-- /wp:heading -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://curity.io/assets/images/resources/standards/oauth/flows/implicit-flow-01.svg" alt="Implicit Flow"/><figcaption><img src="https://curity.io/assets/images/resources/standards/oauth/flows/implicit-flow-01.svg" alt="Implicit Flow"></figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Đầu tiên  User sẽ chọn login</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Browser lúc này sẽ chuyển hướng người dùng đến Authorizarion Server (<strong>/authorize</strong>&nbsp;endpoint) </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>/authorize?response_type=token&amp;client_id=s6BhdRkqt3&amp;state=xyz&amp;redirect_uri=https://client.example.com/callback </code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>User tiến hành xác thực nếu chưa login và ủy quyền cho ứng dụng .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Authorization Server chuyển hướng người dùng quay trở lại Browser cùng với Access Token.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>http:&#47;&#47;example.com/callback#access_token=2YotnFZFEjr1zCsicMWpAA&amp;state=xyz&amp;token_type=example&amp;expires_in=3600</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Ok như vậy nếu như ứng dụng là 1 web-based app thì đến đây là có thể call API với Access Token để lấy dữ liệu từ Resource Owner. Còn đối với Mobile Application sẽ cần phải có các bước khác để trích xuất Access Token trong URI bằng script và gửi về cho nó. Nhưng một phần vì mình chưa có cơ hội được thực nghiệm nên mình sẽ không trình bày về nó , và dù tài liệu có nói nhưng rất khó mường tượng ra. Bạn có thể tham khảo ở <a rel="noreferrer noopener" href="https://tools.ietf.org/html/rfc6749#section-4.2" target="_blank">đây</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Resource owner credentials grant</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Grant type này chỉ áp dụng cho  cho những ứng dụng có mức độ tin tưởng cao ( ví dụ như các ứng dụng của các dịch vụ đó phát hành hoặc các ứng dụng mặc định trên hệ thống )  . Bởi vì User sẽ phải cung cấp thông tin username và password trực tiếp cho Application sử dụng để lấy access_token.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Flow</h4>
+<!-- /wp:heading -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://cdn2.auth0.com/docs/media/articles/api-auth/password-grant.png" alt="Tài nguyên mật khẩu của chủ sở hữu"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Đầu tiên User nhập thông tin đăng nhập (Username/Password) vào ứng dụng.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>grant_type=password&amp;username=johndoe&amp;password=A3ddj3w</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Ứng dụng chuyển tiếp thông tin đăng nhập đến Authorization Server.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Authorization Server xác thực thông tin và trả về Access Token và Refresh Token.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ứng dụng có thể sử dụng Access Token để gọi API .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Client Credentials Flow</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Với các ứng dụng machine-to-machine (M2M), chẳng hạn như CLI, daemon hoặc dịch vụ chạy trên back-end của bạn, hệ thống sẽ xác thực và ủy quyền cho ứng dụng thay vì người dùng. Ứng dụng có thể yêu cầu lấy Access Token bằng bằng các thông tin của ứng dụng như CLIENT ID , CLIENT SECRET.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Flow</h4>
+<!-- /wp:heading -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://cdn2.auth0.com/docs/media/articles/flows/concepts/auth-sequence-client-credentials.png" alt="Trình tự xác thực luồng thông tin khách hàng"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Client  xác thực với Authorization Server bằng CLIENT ID và CLIENT SECRET .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Authorization Server  xác thực và  phản hồi với Access Token.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ứng dụng của bạn có thể sử dụng Access Token để gọi API cho chính nó.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ok như vậy là mình trình bày khá tổng quát về các thứ của OAuth2, mình khuyến khích các bạn đọc thêm về nó chứ mình không thể nào viết chi tiết hơn được nữa mặc dù không khó hiểu nhưng nó quá dài. Mình sẽ để link bài viết ở cuối để các bạn tham khảo.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Qua bài viết này tôi đã giới thiệu với các bạn về OAuth2: khái niệm, các đối tượng tham gia, các luồng hoạt động , còn việc triển khai thì mình sẽ không trình bày các bạn nên tự tìm hiểu. Còn vấn đề về bảo mật và cách cách bypass thì mình sẽ trình bày vào bài viết sau. Cái gì cũng cần phải lắm chắc lý thuyết trước đã nhé.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>THAM KHẢO</h2>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul><li><a href="https://auth0.com/docs/getting-started" target="_blank" rel="noopener">https://auth0.com/docs/getting-started</a></li><li><a href="https://tools.ietf.org/html/rfc6749" target="_blank" rel="noopener">https://tools.ietf.org/html/rfc6749</a> ***</li><li><a href="https://alexbilbie.com/guide-to-oauth-2-grants/#which-oauth-20-grant-should-i-use" target="_blank" rel="noopener">https://alexbilbie.com/guide-to-oauth-2-grants/#which-oauth-20-grant-should-i-use</a></li><li><a href="https://curity.io/resources/develop/oauth/oauth-code-flow/" target="_blank" rel="noopener">https://curity.io/resources/develop/oauth/oauth-code-flow/</a></li></ul>
+<!-- /wp:list -->
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/14/TECH/oath/" data-id="ckbfvow67000f77jma4p49cmz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/techology/" rel="tag">techology</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-TECH/authen" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/TECH/authen/" class="article-date">
+  <time datetime="2020-06-14T07:00:00.000Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/14/TECH/authen/">Two-Factor Authentication &amp; Multil-Factor Authentication</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- wp:paragraph -->
+<p>Xin chào các bạn , trong bài viết này mình sẽ giới thiệu về 2 phương thức bảo mật được ưa dùng hiện nay, cách thức hoạt động và mức độ quan trọng hay ảnh hướng như nào đến người dùng khi không dùng hay bị bypass.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Như các bạn đều biết việc xác thực cổ điện là dựa vào user/password là một phương thức đã lỗi thời và rất dễ bị bẻ khóa.  Cùng với đó gười dùng thường có thói quen dùng một mật khẩu cho nhiều tài khoản hay sử dụng mật khẩu đơn giản để dễ nhớ. Dẫn đến việc kể tấn công có thể đoán ra hay sử dụng các công cụ để thực hiện cuộc tấn công bruteforce hoặc diretory attack chiếm lấy tài khoản một cách dễ dàng. Vì vậy điều cần thiết được đặt ra  là cung cấp cho người dùng những cách bổ sung để bảo vệ tài khoản của họ.&nbsp;<a rel="noreferrer noopener" href="https://www.loginradius.com/blog/2019/01/how-do-i-know-if-my-email-has-been-leaked-in-a-data-breach/" target="_blank"></a></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Xác thực hai yếu tố hay đa yếu tố (2FA hoặc MFA) là phương thức bảo mật mới đã được bổ sung vào quá trình xác thực  và ngày càng trở nên phổ biến.&nbsp;&nbsp;Vậy 2FA và MFA là gì và chúng có thể giúp bảo vệ người dùng như thế nào?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Two-Factor (2FA) và Multi-Factor Authentication hay còn gọi là Bảo mật nhiều lớp, là một phương thức để chứng thực user bằng việc combine 2 hoặc nhiều hơn các factors khác nhau.&nbsp;</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Thực ra Two-Factor Authentication (2FA) - cũng được coi là Multi-Factor authentication (MFA) nhưng MFA lại không phải là 2FA, Tại sao lại vậy ???</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":302,"width":532,"height":207,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large is-resized"><img src="http://hydrasky.ml/wp-content/uploads/2020/05/image-1.png" alt="Multi-Factor Authentication Vs Two-Factor Authentication | REVE Secure" class="wp-image-302" width="532" height="207"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Sự khác biệt dễ thấy nhất giữa xác thực đa yếu tố và xác thực hai yếu tố là 2FA chỉ sử dụng hai trong số các yếu tố có sẵn để xác minh danh tính người dùng, trong khi MFA có thể sử dụng ba hoặc nhiều hơn để kiểm tra.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Xét về tính bảo mật, mặc dù 2FA hiện vẫn đang là phương thức xác thực rất là hữu hiệu nhưng không phải là an toàn thực sự. Đã có rất nhiều cách bypass 2FA  được thực hiện, mặc dù hầu hến đến từ việc cấu hình của người quản trị hoặc đôi khi từ chính sự thiếu hiểu biết từ người dùng nhưng rõ ràng rằng 2FA không còn đủ để ngăn chặn hoàn toàn các vi phạm dữ liệu và đó là lí do sinh ra MFA. MFA không chỉ sử dụng nhiều yếu tố xác thực có sẵn mà nó còn bổ sung thêm các yếu tố  theo ngữ cảnh như thời gian,vị trí ...</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://image.slidesharecdn.com/smspasscode-141101172311-conversion-gate02/95/welcome-to-the-3rd-generation-in-user-authentication-7-638.jpg?cb=1414931604" alt="Welcome to the 3rd generation in user authentication"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Oh như  vậy tại sao vẫn sử dụng 2FA khi đã có MFA ? Dễ hiểu thôi , nhiều xác thực hơn có nghĩa là bảo mật hơn nhưng sẽ phức tạp hơn ,người dùng có thể thấy rất khó chịu với việc này nên các ứng dụng nhỏ và vừa thường sử dụng 2FA cùng với các yếu tố xác thực  mức độ tốt hơn thay vì sử dụng nhiều yếu tố để xác thực như MFA. Còn với các ông lớn như Facebook, Google ... đều đã áp dụng MFA cho người dùng tùy chọn và MFA rất cần thiết cho lưu trữ đám mây (Cloud).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Các yếu tố xác thực chính</h2>
+<!-- /wp:heading -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://www.secsign.com/wp-content/uploads/2017/08/2FA-icon.png" alt="Two-Factor Authentication (2FA) vs. Two-Step Authentication (2SA ..."/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Nếu không dựa vào mật khẩu vậy phương thức này sẽ sử dụng điều gì để xác thực ? Có thể kể đến 4 yếu tố :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Kiến thức hay sự hiểu biết</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Ví dụ là sử dụng tính năng xác thực bằng bạn bè , như zalo sẽ yêu cầu bạn chọn dúng 3 tài khoản  trong danh sách bạn bè để xác thực đó chính là bạn. Kiến thức ở đây là một cái gì đó nằm trong kiến thức liên quan đến tài khoản của người dùng.&nbsp;Đây có thể là mật khẩu, tên người dùng,bạn bè, câu trả lời cho câu hỏi bảo mật mà bạn đặt sẵn, mã PIN hoặc địa chỉ. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Sở hữu</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Loại yếu tố xác thực này đề cập đến thứ mà người dùng sở hữu, thiết bị (chỉ cho phép đăng nhập  ở điện thoại hoặc máy tính của bạn )hoặc đối tượng sẽ cung cấp thêm thông tin cần thiết để xác minh (email, sdt) . Ví dụ như mã OTP được gửi qua SMS hoặc các ừng dụng token, token secret qua email...</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"align":"center","id":301,"width":276,"height":402,"sizeSlug":"large"} -->
+<div class="wp-block-image"><figure class="aligncenter size-large is-resized"><img src="http://hydrasky.ml/wp-content/uploads/2020/05/image.png" alt="" class="wp-image-301" width="276" height="402"/><figcaption>Software tokens</figcaption></figure></div>
+<!-- /wp:image -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Cố Hữu (Vốn có)</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Đây là những yếu tố liên quan đến người dùng và thường là các phương pháp sinh trắc học như nhận dạng vân tay , khuôn mặt , giọng nói hoặc mống mắt . </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Vị trí</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Mặc dù yếu tố xác thực vị trí có thể không được sử dụng thường xuyên như các yếu tố khác, tuy nhiên nó vẫn tạo thành một yếu tố để xác thực hữu hiệu.&nbsp;Theo định nghĩa, nó đề cập đến bạn đang ở đâu.&nbsp;Vị trí của bạn được theo dõi và xác định bằng các công nghệ khác nhau theo dõi địa chỉ IP của bạn và họ thông báo cho bạn nếu họ phát hiện ra việc truy cập ở một vị trí bất thường (VD: bạn ở HN nhưng tài khoản lại được truy cập ở HCM) .Xác định vị trí của bạn cũng có thể được thực hiện bằng địa chỉ MAC hoặc thiết bị có trình theo dõi GPS.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Cơ chế hoạt động internally của 2FA</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Khi bạn enable 2FA cho tài khoản của mình,mỗi lần yêu cầu xác thực 2fa, bạn sẽ nhận được một secret key based 32. Tùy vào mức độ security, độ dài của secret key có thể là 80, 128 hoặc 160 bit.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Các authenticator application sẽ scan secret này dưới dạng QR code (hoặc manually) và dùng nó để generate ra một HMAC-SHA1. Chuỗi HMAC này có thể là một trong 2 dạng:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li><a href="https://en.wikipedia.org/wiki/Time-based_One-time_Password_algorithm" target="_blank" rel="noopener">TOTP</a></li><li><a href="https://en.wikipedia.org/wiki/HMAC-based_One-time_Password_algorithm" target="_blank" rel="noopener">HOTP</a></li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Sau đó HMAC này sẽ được extracted và lấy ra 1 số int 4 byte, đó chính là code.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Một mã code sẽ valid trong 30 giây. Tuy nhiên không phải ai cũng có clock synced giống nhau, vì network latency các kiểu nên thường mọi người hay cho phép ở phạm vi cộng trừ 1 code, tức là 1 code sẽ valid trong 1 phút 30 giây. Điều này có thể giảm tính an toàn, nhưng lại tăng sự trải nghiệm đáng kể.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Backup codes</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Backup codes hay recovery codes sẽ được sử dụng trong trường hợp bạn không thể sử dụng điện thoại, bạn có thể dùng chúng để đăng nhập. Có 2 loại backup codes:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li>Multiple backup codes: Ví dụ github sẽ cho bạn 10 codes, và mỗi code sẽ được sử dụng 1 lần.</li><li>Single backup code: Bạn dùng cái code này đồng nghĩa với việc bạn có thể đăng nhập, nhưng phải setup lại 2FA (nó assume bạn bị mất điện thoại).</li></ul>
+<!-- /wp:list -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Quy trình xác thực bằng 2FA</h3>
+<!-- /wp:heading -->
+
+<!-- wp:core-embed/youtube {"url":"https://www.youtube.com/watch?v=0mvCeNsTa1g","type":"video","providerNameSlug":"youtube","className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+https://www.youtube.com/watch?v=0mvCeNsTa1g
+</div></figure>
+<!-- /wp:core-embed/youtube -->
+
+<!-- wp:paragraph -->
+<p>Dưới đây là cách xác thực 2FA hoạt động:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list {"ordered":true} -->
+<ol><li>Người dùng được nhắc đăng nhập bằng ứng dụng hoặc trang web.</li><li>Người dùng nhập những gì họ biết -  username/password ,email .&nbsp;Sau đó, máy chủ của trang web tìm thấy kết quả hợp lệ và định danh người dùng.</li><li>Trang web sau đó sẽ sử dụng các yếu tố sở hữu duy nhất  như email, sdt có liên kết với tài khoản của người dùng  để gửi one time code dưới dạng một token hoặc text message.</li><li>Sau đó, người dùng nhập mã một lần được tạo trong bước 3.</li><li>Sau khi cung cấp cả hai yếu tố, người dùng được xác thực và cấp quyền truy cập vào ứng dụng hoặc trang web.</li></ol>
+<!-- /wp:list -->
+
+<!-- wp:heading {"level":3} -->
+<h3><strong>Bypass xác thực </strong>2FA</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Dưới đây là  một số cách thồng thường mà các hacker hay sử dụng để vượt qua phương thức bảo mật này  :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li>Burteforce : Nó là biện pháp phổ biến và hay dùng nhất do các code thường chỉ có từ 3 dến 6 kĩ tự và hầu như chỉ là số. Vì vậy nếu khồng có giới hạn request thì việc sử dụng bruteforce tỷ lệ  thành công rất là cao.</li><li>Race conditions: Bằng việc sử dụng đồng thời nhiều request cùng một thời điểm khiến server không kịp xử lí đãn đến tạo ra các giá trị code đã sử dụng trước đó hoặc chưa sử dụng tại một thời điểm sau đó. Và kẻ tấn công có thể tái sử dụng nó. </li><li>Via Oauth: Tích hợp Oauth là một cơ chế đăng nhập của bên thứ ba cho phép người dùng đăng nhập bằng tài khoản bên thứ ba.Để bypass, kẻ tấn công phải có quyền truy cập vào tài khoản tích hợp Oauth để đăng nhập thay vì dùng tài khoản trực tiếp của người dùng.</li><li>Via session management :Phương pháp này dựa vào việc bỏ qua cơ chế xác thực hai yếu tố bằng cách sử dụng các chức năng như đặt lại mật khẩu, Về cơ bản,ngay sau khi sử dụng token để đặt lại mật khẩu nó sẽ  duy trì một phiên với ứng dụng  , dẫn đến việc bypass.</li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Ngoài ra còn rất nhiều cách khác đến từ vấn đề logic flow, người dùng ... Bạn có thể tham khảo từ writeup, tip/trick của các hacker , bughunter ...</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://pbs.twimg.com/media/EW8vBWEX0AAxcVj?format=jpg&amp;name=large" alt="Image"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Một tip bypass 2FA từ <a rel="noreferrer noopener" href="https://twitter.com/hackerscrolls/status/1256276376019230720/photo/1" target="_blank">@hackerscrolls</a></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ok kết luận lại, với 2FA va MFA việc bảo mật sẽ tốt hơn rất nhiều nhưng yếu tố quan trọng nhất vẫn phụ thuộc vào con người. So với 2FA, thì MFA sẽ cố phần nhỉnh hơn về độ an toàn nhưng lại phức tạp, khá tốn chi phí, thời gian xác thực  vì vậy nên áp dụng mỗi phương thức vào môi trường hợp lệ. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Cảm ơn các bạn đã đọc bài. Xin chào và hẹn gặp lại !!!   </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Tham khảo </h2>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul><li><a href="https://en.wikipedia.org/wiki/Multi-factor_authentication" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Multi-factor_authentication</a></li><li><a href="https://kipalog.com/posts/Two-Factor-Authentication-va-ung-dung" target="_blank" rel="noopener">https://kipalog.com/posts/Two-Factor-Authentication-va-ung-dung</a></li><li><a href="https://shahmeeramir.com/4-methods-to-bypass-two-factor-authentication-2b0075d9eb5f" target="_blank" rel="noopener">https://shahmeeramir.com/4-methods-to-bypass-two-factor-authentication-2b0075d9eb5f</a></li><li><a href="https://securitytrails.com/blog/two-factor-auth-vs-multi-factor-auth" target="_blank" rel="noopener">https://securitytrails.com/blog/two-factor-auth-vs-multi-factor-auth</a></li><li><a href="https://www.loginradius.com/blog/2019/06/what-is-multi-factor-authentication/" target="_blank" rel="noopener">https://www.loginradius.com/blog/2019/06/what-is-multi-factor-authentication/</a></li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/14/TECH/authen/" data-id="ckbfvow63000d77jmewrv80ae" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/techology/" rel="tag">techology</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/techology/" rel="tag">techology</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/techology/" style="font-size: 10px;">techology</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/15/CTF%20/RootMe/WEB-CLIENT/">CTF /RootMe/WEB-CLIENT</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/WEB%20Pentesting/Web%20App/CROSS%20SIDE%20REQUEST%20FORGERY/">WEB Pentesting/Web App/CROSS SIDE REQUEST FORGERY</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/WEB%20Pentesting/Web%20App/Cross%20Site%20Scripting%20(Part1)/">WEB Pentesting/Web App/Cross Site Scripting (Part1)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/WEB%20Pentesting/Web%20Server/SUBDOMAIN%20TAKEOVER/">WEB Pentesting/Web Server/SUBDOMAIN TAKEOVER</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/WEB%20Pentesting/Web%20Server/Server%20Side%20Request%20Forgery%20(Part1)/">WEB Pentesting/Web Server/Server Side Request Forgery (Part1)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

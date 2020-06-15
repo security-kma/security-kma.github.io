@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>TECH/Host Header Attack | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Xin chào các bạn! Mình lại quay trở lại với một lỗ hổng thuộc dạng HTTP header injection . Kiểu tấn công này thì nó không quá phức tạp vì mức ảnh hưởng của nó cũng chỉ ở mức bình thường. Nhưng nh">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TECH&#x2F;Host Header Attack">
+<meta property="og:url" content="http://yoursite.com/2020/06/14/TECH/Host%20Header%20Attack/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Xin chào các bạn! Mình lại quay trở lại với một lỗ hổng thuộc dạng HTTP header injection . Kiểu tấn công này thì nó không quá phức tạp vì mức ảnh hưởng của nó cũng chỉ ở mức bình thường. Nhưng nh">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn%253AANd9GcQYlVnvXSiQcarEPtvEKnYSHVLvIvgVcvzuHwJmX4PDXY2QHco2&amp;usqp=CAU">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2020/04/image-9.png">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2020/04/image-10.png">
+<meta property="og:image" content="https://blog.cloudflare.com/content/images/2018/08/subtle-req-resp.png">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2020/04/image-11.png">
+<meta property="og:image" content="https://www.cloudace.in/wp-content/uploads/2020/01/acunetix.png">
+<meta property="article:published_time" content="2020-06-15T02:32:13.501Z">
+<meta property="article:modified_time" content="2020-06-15T02:32:25.901Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn%253AANd9GcQYlVnvXSiQcarEPtvEKnYSHVLvIvgVcvzuHwJmX4PDXY2QHco2&amp;usqp=CAU">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-TECH/Host Header Attack" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/TECH/Host%20Header%20Attack/" class="article-date">
+  <time datetime="2020-06-15T02:32:13.501Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      TECH/Host Header Attack
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- wp:image {"align":"center","width":485,"height":266} -->
+<div class="wp-block-image"><figure class="aligncenter is-resized"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQYlVnvXSiQcarEPtvEKnYSHVLvIvgVcvzuHwJmX4PDXY2QHco2&amp;usqp=CAU" alt="HOST HEADER INJECTION ATTACK - Ram Kumar - Medium" width="485" height="266"/></figure></div>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Xin chào các bạn! Mình lại quay trở lại với một lỗ hổng thuộc dạng HTTP header injection . Kiểu tấn công này thì nó không quá phức tạp vì mức ảnh hưởng của nó cũng chỉ ở mức bình thường. Nhưng như vậy không có nghĩ là mình sẽ bỏ qua, đôi khi có những cái mình không ngờ lại là cái nguy hiểm nhất. Vậy Host Header Attack có gì hay? Chúng ta cùng tìm hiểu nào?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>A client MUST include a Host header field in all HTTP/1.1 request<br>messages</p><cite><strong>RFC 2616</strong></cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>Theo như trong tài liệu <strong><a href="https://tools.ietf.org/html/rfc2616#page-128" target="_blank" rel="noopener">RFC 2616</a></strong> ở mục 14.23 thì trong tất cả các message HTTP/1.1 request từ Client đén Server bắt buộc phải bao gồm trường  "Host" header .&nbsp;Nếu URI được request đến không chứa tên máy chủ Internet của dịch vụ thì trường Host header coi như có giá trị là "empty"(rỗng) .&nbsp;Bất kỳ request HTTP/1.1 nào không có trường Host header  thì sẽ được máy chủ phản hồi với mã trạng thái là 400 (bad request). Thế "Host" header để làm gì ta?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Thông thường một máy chủ web thường phục vụ, lưu trữ nhiều website hoặc ứng dụng web và tất nhiên chúng sẽ cùng một địa chỉ IP của server. Mỗi website hay ứng dụng được lưu trữ như vậy được gọi là "Virtual host".Bây giờ làm sao cho người dùng có thể truy cập vào các website khác nhau ? Đó là lí do của HOST header tồn tại. Tiêu đề này sẽ nằm trong HTTP request đến máy chủ và máy chủ sẽ sử dụng giá trị của header này để chuyển request đến website hoặc ứng dụng được chỉ định. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Điều gì xảy ra nếu chúng ta thay đổi giá trị của header là các host không xác định (evil.com) ? Hầu hết các máy chủ web thường chuyển các các host khồng xác định trong header vào đầu của danh sách "virtual host" của nó, Vì vậy các request tới server với host header không xác định như vậy vẫn được coi là hợp lệ.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":252,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/04/image-9.png" alt="" class="wp-image-252"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Ngoài ra ngoài việc sử dụng "Host" header , attacker còn có thể sử dụng "X-Forward-Host" (viết tắt là XFH) để inject. XFH được sủ dụng để chỉ định máy chủ được chỉ định (X-Forward-Host: cdn.example.com) chuyển tiếp giá trị của "Host" header đến máy chủ gốc.XFH thường được áp dụng trong trương hợp sử dụng proxy hoặc các CDN, trong tài liệu của <a href="https://tools.ietf.org/html/rfc7230#section-5.4" target="_blank" rel="noreferrer noopener">RFC 7230</a>, phần 5.4 có nói:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>When a proxy receives a request with an absolute-form of<br>request-target, the proxy MUST ignore the received Host header field<br>(if any) and instead replace it with the host information of the<br>request-target.</p><cite>Ngoài ra bạn có thể tham khảo thêm về tài liệu của <a href="https://www.keycdn.com/support/x-forwarded-host" target="_blank" rel="noreferrer noopener">KeyCDN</a></cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:image {"id":253,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/04/image-10.png" alt="" class="wp-image-253"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Header này thường được sử dụng phổ biến trong các ứng dụng web PHP, .&nbsp;Một số kịch bản trong ví dụ sau đây là cách sử dụng tiêu biểu và nguy hiểm của host header:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>&lt;script src="http://&lt;?php echo _SERVER&#91;'HOST'] ?>/script.js">
+</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Kẻ tấn công có thể lợi dụng code ở trên để tạo đầu ra HTML chỉ bằng cách thao túng host header.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>GET / HTTP/1.1
+Host: www.attacker.com
+&#91; X-Forwarded-Host: www.attacker.com ]</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Và kết quả nhận được là trình duyệt của victims sẽ load file .js từ máy chủ của attacker :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>&lt;script src="http://attacker.com/script.js"></code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Từ đây attacker có thể thực hiện một cuộc tấn công xss hoặc phising. Nhưng với kiểu này sẽ rất khó để khai thác ở ngoài thực tế. bạn chỉ có thể thay đổi được giá trị các header trong request của victim chỉ khi bạn có thể can thiệp vào giữa giao tiếp của Client vs Server như kiểu MITM (Man in the middle). Các bug bounty program thường không công nhận lỗi này vì vậy bỏ qua hướng đó và tiếp tục leo thang.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Sẽ có 2 hướng tấn công chính từ lỗ hổng HHA mình muốn đề cập là <a rel="noreferrer noopener" href="http://hydrasky.ml/2020/03/web-cache-poisoning-part-1" target="_blank">web cache poisoning</a> và Password reset poisoning.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Đối với Web cache poisoning</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Để điều này xảy ra, kẻ tấn công sẽ cần phải đầu độc proxy cache của trang web hoặc nhà cung cấp được website sử dụng như các CDN.&nbsp;Cache sau đó sẽ phục vụ nội dung bị nhiễm độc cho bất kỳ ai request với nội dung tương tự, và tất nhiên nạn nhân không thể kiểm soát được nội dung độc hại mà cache cung cấp cho họ. Để hiểu rõ hơn về WCP các bạn có thểm tham khảo <a href="http://hydrasky.ml/2020/03/web-cache-poisoning-part-1" target="_blank" rel="noreferrer noopener">bài viết</a> của mình.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"align":"center","width":458,"height":307} -->
+<div class="wp-block-image"><figure class="aligncenter is-resized"><img src="https://blog.cloudflare.com/content/images/2018/08/subtle-req-resp.png" alt="How Cloudflare protects customers from cache poisoning" width="458" height="307"/><figcaption>Ví dụ</figcaption></figure></div>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Một điều lưu ý ở đây là lên sử dụng X-Forwarded-Host thay vì Host header để poisoning bởi vì thông thường Host header nằm trong cache key và bình thường sẽ chẳng ai tự thay đổi giá trị host header của mình về host của attacker hoặc thành một payload độc hại cả.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Đối với Password reset poisoning</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Thông thường khi bạn quên mật khẩu bạn sẽ chọn cách là reset lại nó và chức năng nay ai cũng có thể sử dụng. Server sẽ tiến hành gửi email với link reset mật khẩu có dạng&nbsp;<code>example.com/reset-password?email=victim@gmail.com&amp;code=identify:token</code>&nbsp;(<code>identify:token</code>&nbsp;thường được mã hóa) . Mình sẽ không giải thích code như thế nào nha! Các bạn cử hiêu đơn giản lúc này server sử dụng _SERVER['HOST'] để xác định host của link.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p> Attacker đã lợi dụng điều này dùng tên tài khoản như email, username ... của victim để thực hiện. Trước khi request được gửi đi, attacker sẽ sửa giá trị của host header thành máy chủ của attacker .Server sẽ tiến hành gửi email với link reset mật khẩu có dạng&nbsp;là <code>attacker.com/reset-password?email=victim@gmail.com</code>&amp;<code>code=identify:token</code>&nbsp;(<code>identify:token</code>&nbsp;thường được mã hóa).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ok như vậy khi victim vào mail và click vào link reset mật khẩu sẽ request đến server của attacker. Attacker lúc này chỉ việc ngồi và xem log trên máy chủ sẽ lấy được link hay quan trọng hơn đó la token để đổi mật khẩu của victim.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":257,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/04/image-11.png" alt="" class="wp-image-257"/><figcaption><a href="https://hackerone.com/reports/281575" target="_blank" rel="noopener">https://hackerone.com/reports/281575</a></figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Cách tìm kiếm lỗ hổng này</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Để phát hiện ra nó rât đơn giản bạn chỉ cần chặn bắt request bằng các công cụ như Burpsuite hoặc Zap và thay đổi giá trị của Host header hoặc thêm vào X-Forwarded-Host rồi theo dõi reponse trả về là biết. Hoặc các bạn có thể sử dụng các công cụ scan web tự động như Acunetix. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"align":"center","width":515,"height":253} -->
+<div class="wp-block-image"><figure class="aligncenter is-resized"><img src="https://www.cloudace.in/wp-content/uploads/2020/01/acunetix.png" alt="Acunetix Web Vulnerability Scanning Software - CloudACE Technologies" width="515" height="253"/></figure></div>
+<!-- /wp:image -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Các phòng chống lỗ hổng</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Thay vì sử dụng host header để xác định thì lập trình viên nên sử dụng SERVER_NAME.Bởi vì SERVER_NAME sẽ lấy thông tin từ cấu hình của máy chủ nên nó sẽ xác thực hơn. Cùng với đó bạn có thể kết hợp với việc sử dụng Whitelist cho các tên server được phép</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted">$domains = [‘abc.example.com’, ‘foo.bar.com’];<br>if ( ! in_array($_SERVER[‘SERVER_NAME’], $domains)) {<br>// error<br>}</pre>
+<!-- /wp:preformatted -->
+
+<!-- wp:paragraph -->
+<p>OK như vậy là mình đã nó xong về Host header attack, nói chung thì lỗ hổng này không có gì quá nổi bật nhưng cũng đáng để chúng ta học hỏi thêm kinh nghiệm. Xin chào và hẹn gặp các bạn vào bài viết sau!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Tham khảo</h2>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul><li><a href="https://www.yeahhub.com/host-header-attack-practical-exploitation-and-prevention/" target="_blank" rel="noopener">https://www.yeahhub.com/host-header-attack-practical-exploitation-and-prevention/</a></li><li><a href="https://www.skeletonscribe.net/2013/05/practical-http-host-header-attacks.html" target="_blank" rel="noopener">https://www.skeletonscribe.net/2013/05/practical-http-host-header-attacks.html</a></li><li><a href="https://www.acunetix.com/blog/articles/automated-detection-of-host-header-attacks/" target="_blank" rel="noopener">https://www.acunetix.com/blog/articles/automated-detection-of-host-header-attacks/</a></li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/14/TECH/Host%20Header%20Attack/" data-id="ckbfvtosm000i77jmbwux4yd6" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/14/BugBounty/TIP/SCSP/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          BugBounty/TIP/SCSP
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/14/TECH/Session%20&%20Cookie/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">TECH/Session &amp; Cookie</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/techology/" rel="tag">techology</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/techology/" style="font-size: 10px;">techology</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/15/CTF%20/RootMe/WEB-CLIENT/">CTF /RootMe/WEB-CLIENT</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/WEB%20Pentesting/Web%20App/CROSS%20SIDE%20REQUEST%20FORGERY/">WEB Pentesting/Web App/CROSS SIDE REQUEST FORGERY</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/WEB%20Pentesting/Web%20App/Cross%20Site%20Scripting%20(Part1)/">WEB Pentesting/Web App/Cross Site Scripting (Part1)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/WEB%20Pentesting/Web%20Server/SUBDOMAIN%20TAKEOVER/">WEB Pentesting/Web Server/SUBDOMAIN TAKEOVER</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/WEB%20Pentesting/Web%20Server/Server%20Side%20Request%20Forgery%20(Part1)/">WEB Pentesting/Web Server/Server Side Request Forgery (Part1)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

