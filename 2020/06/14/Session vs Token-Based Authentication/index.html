@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Session &amp; Token-Based Authentication | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Xin chào các bạn, bài viết này mĩnh sẽ nói về 2 cơ chế xác thực người dùng dựa vào session và token. Chắc nhiều bạn thấy chúng rât nhiều nhưng cũng chưa rõ nó hoạt động như thế nào .Ok chúng ta cùng">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Session &amp; Token-Based Authentication">
+<meta property="og:url" content="http://yoursite.com/2020/06/14/Session%20vs%20Token-Based%20Authentication/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Xin chào các bạn, bài viết này mĩnh sẽ nói về 2 cơ chế xác thực người dùng dựa vào session và token. Chắc nhiều bạn thấy chúng rât nhiều nhưng cũng chưa rõ nó hoạt động như thế nào .Ok chúng ta cùng">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images.viblo.asia/full/fdd3546f-1ee6-4ea7-afa4-d07189532c30.png">
+<meta property="og:image" content="https://images.viblo.asia/17eeed29-52cf-4b4c-92b4-17c9adeb249a.png">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2020/04/image-13.png">
+<meta property="article:published_time" content="2020-06-14T07:00:00.000Z">
+<meta property="article:modified_time" content="2020-06-15T16:21:51.304Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Technology">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.viblo.asia/full/fdd3546f-1ee6-4ea7-afa4-d07189532c30.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Session vs Token-Based Authentication" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/Session%20vs%20Token-Based%20Authentication/" class="article-date">
+  <time datetime="2020-06-14T07:00:00.000Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Session &amp; Token-Based Authentication
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- wp:paragraph -->
+<p>Xin chào các bạn, bài viết này mĩnh sẽ nói về 2 cơ chế xác thực người dùng dựa vào session và token. Chắc nhiều bạn thấy chúng rât nhiều nhưng cũng chưa rõ nó hoạt động như thế nào .Ok chúng ta cùng tìm hiểu nào.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Tại sao lại dùng session hay token để xác thực người dùng ?</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Như các bạn đã biết việc giao tiếp giữa trình duyệt web (user) với  với máy chủ sẽ sử dụng giao thức truyền siêu văn bản  HTTP (Hypertext Transfer Protocol) . Mà HTTP là một giao thức phi trạng thái (Stateless) - phiên kết nối (TCP session) sẽ mất khi gói tin đến đích . Điều đó đồng nghĩa với việc mỗi lần user request đến tài nguyên cần xác thực họ sẽ phải đăng nhập một lần. Oh Bully sh!t ! Vì vậy người ta cần tìm cách để có thể xác thực và duy trì trạng thái đăng nhập cho người dùng và đó là lí do  dùng đến session và token. Thực ra ngoài hai phương thức này còn một phương thức cổ điển nữa mà thỉnh thoảng ta vẫn hay gặp đó là HTTP basic authentication nhưng nó rất đơn giản, thô và thường chỉ sử dụng trong nội bộ nên mình sẽ bỏ qua. Ok tiếp tục nào !</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Session based Authentication</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Trong bài viết trước của mình có giải thích về session , bạn nào chưa biết có thể tham khảo. Session sẽ được tạo ra khi user request đến server và server sẽ gửi sessionid về browser và lưu trữ ở cache browser. Các request tiếp theo từ browser lên server thì sessionid được đính kèm dưới dạng cookie . Server sẽ thực hiện so sánh giá trị sessionid và trả response về.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://images.viblo.asia/full/fdd3546f-1ee6-4ea7-afa4-d07189532c30.png" alt=""/></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading {"level":3} -->
+<h3><strong>Ưu điểm:</strong></h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p><strong>Thông tin được giấu kín, an toàn:</strong>&nbsp;Client chỉ được biết tới&nbsp;<strong>Session ID</strong>&nbsp;thường là 1 chuỗi random hoặc đã được băm không có thông tin gì của người dùng, còn mọi thông tin khác của phiên đăng nhập hay người dùng hiện tại đều được lưu phía server nên cơ chế này giữ kín được thông tin của người dùng trong quá trình truyền tải.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Fully-controlled session:</strong>&nbsp;Tính chất này có thể cho phép hệ thống quản trị được&nbsp;<strong>TẤT CẢ</strong>&nbsp;các hoạt động liên quan tới phiên đăng nhập của người dùng như thời gian login, force logout,...</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Nhược điểm</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p><strong>Chiếm nhiều bộ nhớ:</strong>&nbsp;Với mỗi phiên làm việc của user, server sẽ lại phải tạo ra một session và lưu vào bộ nhớ trên server. Số data này có thể còn lớn hơn cả user database của bạn do mỗi user có thể có vài session khác nhau. Do vậy việc tra cứu đối với các hệ thống lớn nhiều người dùng sẽ là vấn đề.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Khả năng bị  tấn công CSRF:</strong>&nbsp;Nói nôm na là do&nbsp;Session ID&nbsp;thường được lưu vào&nbsp;cookie mà  cookie được&nbsp;tự động&nbsp;gắn vào các request tới domain của bạn.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Không có khả năng mở rộng (Scalability)  với các flatform khác:</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Bây giờ hãy thử tưởng tượng chúng ta đang có một trang web hoạt động ngon lành với Session rồi, nhưng tới một ngày chúng ta phải làm thêm các Native Apps (ứng dụng di động) cho hệ thống là IOS hoặc Android, và cùng sử dụng chung một Database với ứng dụng web hiện tại thì như thế nào?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Rõ ràng lúc này chúng ta sẽ không thể xác thực người dùng sử dụng Native app bằng Session được vì Native app không có Cookie, chỉ Browser mới có mà thôi.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Vậy nên Token-Based Authentication - JWT mới được sinh ra trên thế giới lập trình này để giải quyết vấn đề trên và hiện nay nó luôn được ưu tiên lựa chọn mỗi khi bắt đầu làm một dự án mới.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p> Mặc dù vậy, hiện tại Session-based Authentication thường được dùng trong các website thương mại ,nhỏ vừa (tham khảo phần mục đích của session trong bài viết của mình) và những ứng dụng web làm việc chủ yếu với browser, những hệ thống monolithic do cần sự tập trung trong việc lưu session data và sự hạn chế về domain.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Token-Based Authentication</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Token-Based Authentication đã ra mắt cũng  được vài năm, nó đề xuất bởi OAuth 2.0 Framework. Cách thức hoạt động của kĩ thuật này khá giống với với Session-Based Authentication nhưng các công nghệ ngày nay vẫn ưu tiên sử dụng nó hơn, tại sao nhỉ?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Điều đầu tiên cần nhớ, Token-Based Authentication là statefull (khác với session ) vì vậy server sẽ không lưu trữ hồ sơ về việc người dùng đã đăng nhập hay token đã được tạo. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Dựa vào định dạng sẽ có 3 loại token chính là SAML ( Security Markup  Assertion Language), SWT ( Simple Web Token) và JWT (Json Web Token). Chi tiết về các loại này mình sẽ có bài viết riêng và trong bài này mĩnh sẽ lấy JWT để nói vì nó được chấp nhận và sử dụng rộng rãi như một tiêu chuẩn của các nền tảng web hiện đại (<a href="https://tools.ietf.org/html/rfc7519" target="_blank" rel="noopener">RFC 7519</a>) . </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Nói qua một chút về JWT  để các bạn có hiểu rõ hơn về quy trình xác thực của nó (Chi tiết sẽ có bài viết riêng). JWT token định nghĩa là cách thức xác thực giữa các ứng dụng bằng một đối tượng&nbsp;JSON<strong>,</strong>nó bao gồm 3 phần lầ header, payload và chữ ký (signature). JWT sử dụng chữ kí số để đảm bảo tính toàn vẹn của token được tạo, phần payload sẽ chứa các thông tin của người dùng để xác thực , còn header để chỉ định thuật toán để mã hóa.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p> Dưới đây là Flow của Token-based Authentication:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://images.viblo.asia/17eeed29-52cf-4b4c-92b4-17c9adeb249a.png" alt="Session và Token Based Authentication - Viblo"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Đầu tiên user submit username/password , sau khi check thông tin hợp lệ server sẽ tạo token và trả lại token trong response cho người dùng. Phía client sẽ thực hiện lưu trữ, nếu như là trình duyệt web thì JWT có thể lưu vào Local Storage, IOS app thì sẽ là Keychain và Android app sẽ lưu vào SharedPreferences. Các request tiếp theo token sẽ được thêm vào request ở các vị trí như là Athorization header , URL , Cookie header hoặc request body. Server sẽ check token bằng cách kiểm tra chữ kí số (signature) , đảm bảo thông tin trong token là chính xác và token đó do server tạo ra. Response sẽ  được trả về nếu thành công hoặc thông báo lỗi xác thực nếu thất bại.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":292,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/04/image-13.png" alt="" class="wp-image-292"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading {"level":4} -->
+<h4><strong>Ưu điểm</strong>:</h4>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul><li><strong><strong>Phù hợp với nhiều loại client:</strong>&nbsp;</strong>Nên nhớ, cookie là một concept được&nbsp;các browser&nbsp;áp dụng tự động, còn với các client sử dụng Web API như mobile, IoT device, server,... thì việc sử dụng cookie lại rất hạn chế. Sử dụng token trong header hay URL,... sẽ dễ dàng hơn cho client trong việc lưu lại token và truyền tải token.</li><li><strong>Scalability:</strong> Dễ dàng mở rộng server hơn. Điều này là nhờ tính stateless của JWT, server không cần phải lưu session state, nên trong trường hợp phía server sử dụng cơ chế load balancing, bất kỳ máy server nào cũng có thể handle request và vẫn có được state của user thay vì chỉ server mà user đã login.</li><li><strong>Chống CSRF:</strong>&nbsp;Thông thường thì token được thêm vào URL hoặc Authorization header và request body ( kèm trong cookie rất ít ) nên sẽ phòng chống được các trường hợp tấn công như với trường hợp session/cookie. Ngoài ra ,theo như RFC thì token cũng có nhiều loại trong đó có lại chỉ sử dụng một lần hoặc chỉ dùng cho một hành động.</li></ul>
+<!-- /wp:list -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Nhược điểm:</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p><strong>Phức tạp cho phía client</strong>: Cơ chế sử dụng token thường yêu cầu client phải có xử lý liên quan tới lưu token, gửi token, do vậy sẽ không phù hợp với những website kiểu cũ, sử dụng nhiều server render html và phần javascript hạn chế.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Thông tin dễ lộ:</strong> JWT&nbsp;nó&nbsp;không ẩn, không làm mờ, không che giấu dữ liệu gì cả, mà nó được sử dụng để&nbsp;chứng minh rằng dữ liệu được tạo ra bởi một nguồn xác thực. Dữ liệu trong payload chỉ được Encoded bằng base64urlencode chứ không phải Encrypted. Chính vì vậy, thông thường người ta chỉ lưu 1 số thông tin thiết yếu như user_id, username mà không lưu những thông tin nhạy cảm như password vào token vgiao thức mã hóa đường truyền HTTPS để tránh tấn công MITM .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ok minh đã trình bày tổng quát về 2 các xác thực dựa vào session và token. Các bạn muốm tìm hiểu sâu hơn có thể tham khảo link mình đã đểm bên dưới. Cảm ơn các bạn đã đọc bài !</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Tham khảo</h2>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul><li><a href="https://kipalog.com/posts/Authentication-story-part-2--Authentication-co-ban" target="_blank" rel="noopener">https://kipalog.com/posts/Authentication-story-part-2--Authentication-co-ban</a></li><li><a href="https://wp-rocket.me/blog/difference-json-web-tokens-vs-session-cookies/" target="_blank" rel="noopener">https://wp-rocket.me/blog/difference-json-web-tokens-vs-session-cookies/</a></li><li><a href="https://trungquandev.com/hieu-sau-ve-jwt-json-web-tokens/" target="_blank" rel="noopener">https://trungquandev.com/hieu-sau-ve-jwt-json-web-tokens/</a></li><li>Token-Based vs Session-Based Authentication: A survey</li><li>Pro ASP.NET Web API Security Securing ASP.NET Web API by by Badrinarayanan Lakshmiraghavan</li></ul>
+<!-- /wp:list -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/14/Session%20vs%20Token-Based%20Authentication/" data-id="ckbgpmbco000fqxjm50du0zxs" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/14/oath/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Oauth
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/14/Cross%20Site%20Scripting%20(Part1)/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Cross Site Scripting (Part 1)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BugBoutyTip/" rel="tag">BugBoutyTip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web-App/" rel="tag">Web App</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web-Server/" rel="tag">Web Server</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/BugBoutyTip/" style="font-size: 10px;">BugBoutyTip</a> <a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/Technology/" style="font-size: 20px;">Technology</a> <a href="/tags/Web-App/" style="font-size: 13.33px;">Web App</a> <a href="/tags/Web-Server/" style="font-size: 16.67px;">Web Server</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/15/CROSS%20SIDE%20REQUEST%20FORGERY/">Cross Side Request Forgery</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/oath/">Oauth</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/Session%20vs%20Token-Based%20Authentication/">Session &amp; Token-Based Authentication</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/Cross%20Site%20Scripting%20(Part1)/">Cross Site Scripting (Part 1)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/Host%20Header%20Attack/">Host Header Attack</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

