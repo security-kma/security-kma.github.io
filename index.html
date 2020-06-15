@@ -64,6 +64,230 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-csp" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/csp/" class="article-date">
+  <time datetime="2020-06-15T02:01:03.969Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/14/csp/">csp</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- wp:heading -->
+<h2><strong>Content&nbsp;Security&nbsp;Policy&nbsp;(CSP)&nbsp;là&nbsp;gì&nbsp;?</strong>&nbsp;</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Content Security Policy (CSP) là chính sách bảo mật nội dung, được sử dụng để xác định các nguồn nội dung an toàn trên website mà trình duyệt có thể tải về cho người dùng.CSP là biện pháp đối phó rất hiệu quả với các cuộc tấn công Cross Site Scripting (XSS) và các kiểu injection tương tự.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://datahouse.asia/wp-content/uploads/2020/04/content-security-policy-1024x414.png" alt="Does Security Matter to Front End Developers and Tips To Not Get ..."/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Tưởng tượng một chút, chúng ta ó 2 hướng cho các cuộc tấn công chèn script độc hại vào các website, đó là thông qua:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li>Inline Script: attacker đặt script của chúng trực tiếp vào trang web của bạn</li><li>Trình duyệt sẽ Load script từ các domain khác (của attacker) trên website đang truy cập .</li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Với hướng thứ 2,  attacker ưa dùng hơn vì dễ dàng truền tải script độc hại và có thể tùy ý thay đổi nội dung của script mà trình duyệt load. Nó có thể thay đổi trang web mà không cần tương tác.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":316,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/05/image-5.png" alt="" class="wp-image-316"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Nhiệm vụ của CSP lúc này là không cho phép trình duyệt load script từ domain khác ,như thế kế hoạch của attacker sẽ bị hỏng. Vậy CSP đã làm thế nào ? </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2><strong>Cách&nbsp;hoạt&nbsp;động&nbsp;của&nbsp;SCP</strong>&nbsp;</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Bằng cách sử dụng các chỉ thị của CSP phù hợp ở trong các tiêu đề phản hồi HTTP, bạn có thể chọn lọc, chỉ định nguồn dữ liệu nào sẽ được phép sử dụng trong ứng dụng web của mình. Ví dụ như:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li>Chỉ định thực thi script đến từ domain của mình (ví dụ: mydomain.com)</li><li>Chỉ định thực thi các script đến từ một domain khác đáng tin cậy hay subdomain (ví dụ: * .mydomain.com, google.com)</li><li>Chỉ định chỉ thực thi tệp duy nhất mydomain.com/script.min.js</li><li>Không thực thi bất kì mã JavaScript nào</li><li>Chỉ hiển thị hình ảnh đến từ cdn.securecdn.com</li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Cách chỉ định chính sách , đó là thêm header HTTP dưới đây vào repsonse , nó có dạng là</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Content-Security-Policy: [chinh sách]</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":311,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/05/image-2.png" alt="" class="wp-image-311"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Để&nbsp;viết&nbsp;chính&nbsp;sách,&nbsp;bạn&nbsp;cần&nbsp;biết&nbsp;các&nbsp;chỉ&nbsp;thị&nbsp;cho&nbsp;các&nbsp;đối&nbsp;tượng&nbsp;&nbsp;</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":312,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/05/image-3.png" alt="" class="wp-image-312"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Ví dụ như img-src áp dụng các hình ảnh được hiển thị trên trang web, nó sẽ chỉ định nguồn hình ảnh đươc phép lấy về, default-src đóng vai trò dự phòng để tìm nạp CSP khác nếu nó bị thiếu . Để biết thêm và chi tiết các chỉ thị các bạn có thể tham khảo nội <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy" target="_blank">ở đây</a>  .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Cùng với các chị thị còn có các thuộc tính của các chỉ thị hoặc có thể gọi là các keywords/values bổ trợ, Ví dụ như :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li>"none" không cho phép các đối tượng liên quan đến chỉ thị được thực thi.</li><li>"self " cho phép thực thi đối với domain của bạn (ko tính subdomain) hoặc những domain được chỉ định.</li><li>"unsafe-inline" cho phép thực thi các đoạn mã CSS hoặc Javascript được nhúng trực tiếp vào mã nguồn. Thiết lập này không được khuyến khích sử dụng nhưng trong nhiều trường hợp chúng ta vẫn phải dùng đến.</li><li>"unsafe-eval" cho phép chạy hàm eval(), đây là một hàm khá nguy hiểm của Javascript.</li><li>"*" áp dụng cho tất cả ví dụ như 'Https: // *' sẽ cho phép tất cả các tài nguyên đang truyền tải qua HTTPS.</li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Bạn&nbsp;có&nbsp;thể&nbsp;tham&nbsp;khảo&nbsp;thêm&nbsp;<a rel="noreferrer noopener" href="https://content-security-policy.com/" target="_blank">ở đây</a>&nbsp;</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3><strong>VÍ DỤ MỘT VÀI CHÍNH SÁCH</strong></h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>&nbsp;CSP chỉ cho phép JavaScript , cái mà được lưu trữ trong trang web của bạn</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>Content-Security-Policy: script-src 'self'</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Cho phép các các nội dung thuộc domain và subdomain của example.com và được truyền tải thông qua cả 2 giao thức http , https</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>Content-Security-Policy: default-src *://*.example.com  </code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Chỉ cho phép JavaScript , cái mà được lưu trữ trên trang web của bạn và cdn.trustyorigin.net nhưng hình ảnh thì ở bất kì chỗ nào</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>Content-Security-Policy: script-src 'self' cdn.trustedorigin.net; img-src *; </code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Chặn tất cả các form submit</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>Content-Security-Policy form-action 'none'; </code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Chỉ cho phép thực thi js trong tập tin script.js trên https://trustyorigin.net/ và mặc định các giá trị của child-src, connect-src, font-src, frame-src, img-src, manifest-src, media-src, media-src, object-src, script-src, style-src và worker-src đều là self - các nội dung liên quan đến chỉ thị đều lấy từ nguồn của URL hiện tại</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>Content-Security-Policy default-src ‘self’; script-src https://trustedorigin.net/script.js; </code></pre>
+<!-- /wp:code -->
+
+<!-- wp:heading -->
+<h2><strong>Triển&nbsp;khai&nbsp;CSP</strong>&nbsp;</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Để triển khai CSP, ta cần định cấu hình máy chủ web của mình để trả về Content-Security-Policy header HTTP (đôi khi bạn sẽ thấy nó với header X-Content-Security-Policytiêu đề, nhưng đó là phiên bản cũ hơn và bây giờ không cần đề cập đến nó nữa). Ví dụ: nếu bạn sử dụng Apache, bạn có thể xác định CSP trong tệp httpd.conf , Virtualhost hoặc .htaccess của trang web của bạn.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":313,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/05/image-4.png" alt="" class="wp-image-313"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Ngày nay ,CSP cũng được hỗ trợ bởi tất cả các trình duyệt hiện đại  và đã được nhiều năm chỉ riêng không được hỗ trợ trong Internet Explorer, nó chỉ dùng sandbox.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":319,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="http://hydrasky.ml/wp-content/uploads/2020/05/image-6.png" alt="" class="wp-image-319"/><figcaption>Level ở đây các bạn có thể hiểu như là thế hệ của CSP</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Ngoài ra cấu hình trên server, bạn cũng có thể cung cấp các chỉ thị cụ thể bằng cách sử dụng thẻ &lt;meta&gt;- thẻ HTML , được gọi là CSP Page-level. Dưới đây, một ví dụ đặt ra chính sách tương tự như trên:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>&lt;meta http-equiv="Content-Security-Policy" content="default-src 'self' "> </code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Để sử dụng các chỉ thị này sẽ cần đến Sanboxing của trình duyệt</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Một vấn đề nữa, nếu như các trình duyệt không hỗ trợ CSP nó vẫn hoạt động với các máy chủ triển khai nó và ngược lại, các trình duyệt không hỗ trợ CSP chỉ cần bỏ qua nó, hoạt động như bình thường, và mặc định Same-origin là policy cho nội dung web. Nếu trang web không cung cấp CSP header , các trình duyệt cũng sử dụng Same-origin làm policy .</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Bypass CSP</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Có lẽ đây là mục mà ae pentest yêu thích nhất, bất kì phương thức bảo mật nào đều có lỗ hổng và CSP cũng không ngoại lệ. CSP giống như whitelist, vì vậy đôi lúc nó sẽ khổng thể đáp ứng được toàn bộ ưu cầu về các tính bảo mật. Các bạn có thểm tham khảo các bài viết dưới đây :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><li><a href="http://blog.innerht.ml/csp-2015/" target="_blank" rel="noopener">"CSP 2015". XSS&nbsp;Jigsaw.&nbsp;Retrieved&nbsp;December&nbsp;12, 2015.&nbsp;</a></li><li><a href="http://sebastian-lekies.de/csp/bypasses.php" target="_blank" rel="noopener">Lekies,&nbsp;Sebastian. "Collection&nbsp;of&nbsp;CSP&nbsp;bypasses".&nbsp;Retrieved&nbsp;2017-06-05.&nbsp;</a></li><li><a href="http://www.slideshare.net/x00mario/an-abusive-relationship-with-angularjs" target="_blank" rel="noopener">"An&nbsp;Abusive&nbsp;Relationship&nbsp;with&nbsp;AngularJS".&nbsp;Retrieved&nbsp;January&nbsp;5, 2016.&nbsp;</a></li><li><a href="https://www.youtube.com/watch?v=p07acPBi-qw" target="_blank" rel="noopener">OWASP (2017-05-25),&nbsp;AppSec&nbsp;EU 2017&nbsp;Don't&nbsp;Trust&nbsp;The DOM:&nbsp;Bypassing&nbsp;XSS&nbsp;Mitigations&nbsp;Via&nbsp;Script&nbsp;Gadgets&nbsp;by&nbsp;Sebastian&nbsp;Lekies,&nbsp;retrieved&nbsp;2017-06-05&nbsp;</a></li><li><a rel="noreferrer noopener" href="https://portswigger.net/research/bypassing-csp-with-policy-injection" target="_blank">https://portswigger.net/research/bypassing-csp-with-policy-injection</a>&nbsp;</li><li><a rel="noreferrer noopener" href="https://lab.wallarm.com/how-to-trick-csp-in-letting-you-run-whatever-you-want-73cb5ff428aa/" target="_blank">https://lab.wallarm.com/how-to-trick-csp-in-letting-you-run-whatever-you-want-73cb5ff428aa/</a>&nbsp;</li><li><a href="https://book.hacktricks.xyz/pentesting-web/content-security-policy-csp-bypass" target="_blank" rel="noopener">https://book.hacktricks.xyz/pentesting-web/content-security-policy-csp-bypass</a></li></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Ngay từ đầu mk cũng đề cập , CSP giúp giảm thiểu các cuộc tấn công xss và các kiểu tấn công tương tự nhưng nó lại không có tác dụng một người ae họ hàng gần với nó là HTML injection.  Bạn có thể tham khảo chi tiết <a rel="noreferrer noopener" href="https://blog.detectify.com/2019/07/11/content-security-policy-csp-explained-including-common-bypasses/" target="_blank">ở đây</a>  và xem bài thuyết trình về CSP (Tóm tắt một chút cho các bạn đó là anh Matt Brunt đã trình bày các khái niệm, mối đe dọa từ xss, triển khai CSP một cách hợp lí để vừa ngăn ngừa tấn công vừa tránh bị phá hỏng web site bởi chính CSP, và cuối cùng đó là các vấn đề và sự hữu ích của tính  năng auto report của CSP - "report-only" cho các quản trị). OK cùng xem nào ! và hẹn các bạn ở bài viết sau.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:core-embed/youtube {"url":"https://www.youtube.com/watch?v=mr230uotw-Y","type":"video","providerNameSlug":"youtube","className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+https://www.youtube.com/watch?v=mr230uotw-Y
+</div></figure>
+<!-- /wp:core-embed/youtube -->
+
+<!-- wp:heading -->
+<h2>Tham khảo</h2>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul><li><a href="https://en.wikipedia.org/wiki/Content_Security_Policy" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Content_Security_Policy</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP</a></li><li><a href="https://w3c.github.io/webappsec-csp/#framework" target="_blank" rel="noopener">https://w3c.github.io/webappsec-csp/#framework</a><a href="https://www.netsparker.com/blog/web-security/content-security-policy/" target="_blank" rel="noopener">https://www.netsparker.com/blog/web-security/content-security-policy/</a></li><li><a href="https://blog.sucuri.net/2018/04/content-security-policy.html" target="_blank" rel="noopener">https://blog.sucuri.net/2018/04/content-security-policy.html</a></li><li><a href="https://content-security-policy.com/" target="_blank" rel="noopener">https://content-security-policy.com/</a></li></ul>
+<!-- /wp:list -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/14/csp/" data-id="ckbfuqz8m0000xljm76ar1ype" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-oath" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/06/14/oath/" class="article-date">
@@ -431,6 +655,10 @@ CLIENT SECRET ở đây là một giá trị bí mật chỉ cho phép APP và A
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2020/06/14/csp/">csp</a>
+          </li>
         
           <li>
             <a href="/2020/06/14/oath/">Oauth</a>
