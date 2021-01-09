@@ -66,6 +66,98 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Pentest_Android_P1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/08/Pentest_Android_P1/" class="article-date">
+  <time datetime="2021-01-08T05:00:00.000Z" itemprop="datePublished">2021-01-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/08/Pentest_Android_P1/">Pentest Android (Part1)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>TL;TD<br>Xin chào  mọi ngơơi, Chúng các bạn 1 năm 2021 vui vẻ và gặp nhiều may mắn. Năm 2021 mình đã có nhiều dự định, mục tiêu mới . Mở đầu năm mới mình sẽ thêm 1 series về Mobile Security.<br>Phần đầu tiên chúng ta sẽ cùng tìm hiểu về  Android app, cụ thể hơn là các kiến thức cơ bản về nó. Dần dần về sau sẽ đi sâu hơn và sang cả IOS nữa. Bắt đầu thôi nào !!! </p>
+<p> <h3>Cấu trúc của một file Apk ? </h2></p>
+<p> Các ứng dụng Android có định dạng file là APK . APK về cơ bản là một tệp ZIP. (Bạn có thể đổi tên phần mở rộng tệp thành .zip và sử dụng giải nén để mở và xem nội dung của nó.). Để decompress file apk có thể sử dụng công cụ có thể là <a target="_blank" rel="noopener" href="https://bytecodeviewer.com/">Bytecode viewer</a>, công cụ này tích hợp nhiều công cụ chuyên dụng để reverse android như Dexjar , APKTool hay có nhiều plugin bổ trợ và cuối cùng là nó một công cụ mã nguồn mở (Open Source). </p>
+<p><img src="/images/Aroid/folder.png" alt="image info"></p>
+<p>Khi giải nén ra bạn sẽ thấy được cấu trúc của một file APK, nó bao gồm một số folder chứa nhiều file trong đó có một số thư mục chính cần nhớ :</p>
+<ul>
+<li>META-INF / : Thư mục này sẽ xuất hiện ở trong file APK đã được kí (sign). Bao gồm danh sách các file bên trong APK và chữ kí của chúng.</li>
+<li>lib/: Các file của thư viện gốc (native) cho ứng dụng theo mặc định sẽ nằm ở đây! Trong thư mục lib /, có các thư mục dành riêng cho cpu. Ví dụ: armeabi, mips,</li>
+<li>res/: Trong folder này chứa tất cả các tài nguyên của ứng dụng như resouce XML, image … .</li>
+<li>assets/ : Cũng là nơi chứa các file, tài nguyên mà ứng dụng có thể cần , các thư viện native bổ sung … , đôi khi có thể chứa file DEX.</li>
+<li>AndroidManifest.xml : file này dùng để mô tả tên , phiên bản và nội dung file APK</li>
+<li>Classes.dex: Bao gồm mã nguồn được biên dịch (Complie), được lưu dưới dạng DEX bytecode.<h2 id="Dalvik-amp-Smali"><a href="#Dalvik-amp-Smali" class="headerlink" title="Dalvik &amp; Smali"></a>Dalvik &amp; Smali</h2></li>
+</ul>
+<p>Hầu hết các ứng dụng Android được viết bằng Java (Kotlin cũng được hỗ trợ và tương thích với Java ). Thay vì code Java được chạy trong Máy ảo Java (JVM) như các ứng dụng trên máy tính thì trong Android, Java được biên dịch sang định dạng bytecode (có thể tưởng tượng như là binaryfile nhưng thực chất là 2 cái này khác nhau nha ) được gọi <a target="_blank" rel="noopener" href="https://source.android.com/devices/tech/dalvik/dalvik-bytecode#instructions">Dalvik Executable</a> (DEX). Đối với các phiên bản trước của Android, mã bytecode đã được dịch bởi máy ảo Dalvik. Đối với các phiên bản Android mới hơn thì sử dụng Android Runtime (ART) .</p>
+<p><img src="/images/Aroid/DevelopersFlow.jpg" alt="image info"></p>
+<p>Nếu các nhà phát triển, viết bằng Java và mã được biên dịch sang DEX bytecode, để reverse app , chúng ta làm theo hướng ngược lại.<br><img src="/images/Aroid/ReversersFlow.jpg" alt="image info"></p>
+<p>Smali là ngôn ngữ máy mà con người có thể đọc được. Nếu bạn đã thực hiện reverse engineer hoặc học môn kiến ​​trúc máy tính với mã C/C++ đã biên dịch thì có thể hiểu SMALI cũng tương tự như là Assembly (hợp ngữ).</p>
+<p>Ví dụ , code hiển thị HelloWord bằng java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public static void printHelloWorld() &#123;</span><br><span class="line">	System.out.println(&quot;Hello World&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Smali code sẽ là :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.method public static printHelloWorld()V</span><br><span class="line">	.registers 2</span><br><span class="line">	sget-object v0, Ljava&#x2F;lang&#x2F;System;-&gt;out:Ljava&#x2F;io&#x2F;PrintStream;</span><br><span class="line">	const-string v1, &quot;Hello World&quot;</span><br><span class="line">	invoke-virtual &#123;v0,v1&#125;, Ljava&#x2F;io&#x2F;PrintStream;-&gt;println(Ljava&#x2F;lang&#x2F;String;)V</span><br><span class="line">	return-void</span><br><span class="line">.end method</span><br></pre></td></tr></table></figure><br>Tìm hiểu về các syntax của smali <a target="_blank" rel="noopener" href="https://source.android.com/devices/tech/dalvik/dalvik-bytecode#instructions">tại đây</a>.</p>
+<p> Bây giờ, tìm hiểu về một app được thực thi như thế nào thì đầu tiên, ta quay lại một chút về khái niệm bytecode, để có thể hiểu được một file java được thực thi như thế nào trước.</p>
+<p><img src="/images/Aroid/bytecode-trong-java.png" alt="image info"></p>
+<p>Khi một chương trình Java được thực thi, các trình biên dịch biên dịch đoạn mã và một Bytecode được tạo ra dưới dạng một file .class. Bytecode được gọi là intermediate code (mã trung gian) nên nó sẽ khác với lại machine code (mã máy) -low-level code. Machine code là  là một tập hợp các lệnh bằng ngôn ngữ máy hoặc hệ nhị phân có thể được thực thi trực tiếp bởi CPU. Trong khi đó bytecode không thể thực thi trực tiếp mà cần phải thông qua một trình thông dịch để chuyển sang mã máy và thực thi. </p>
+<p>Nghe có vẻ rất tốn thời gian và tài nguyên? Đúng ! Trong các ngôn ngữ mà mình từng biết thì java là thằng tốn bộ nhớ nhất và hầu như ai cũng biết nhưng bù lại một trong nhưng ưu điểm của java nói riêng các côn ngữ thông dịch nói chung đó chính là hỗ trợ đa nền tảng. Tức có nghĩa là chỉ cần có JVM thì trên hệ điều nào cũng sẽ chạy được trong khi đó các file thực thi được viết bởi c lại phụ thuộc vào kiến trúc của máy tính. Ví dụ như không thể chạy file 64bit trên hệ điều hành vi xử lí 32 bit.</p>
+<p>Bytecode là một dạng tập lệnh được thiết kế để thực thi bởi máy ảo java (JVM).JVM chuyển đổi mã bytecode thành mã máy. Do đó máy tính nào có JVM đều có thể thực thi bytecode đó. Nói cách khác, bất kỳ nền tảng nào chứa JVM đều có thể thực thi Java Bytecode - Once Write Run Anywhere.</p>
+<p><img src="/images/Aroid/Machine-Code-and-Bytecode_Figure-2.jpg" alt="image info"></p>
+<h2 id="Qua-trinh-thuc-thi-ung-dung-Android-Runtime"><a href="#Qua-trinh-thuc-thi-ung-dung-Android-Runtime" class="headerlink" title="Quá trình thực thi ứng dụng - Android Runtime"></a>Quá trình thực thi ứng dụng - Android Runtime</h2><p>Đầu tiên chúng ta cần hiểu môi trường Runtime là gì và cũng cần hiểu cách hoạt động của một số công cụ cơ bản là JVM và Dalvik VM.</p>
+<p>Nói một cách dễ hiểu, runtime là một hệ thống, môi trường được sử dụng bởi hệ điều hành, đảm nhiệm việc chuyển đổi mã mà bạn viết bằng ngôn ngữ cấp cao như Java sang mã máy và được CPU/Bộ xử lý đọc hiểu.</p>
+<p>Khi chạy Android Java app các class được chuyển đổi thành mã DEX bytecode .  Tiếp đó các file định dạng DEX bytecode sẽ được dịch sang mã máy thông qua ART hoặc Dalvik runtimes. Ở đây DEX bytecode độc ​​lập với kiến ​​trúc thiết bị.</p>
+<p><img src="/images/Aroid/runtime.png" alt="image info"></p>
+<p>Dalvik là một công cụ biên dịch dựa trên JIT (Just in time). Có nhiều hạn chế khi sử dụng Dalvik do đó từ Android 4.4 (kitkat) ART đã được giới thiệu và từ Android 5.0 (Lollipop), nó đã thay thế hoàn toàn Dalvik. Android 7.0 kết hợp trình biên dịch Just in time (JIT) với Android runtime (ART) giúp không ngừng cải thiện hiệu suất của các ứng dụng Android khi chúng chạy. Đặc điểm nối bật của ART là nó sử dụng trình sử biên dịch AOT (Ahead of time). Ngay thời điểm cài đặt chưa thực thi, ART sẽ biên dịch ứng dụng bằng công cụ dex2oat trên thiết bị. Giải thích thuật ngữ:</p>
+<ul>
+<li><p>JIT: Là 1 trình biên dịch(compiler), nó dịch dalvik byte-code trong .dex → machine-code với cơ chế theo từng method (tức là theo khối). Bởi vì JIT chỉ biên dịch một phần mã nên nó có dung lượng bộ nhớ nhỏ hơn và sử dụng ít không gian vật lý trên thiết bị hơn nhưng thời gian thực thi sẽ lâu hơn.</p>
+</li>
+<li><p>AOT: Là 1 trình biên dịch, tên của nó có ý nghĩa là biên dịch trước thời gian ứng dụng được thực thi (Nó được chạy dưới nền). Do đó ART sẽ giúp thực thi nhanh hơn vì không biên dịch nhiều lần như JIT nhưng do tốn thời gian để biên dịch  khi một ứng dụng được cài đặt nên việc cài đặt sẽ lâu hơn và chiếm dung lượng lớn hơn một chút để lưu trữ mã đã biên dịch.</p>
+</li>
+</ul>
+<p><img src="/images/Aroid/artvsdal.png" alt="image info"></p>
+<p>Để giải quyết các nhược điểm trên, Android bây giờ ngoài sử dụng Just-in-time (JIT) compilation như Dalvik thì còn sử dụng thêm Ahead-of-time(AOT) compilation và Profile-guided compilation, sự kết hợp giữa các chế độ biên dịch này sẽ giúp ứng dụng Android cải thiện được hiệu suất so với sử dụng Dalvik. Các chế độ biên dịch được cấu hình, kết hợp ra sao tuỳ thuộc vào hãng sản xuất điện thoại Android. Giải thích thuật ngữ:</p>
+<ul>
+<li>Profile-guided compilation: Nó có chức năng hướng dẫn chạy mã trong quá trình ứng dụng thực thi.</li>
+</ul>
+<p><img src="/images/Aroid/JavaBytecod1.png" alt="image info"></p>
+<p>Để thực thì file, JVM sử dụng 2 cơ chế để làm điều này đó là biên dịch (JIT compliaion ) và thông dịch (interpreted).  </p>
+<ul>
+<li>Interpreted: Thông dịch, trình thông dịch hoạt động với cơ chế dịch từng dòng trong tệp input rồi thực thi ngay dòng output đó, và rồi lại cứ lặp quá trình dịch với các dòng tiếp theo.</li>
+</ul>
+<p>Lưu ý biên dịch/thông dịch là những khái niệm không đc xác định rõ ràng về lý thuyết, bởi nếu biên dịch mà chạy ở “realtime” thì cũng được gọi là thông dịch. Chắc sẽ có bạn thắc mắc JIT có ngon hơn Interpreted  ?<a target="_blank" rel="noopener" href="https://stackoverrun.com/vi/q/854569"> click để hiểu :) </a></p>
+<p>Kết thúc part 1, sẽ là road map về pentest Android app :</p>
+<p><img src="/images/Aroid/Android-Pentesting-2048x1237.png" alt="image info"></p>
+<p>Nói chung thì pentest mobile không quá phức tạp (Nhưng ko đồng nghĩa với dễ nha), chỉ là thêm phần reverse engineer và analysis code lúc đầu, còn các phần sau khá giống với pentest web application . Nên chịu khó bỏ thời gian để tìm hiểu và có thể làm quen với mobile app.<br>Sang phần tiếp theo mình sẽ đi riêng về từng mục một.Tài liệu về lỗ hổng, các vấn đề về mobile security thì các bạn có thể đọc <a target="_blank" rel="noopener" href="https://mobile-security.gitbook.io/mobile-security-testing-guide/overview/0x03-overview">ở đây</a></p>
+<h2>Tài liệu tham khảo</h2>
+
+<p>[+] <a target="_blank" rel="noopener" href="https://github.com/tsug0d/AndroidMobilePentest101/">https://github.com/tsug0d/AndroidMobilePentest101/</a><br>[+] <a target="_blank" rel="noopener" href="https://ragingrock.com/AndroidAppRE/app_fundamentals.html">https://ragingrock.com/AndroidAppRE/app_fundamentals.html</a><br>[+] <a target="_blank" rel="noopener" href="https://mobile-security.gitbook.io/mobile-security-testing-guide/overview/0x03-overview">https://mobile-security.gitbook.io/mobile-security-testing-guide/overview/0x03-overview</a><br>[+] <a target="_blank" rel="noopener" href="https://viblo.asia/p/tu-android-source-code-den-binary-code-ly-do-ios-nhanh-hon-android-1VgZvPN15Aw">https://viblo.asia/p/tu-android-source-code-den-binary-code-ly-do-ios-nhanh-hon-android-1VgZvPN15Aw</a><br>[+] <a target="_blank" rel="noopener" href="https://blog.softwaroid.com/2020/05/02/android-application-penetration-testing-bug-bounty-checklist/">https://blog.softwaroid.com/2020/05/02/android-application-penetration-testing-bug-bounty-checklist/</a><br>[+] <a target="_blank" rel="noopener" href="https://source.android.com/devices/tech/dalvik/dalvik-bytecode#instructions">https://source.android.com/devices/tech/dalvik/dalvik-bytecode#instructions</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.hydrasky.ml/2021/01/08/Pentest_Android_P1/" data-id="ckjolgvfp00012fjm2xvy2oxp" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Pentest-Mobile/" rel="tag">Pentest Mobile</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-OS command Injection" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/11/29/OS%20command%20Injection/" class="article-date">
@@ -1189,132 +1281,11 @@
 
 
   
-    <article id="post-Host Header Attack" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/14/Host%20Header%20Attack/" class="article-date">
-  <time datetime="2020-06-14T04:00:00.000Z" itemprop="datePublished">2020-06-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/14/Host%20Header%20Attack/">Host Header Attack</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <!-- wp:image {"align":"center","width":485,"height":266} -->
-<div class="wp-block-image"><figure class="aligncenter is-resized"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQYlVnvXSiQcarEPtvEKnYSHVLvIvgVcvzuHwJmX4PDXY2QHco2&usqp=CAU" alt="HOST HEADER INJECTION ATTACK - Ram Kumar - Medium" width="485" height="266"/></figure></div>
-
-
-
-<p>Xin chào các bạn! Mình lại quay trở lại với một lỗ hổng thuộc dạng HTTP header injection . Kiểu tấn công này thì nó không quá phức tạp vì mức ảnh hưởng của nó cũng chỉ ở mức bình thường. Nhưng như vậy không có nghĩ là mình sẽ bỏ qua, đôi khi có những cái mình không ngờ lại là cái nguy hiểm nhất. Vậy Host Header Attack có gì hay? Chúng ta cùng tìm hiểu nào?</p>
-<p>A client MUST include a Host header field in all HTTP/1.1 request messages <strong>RFC 2616</strong> </p>
-<p>Theo như trong tài liệu  <strong><a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2616#page-128">RFC 2616</a></strong>  ở mục 14.23 thì trong tất cả các message HTTP/1.1 request từ Client đén Server bắt buộc phải bao gồm trường  “Host” header .Nếu URI được request đến không chứa tên máy chủ Internet của dịch vụ thì trường Host header coi như có giá trị là “empty”(rỗng) .Bất kỳ request HTTP/1.1 nào không có trường Host header  thì sẽ được máy chủ phản hồi với mã trạng thái là 400 (bad request). Thế “Host” header để làm gì ta?</p>
-<p>Thông thường một máy chủ web thường phục vụ, lưu trữ nhiều website hoặc ứng dụng web và tất nhiên chúng sẽ cùng một địa chỉ IP của server. Mỗi website hay ứng dụng được lưu trữ như vậy được gọi là “Virtual host”.Bây giờ làm sao cho người dùng có thể truy cập vào các website khác nhau ? Đó là lí do của HOST header tồn tại. Tiêu đề này sẽ nằm trong HTTP request đến máy chủ và máy chủ sẽ sử dụng giá trị của header này để chuyển request đến website hoặc ứng dụng được chỉ định. </p>
-<p>Điều gì xảy ra nếu chúng ta thay đổi giá trị của header là các host không xác định (evil.com) ? Hầu hết các máy chủ web thường chuyển các các host khồng xác định trong header vào đầu của danh sách “virtual host” của nó, Vì vậy các request tới server với host header không xác định như vậy vẫn được coi là hợp lệ.</p>
-<img src="/images/HHT/image-9.png" class="[class names]" title="[500] [500] " alt="title text">
-
-
-
-<p>Ngoài ra ngoài việc sử dụng “Host” header , attacker còn có thể sử dụng “X-Forward-Host” (viết tắt là XFH) để inject. XFH được sủ dụng để chỉ định máy chủ được chỉ định (X-Forward-Host: cdn.example.com) chuyển tiếp giá trị của “Host” header đến máy chủ gốc.XFH thường được áp dụng trong trương hợp sử dụng proxy hoặc các CDN, trong tài liệu của <a href="https://tools.ietf.org/html/rfc7230#section-5.4" target="_blank" rel="noreferrer noopener">RFC 7230</a>, phần 5.4 có nói:</p>
-<blockquote><p>When a proxy receives a request with an absolute-form of request-target, the proxy MUST ignore the received Host header field (if any) and instead replace it with the host information of the request-target.Ngoài ra bạn có thể tham khảo thêm về tài liệu của <a href="https://www.keycdn.com/support/x-forwarded-host" target="_blank" rel="noreferrer noopener">KeyCDN</a></p>
-</blockquote>
-<img src="/images/HHT/image-10.png" class="[class names]" title="[500] [500] " alt="title text">
-
-
-
-<p>Header này thường được sử dụng phổ biến trong các ứng dụng web PHP, .Một số kịch bản trong ví dụ sau đây là cách sử dụng tiêu biểu và nguy hiểm của host header:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src&#x3D;&quot;http:&#x2F;&#x2F;&lt;?php echo _SERVER[&#39;HOST&#39;] ?&gt;&#x2F;script.js&quot;&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<p>Kẻ tấn công có thể lợi dụng code ở trên để tạo đầu ra HTML chỉ bằng cách thao túng host header.</p>
-<pre><code>GET / HTTP/1.1
-Host: www.attacker.com
-[ X-Forwarded-Host: www.attacker.com ]</code></pre>
-<p>Và kết quả nhận được là trình duyệt của victims sẽ load file .js từ máy chủ của attacker :</p>
-<pre><code>&lt;script src=&quot;http://attacker.com/script.js&quot;&gt;</code></pre>
-<p>Từ đây attacker có thể thực hiện một cuộc tấn công xss hoặc phising. Nhưng với kiểu này sẽ rất khó để khai thác ở ngoài thực tế. bạn chỉ có thể thay đổi được giá trị các header trong request của victim chỉ khi bạn có thể can thiệp vào giữa giao tiếp của Client vs Server như kiểu MITM (Man in the middle). Các bug bounty program thường không công nhận lỗi này vì vậy bỏ qua hướng đó và tiếp tục leo thang.</p>
-<p>Sẽ có 2 hướng tấn công chính từ lỗ hổng HHA mình muốn đề cập là <a rel="noreferrer noopener" href="http://hydrasky.ml/2020/03/web-cache-poisoning-part-1" target="_blank">web cache poisoning</a> và Password reset poisoning.</p>
-<h4>Đối với Web cache poisoning</h4>
-
-
-
-<p>Để điều này xảy ra, kẻ tấn công sẽ cần phải đầu độc proxy cache của trang web hoặc nhà cung cấp được website sử dụng như các CDN.Cache sau đó sẽ phục vụ nội dung bị nhiễm độc cho bất kỳ ai request với nội dung tương tự, và tất nhiên nạn nhân không thể kiểm soát được nội dung độc hại mà cache cung cấp cho họ. Để hiểu rõ hơn về WCP các bạn có thểm tham khảo <a href="http://blog.hydrasky.ml/2020/03/web-cache-poisoning-part-1" target="_blank" rel="noreferrer noopener">bài viết</a> của mình.</p>
-<div class="wp-block-image"><figure class="aligncenter is-resized"><img src="https://blog.cloudflare.com/content/images/2018/08/subtle-req-resp.png" alt="Ví dụ" width="458" height="307"/></figure></div>
-
-
-
-<p>Một điều lưu ý ở đây là lên sử dụng X-Forwarded-Host thay vì Host header để poisoning bởi vì thông thường Host header nằm trong cache key và bình thường sẽ chẳng ai tự thay đổi giá trị host header của mình về host của attacker hoặc thành một payload độc hại cả.</p>
-<h4>Đối với Password reset poisoning</h4>
-
-
-
-<p>Thông thường khi bạn quên mật khẩu bạn sẽ chọn cách là reset lại nó và chức năng nay ai cũng có thể sử dụng. Server sẽ tiến hành gửi email với link reset mật khẩu có dạng:</p>
-<p>example.com/reset-password?email=victim@gmail.com&amp;code=identify:token (identify:tokenthường được mã hóa) . </p>
-<p>Mình sẽ không giải thích code như thế nào nha! Các bạn cử hiêu đơn giản lúc này server sử dụng $_SERVER[‘HOST’] để xác định host của link.</p>
-<p> Attacker đã lợi dụng điều này dùng tên tài khoản như email, username … của victim để thực hiện. Trước khi request được gửi đi, attacker sẽ sửa giá trị của host header thành máy chủ của attacker .Server sẽ tiến hành gửi email với link reset mật khẩu có dạnglà attacker.com/reset-password?email=victim@gmail.com&amp;code=identify:token(identify:tokenthường ở dạng mã hóa, đôi khi là JWT).</p>
-<p>Ok như vậy khi victim vào mail và click vào link reset mật khẩu sẽ request đến server của attacker. Attacker lúc này chỉ việc ngồi và xem log trên máy chủ sẽ lấy được link hay quan trọng hơn đó la token để đổi mật khẩu của victim.</p>
-<img src="/images/HHT/password-reset-poisoning.svg" class="[class names]" title="[500] [500] " alt="Password reset poisoning">
-
-<p>Một lỗ hổng khá dễ để khai thác nhưng tác động lại rất lớn.Tham khảo thêm <a target="_blank" rel="noopener" href="https://hackerone.com/reports/281575">https://hackerone.com/reports/281575</a></p>
-<h3>Cách tìm kiếm lỗ hổng này</h3>
-
-
-
-<p>Để phát hiện ra nó rât đơn giản bạn chỉ cần chặn bắt request bằng các công cụ như Burpsuite hoặc Zap và thay đổi giá trị của Host header hoặc thêm vào X-Forwarded-Host rồi theo dõi reponse trả về là biết. Hoặc các bạn có thể sử dụng các công cụ scan web tự động như Acunetix. </p>
-<!-- wp:image {"align":"center","width":515,"height":253} -->
-<div class="wp-block-image"><figure class="aligncenter is-resized"><img src="https://www.cloudace.in/wp-content/uploads/2020/01/acunetix.png" alt="Acunetix Web Vulnerability Scanning Software - CloudACE Technologies" width="515" height="253"/></figure></div>
-
-
-<h3>Các phòng chống lỗ hổng</h3>
-
-
-
-<p>Thay vì sử dụng host header để xác định thì lập trình viên nên sử dụng SERVER_NAME.Bởi vì SERVER_NAME sẽ lấy thông tin từ cấu hình của máy chủ nên nó sẽ xác thực hơn. Cùng với đó bạn có thể kết hợp với việc sử dụng Whitelist cho các tên server được phép</p>
-<!-- wp:preformatted -->
-<pre class="wp-block-preformatted">$domains = [‘abc.example.com’, ‘foo.bar.com’]; if ( ! in_array($_SERVER[‘SERVER_NAME’], $domains)) { // error }</pre>
-<!-- /wp:preformatted -->
-
-
-<p>OK như vậy là mình đã nó xong về Host header attack, nói chung thì lỗ hổng này không có gì quá nổi bật nhưng cũng đáng để chúng ta học hỏi thêm kinh nghiệm. Xin chào và hẹn gặp các bạn vào bài viết sau!</p>
-<h2>Tham khảo</h2>
-
-
-
-<ul><li><a target="_blank" rel="noopener" href="https://www.yeahhub.com/host-header-attack-practical-exploitation-and-prevention/">https://www.yeahhub.com/host-header-attack-practical-exploitation-and-prevention/</a></li><li><a target="_blank" rel="noopener" href="https://www.skeletonscribe.net/2013/05/practical-http-host-header-attacks.html">https://www.skeletonscribe.net/2013/05/practical-http-host-header-attacks.html</a></li><li><a target="_blank" rel="noopener" href="https://www.acunetix.com/blog/articles/automated-detection-of-host-header-attacks/">https://www.acunetix.com/blog/articles/automated-detection-of-host-header-attacks/</a></li></ul>
-
-
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://blog.hydrasky.ml/2020/06/14/Host%20Header%20Attack/" data-id="ckhqle8tk0008o7jmblm8du1l" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Pentest-Web/" rel="tag">Pentest Web</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -1328,7 +1299,7 @@ Host: www.attacker.com
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BugBoutyTip/" rel="tag">BugBoutyTip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lab/" rel="tag">Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pentest-Web/" rel="tag">Pentest Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BugBoutyTip/" rel="tag">BugBoutyTip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lab/" rel="tag">Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pentest-Mobile/" rel="tag">Pentest Mobile</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pentest-Web/" rel="tag">Pentest Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
     </div>
   </div>
 
@@ -1338,7 +1309,7 @@ Host: www.attacker.com
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/BugBoutyTip/" style="font-size: 13.33px;">BugBoutyTip</a> <a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/Lab/" style="font-size: 10px;">Lab</a> <a href="/tags/Pentest-Web/" style="font-size: 16.67px;">Pentest Web</a> <a href="/tags/Technology/" style="font-size: 20px;">Technology</a>
+      <a href="/tags/BugBoutyTip/" style="font-size: 13.33px;">BugBoutyTip</a> <a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/Lab/" style="font-size: 10px;">Lab</a> <a href="/tags/Pentest-Mobile/" style="font-size: 10px;">Pentest Mobile</a> <a href="/tags/Pentest-Web/" style="font-size: 16.67px;">Pentest Web</a> <a href="/tags/Technology/" style="font-size: 20px;">Technology</a>
     </div>
   </div>
 
@@ -1347,7 +1318,7 @@ Host: www.attacker.com
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
     </div>
   </div>
 
@@ -1358,6 +1329,10 @@ Host: www.attacker.com
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2021/01/08/Pentest_Android_P1/">Pentest Android (Part1)</a>
+          </li>
         
           <li>
             <a href="/2020/11/29/OS%20command%20Injection/">Command Injection TIP</a>
@@ -1375,10 +1350,6 @@ Host: www.attacker.com
             <a href="/2020/06/15/CROSS%20SIDE%20REQUEST%20FORGERY/">Cross Side Request Forgery</a>
           </li>
         
-          <li>
-            <a href="/2020/06/14/Oauth/">OAUTH</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1391,7 +1362,7 @@ Host: www.attacker.com
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2020 Le Binh An<br>
+      &copy; 2021 Le Binh An<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

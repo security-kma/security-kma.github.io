@@ -66,6 +66,127 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Host Header Attack" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/Host%20Header%20Attack/" class="article-date">
+  <time datetime="2020-06-14T04:00:00.000Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/14/Host%20Header%20Attack/">Host Header Attack</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- wp:image {"align":"center","width":485,"height":266} -->
+<div class="wp-block-image"><figure class="aligncenter is-resized"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQYlVnvXSiQcarEPtvEKnYSHVLvIvgVcvzuHwJmX4PDXY2QHco2&usqp=CAU" alt="HOST HEADER INJECTION ATTACK - Ram Kumar - Medium" width="485" height="266"/></figure></div>
+
+
+
+<p>Xin chào các bạn! Mình lại quay trở lại với một lỗ hổng thuộc dạng HTTP header injection . Kiểu tấn công này thì nó không quá phức tạp vì mức ảnh hưởng của nó cũng chỉ ở mức bình thường. Nhưng như vậy không có nghĩ là mình sẽ bỏ qua, đôi khi có những cái mình không ngờ lại là cái nguy hiểm nhất. Vậy Host Header Attack có gì hay? Chúng ta cùng tìm hiểu nào?</p>
+<p>A client MUST include a Host header field in all HTTP/1.1 request messages <strong>RFC 2616</strong> </p>
+<p>Theo như trong tài liệu  <strong><a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2616#page-128">RFC 2616</a></strong>  ở mục 14.23 thì trong tất cả các message HTTP/1.1 request từ Client đén Server bắt buộc phải bao gồm trường  “Host” header .Nếu URI được request đến không chứa tên máy chủ Internet của dịch vụ thì trường Host header coi như có giá trị là “empty”(rỗng) .Bất kỳ request HTTP/1.1 nào không có trường Host header  thì sẽ được máy chủ phản hồi với mã trạng thái là 400 (bad request). Thế “Host” header để làm gì ta?</p>
+<p>Thông thường một máy chủ web thường phục vụ, lưu trữ nhiều website hoặc ứng dụng web và tất nhiên chúng sẽ cùng một địa chỉ IP của server. Mỗi website hay ứng dụng được lưu trữ như vậy được gọi là “Virtual host”.Bây giờ làm sao cho người dùng có thể truy cập vào các website khác nhau ? Đó là lí do của HOST header tồn tại. Tiêu đề này sẽ nằm trong HTTP request đến máy chủ và máy chủ sẽ sử dụng giá trị của header này để chuyển request đến website hoặc ứng dụng được chỉ định. </p>
+<p>Điều gì xảy ra nếu chúng ta thay đổi giá trị của header là các host không xác định (evil.com) ? Hầu hết các máy chủ web thường chuyển các các host khồng xác định trong header vào đầu của danh sách “virtual host” của nó, Vì vậy các request tới server với host header không xác định như vậy vẫn được coi là hợp lệ.</p>
+<img src="/images/HHT/image-9.png" class="[class names]" title="[500] [500] " alt="title text">
+
+
+
+<p>Ngoài ra ngoài việc sử dụng “Host” header , attacker còn có thể sử dụng “X-Forward-Host” (viết tắt là XFH) để inject. XFH được sủ dụng để chỉ định máy chủ được chỉ định (X-Forward-Host: cdn.example.com) chuyển tiếp giá trị của “Host” header đến máy chủ gốc.XFH thường được áp dụng trong trương hợp sử dụng proxy hoặc các CDN, trong tài liệu của <a href="https://tools.ietf.org/html/rfc7230#section-5.4" target="_blank" rel="noreferrer noopener">RFC 7230</a>, phần 5.4 có nói:</p>
+<blockquote><p>When a proxy receives a request with an absolute-form of request-target, the proxy MUST ignore the received Host header field (if any) and instead replace it with the host information of the request-target.Ngoài ra bạn có thể tham khảo thêm về tài liệu của <a href="https://www.keycdn.com/support/x-forwarded-host" target="_blank" rel="noreferrer noopener">KeyCDN</a></p>
+</blockquote>
+<img src="/images/HHT/image-10.png" class="[class names]" title="[500] [500] " alt="title text">
+
+
+
+<p>Header này thường được sử dụng phổ biến trong các ứng dụng web PHP, .Một số kịch bản trong ví dụ sau đây là cách sử dụng tiêu biểu và nguy hiểm của host header:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src&#x3D;&quot;http:&#x2F;&#x2F;&lt;?php echo _SERVER[&#39;HOST&#39;] ?&gt;&#x2F;script.js&quot;&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>Kẻ tấn công có thể lợi dụng code ở trên để tạo đầu ra HTML chỉ bằng cách thao túng host header.</p>
+<pre><code>GET / HTTP/1.1
+Host: www.attacker.com
+[ X-Forwarded-Host: www.attacker.com ]</code></pre>
+<p>Và kết quả nhận được là trình duyệt của victims sẽ load file .js từ máy chủ của attacker :</p>
+<pre><code>&lt;script src=&quot;http://attacker.com/script.js&quot;&gt;</code></pre>
+<p>Từ đây attacker có thể thực hiện một cuộc tấn công xss hoặc phising. Nhưng với kiểu này sẽ rất khó để khai thác ở ngoài thực tế. bạn chỉ có thể thay đổi được giá trị các header trong request của victim chỉ khi bạn có thể can thiệp vào giữa giao tiếp của Client vs Server như kiểu MITM (Man in the middle). Các bug bounty program thường không công nhận lỗi này vì vậy bỏ qua hướng đó và tiếp tục leo thang.</p>
+<p>Sẽ có 2 hướng tấn công chính từ lỗ hổng HHA mình muốn đề cập là <a rel="noreferrer noopener" href="http://hydrasky.ml/2020/03/web-cache-poisoning-part-1" target="_blank">web cache poisoning</a> và Password reset poisoning.</p>
+<h4>Đối với Web cache poisoning</h4>
+
+
+
+<p>Để điều này xảy ra, kẻ tấn công sẽ cần phải đầu độc proxy cache của trang web hoặc nhà cung cấp được website sử dụng như các CDN.Cache sau đó sẽ phục vụ nội dung bị nhiễm độc cho bất kỳ ai request với nội dung tương tự, và tất nhiên nạn nhân không thể kiểm soát được nội dung độc hại mà cache cung cấp cho họ. Để hiểu rõ hơn về WCP các bạn có thểm tham khảo <a href="http://blog.hydrasky.ml/2020/03/web-cache-poisoning-part-1" target="_blank" rel="noreferrer noopener">bài viết</a> của mình.</p>
+<div class="wp-block-image"><figure class="aligncenter is-resized"><img src="https://blog.cloudflare.com/content/images/2018/08/subtle-req-resp.png" alt="Ví dụ" width="458" height="307"/></figure></div>
+
+
+
+<p>Một điều lưu ý ở đây là lên sử dụng X-Forwarded-Host thay vì Host header để poisoning bởi vì thông thường Host header nằm trong cache key và bình thường sẽ chẳng ai tự thay đổi giá trị host header của mình về host của attacker hoặc thành một payload độc hại cả.</p>
+<h4>Đối với Password reset poisoning</h4>
+
+
+
+<p>Thông thường khi bạn quên mật khẩu bạn sẽ chọn cách là reset lại nó và chức năng nay ai cũng có thể sử dụng. Server sẽ tiến hành gửi email với link reset mật khẩu có dạng:</p>
+<p>example.com/reset-password?email=victim@gmail.com&amp;code=identify:token (identify:tokenthường được mã hóa) . </p>
+<p>Mình sẽ không giải thích code như thế nào nha! Các bạn cử hiêu đơn giản lúc này server sử dụng $_SERVER[‘HOST’] để xác định host của link.</p>
+<p> Attacker đã lợi dụng điều này dùng tên tài khoản như email, username … của victim để thực hiện. Trước khi request được gửi đi, attacker sẽ sửa giá trị của host header thành máy chủ của attacker .Server sẽ tiến hành gửi email với link reset mật khẩu có dạnglà attacker.com/reset-password?email=victim@gmail.com&amp;code=identify:token(identify:tokenthường ở dạng mã hóa, đôi khi là JWT).</p>
+<p>Ok như vậy khi victim vào mail và click vào link reset mật khẩu sẽ request đến server của attacker. Attacker lúc này chỉ việc ngồi và xem log trên máy chủ sẽ lấy được link hay quan trọng hơn đó la token để đổi mật khẩu của victim.</p>
+<img src="/images/HHT/password-reset-poisoning.svg" class="[class names]" title="[500] [500] " alt="Password reset poisoning">
+
+<p>Một lỗ hổng khá dễ để khai thác nhưng tác động lại rất lớn.Tham khảo thêm <a target="_blank" rel="noopener" href="https://hackerone.com/reports/281575">https://hackerone.com/reports/281575</a></p>
+<h3>Cách tìm kiếm lỗ hổng này</h3>
+
+
+
+<p>Để phát hiện ra nó rât đơn giản bạn chỉ cần chặn bắt request bằng các công cụ như Burpsuite hoặc Zap và thay đổi giá trị của Host header hoặc thêm vào X-Forwarded-Host rồi theo dõi reponse trả về là biết. Hoặc các bạn có thể sử dụng các công cụ scan web tự động như Acunetix. </p>
+<!-- wp:image {"align":"center","width":515,"height":253} -->
+<div class="wp-block-image"><figure class="aligncenter is-resized"><img src="https://www.cloudace.in/wp-content/uploads/2020/01/acunetix.png" alt="Acunetix Web Vulnerability Scanning Software - CloudACE Technologies" width="515" height="253"/></figure></div>
+
+
+<h3>Các phòng chống lỗ hổng</h3>
+
+
+
+<p>Thay vì sử dụng host header để xác định thì lập trình viên nên sử dụng SERVER_NAME.Bởi vì SERVER_NAME sẽ lấy thông tin từ cấu hình của máy chủ nên nó sẽ xác thực hơn. Cùng với đó bạn có thể kết hợp với việc sử dụng Whitelist cho các tên server được phép</p>
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted">$domains = [‘abc.example.com’, ‘foo.bar.com’]; if ( ! in_array($_SERVER[‘SERVER_NAME’], $domains)) { // error }</pre>
+<!-- /wp:preformatted -->
+
+
+<p>OK như vậy là mình đã nó xong về Host header attack, nói chung thì lỗ hổng này không có gì quá nổi bật nhưng cũng đáng để chúng ta học hỏi thêm kinh nghiệm. Xin chào và hẹn gặp các bạn vào bài viết sau!</p>
+<h2>Tham khảo</h2>
+
+
+
+<ul><li><a target="_blank" rel="noopener" href="https://www.yeahhub.com/host-header-attack-practical-exploitation-and-prevention/">https://www.yeahhub.com/host-header-attack-practical-exploitation-and-prevention/</a></li><li><a target="_blank" rel="noopener" href="https://www.skeletonscribe.net/2013/05/practical-http-host-header-attacks.html">https://www.skeletonscribe.net/2013/05/practical-http-host-header-attacks.html</a></li><li><a target="_blank" rel="noopener" href="https://www.acunetix.com/blog/articles/automated-detection-of-host-header-attacks/">https://www.acunetix.com/blog/articles/automated-detection-of-host-header-attacks/</a></li></ul>
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.hydrasky.ml/2020/06/14/Host%20Header%20Attack/" data-id="ckhqle8tk0008o7jmblm8du1l" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Pentest-Web/" rel="tag">Pentest Web</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-SQLi TIP" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/06/14/SQLi%20TIP/" class="article-date">
@@ -1029,236 +1150,11 @@
 
 
   
-    <article id="post-HTTP Request Smuggling Attack" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/14/HTTP%20Request%20Smuggling%20Attack/" class="article-date">
-  <time datetime="2020-06-14T04:00:00.000Z" itemprop="datePublished">2020-06-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/14/HTTP%20Request%20Smuggling%20Attack/">HTTP Request Smuglling</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p> Một trong các lỗ hổng  dựa vào tính năng của giao thức HTTP từ đó tạo các các thông điệp HTTP message đặc biệt ,phía server sẽ phân tích và diễn giải các message nhận được theo ý của attacker. HTTP Request Smuggling gọi tắt là HRS là một kĩ thuật , phương tiện tấn công năng cao, được công bố trong một <a rel="noreferrer noopener" href="https://www.cgisecurity.com/lib/HTTP-Request-Smuggling.pdf" target="_blank">tài liêu</a> vào năm 2005 bởi một công ty công nghệ Wathfire . HRS là kĩ thuật can thiệp vào việc xử lý tuần tự các  HTTP request tới một web site từ một hoặc nhiều user.</p>
-<figure class="wp-block-image"><img src="https://portswigger.net/web-security/images/http-request-smuggling.svg" alt="What is HTTP request smuggling? Tutorial & Examples | Web Security ..."/><figcaption>src: PortSwigger</figcaption></figure>
-
-
-
-<p>Lỗ hổng này thường được đánh giá ở mức Critical do HRS có khả năng bypass các kiểm soát truy cập, tường lửa web. Ngoài ra HRS còn là phương tiện để thực hiện các cuộc tấn công nguy hiểm khác như Web Cache Poisoning , Cross Site Scripting, Session Hijacking, Server-Side Requesr Forgery,Open Redirect,… Danh sách này còn có thể còn nhiều hơn nữa bởi còn nhiều kiểu tấn công chưa được khám phá.</p>
-<h4> HTTP Request Smuggling sinh ra từ đâu?</h4>
-
-
-
-<figure class="wp-block-image"><img src="https://documentation.help/DogeTool-HTTP-Requests-vt/http_requestmessageexample.png" alt="HTTP Request Message - HTTP Requests Documentation"/></figure>
-
-
-
-<p>Hình trên là miêu tả các thành phần của một request, reponse chỉ hơi khác một chút , bây giờ mình cùng xem qua quy trình một gói request được xử lí nào !</p>
-<p>Nhìn vào dòng request line ta sẽ thấy được server đang sử dụng giao thức HTTP/1.1 . Hiện nay  mặc dù Htpp/2 đã ra mắt để dần thay thế nó hay thậm chí Http/3 cũng được đề cập đến nhưng version này vẫn được sử dụng rất phổ biến rất , nó là bản nâng cấp của Http/1.0 với một tính năng mới cực kì hiệu quả cho việc truyền tải là 2 ae Keep-Alive và Pipeline. Để biết rõ về khác biệt giữa các version này là gì các bạn có thể tham khảo <a rel="noreferrer noopener" href="https://kipalog.com/posts/Luoc-su-tu-HTTP-1-toi-HTTP-2-va-tuong-lai-cua-HTTP" target="_blank">bài viết</a> này. </p>
-<p>Một trong những vấn đề của Http 1.0 đó chính là chỉ có thể một connection tới một tài nguyên dẫn đến hiệu suất thấp và tốn nhiều thời gian,lưu lượng do quá trình bắt tay 3 bước TCP . Vì thế 2 tính năng Keep-Alive và Pipeline đã được thêm vào trong bản Http/1.1 để có thể tạo một connection tải nhiều tài nguyên . Với tính năng Keep-Alive, request sẽ được thêm một header đặc biệt là Connection: Keep-Alive , phía máy chủ sẽ nhận được request và hiểu là không được đóng kết nổi TCP , tương tự phía server sẽ dùng lại cái kết nối TCP này .Như vậy chỉ cần thực hiện một lần bắt tay ba bước , điều này có thể giảm lưu lượng tới máy chủ, tiết kiệm tài nguyên và tăng tốc truy cập. Tính năng này được bật mặc đinh khi sử dụng giao thức Http/1.1.</p>
-<p>Đi cùng với Keep-Alive đó là Pipeline, để giải quyết vấn đề lộn xộn khi nhiều request cùng một lúc và thời gian khi phải chờ dợi response của request trước để thực hiện request tiếp theo trong cùng một connection.Http Pipeline sẽ cho phép việc gửi request liên tục mà không cần phải chờ đợi response của request trước nhưng vẫn phải theo tuần tự vào trước thì nhận trước. Tính năng này có một nhược điểm là nếu request trước nhận response chậm thì các request sau cũng phải chờ cho xong mới được nhận response của mình. Nhược điểm này còn có tên là head-of-line blocking, vấn đề này đã được khắc phục ở Http/2 và một biện pháp không liên quan nhưng lại có thể làm người ta quên đi pipeline nữa đó chính là <a rel="noreferrer noopener" href="http://hydrasky.ml/2020/03/web-cache" target="_blank">CACHE</a> (tham khảo bài viết của mình). Cache rất hữu ích vì nó sẽ đưa HRS thành Web Cache Poisoning hehe.</p>
-<p>Thực ra chúng ta chỉ cần quan tâm vè Keep-Alive cho lỗ hổng này, còn Pipeline thì không cần thiết vì tính năng này phức tạp,chứa nhược điểm lớn nên bình thường nó ko được dùng và bị disable trên trình duyệt,còn phía server vẫn hỗ trợ cho connection nào cần. Nhưng nói rồi thì nói luôn cho đỡ thắc mắc và mình đỡ quên hehe.</p>
-<p>Ok như vậy với tính năng Keep-Alive ,request sẽ được  forward lần lượt đến Back-End Server thông qua Front-End Server (Proxy server, load banacer ) trên cùng một connection TLS/TCP. Ngoài ra khi đến Front-End Server,request cũng sẽ được phân tích để lưu vào cache .</p>
-<!-- wp:image {"width":584,"height":328} -->
-<figure class="wp-block-image is-resized"><img src="https://portswigger.net/web-security/images/forwarding-http-requests-to-back-end-server.svg" alt="What is HTTP request smuggling? Tutorial & Examples | Web Security ..." width="584" height="328"/></figure>
-
-
-
-<p>Sau khi nhận request Back-End server sẽ phân tích các header của request để xác định khi nào sẽ kết thúc  một request vừa nhận và nhận request tiếp theo.</p>
-<p>Lợi dụng điều này Attacker gửi một requets thập cẩm(nhưng có tính toán nha) để  lừa front-end server đó là 1 reuqest hợp lệ và chuyển tiếp đến Back-End. BE said “ bạn cho thì mình lấy thôi” , rồi  khi phân tích request  Back-End hiểu lầm là một phần của request thập cẩm đó là điểm bắt đầu và nó sẽ được gộp vào request sau đó (như phích và ổ cắm haha ). </p>
-<figure class="wp-block-image"><img src="https://portswigger.net/web-security/images/smuggling-http-request-to-back-end-server.svg" alt="What is HTTP request smuggling? Tutorial & Examples | Web Security ..."/></figure>
-
-
-
-<p>Sau đó request vẫn được thực hiện một cách hợp lệ response sẽ được trả về  ,như vậy attacker đã can thiệp vào việc xử lí của ứng dụng. =&gt; Smuggling attack !!!</p>
-<figure class="wp-block-image"><img src="https://memn0ps.github.io/images/2019-09-13-HTTP-Request-Smuggling-CL-TE/screenshot2.png" alt="screenshot2"/><figcaption>Ví dụ minh họa</figcaption></figure>
-
-
-
-<h4>Cách thức tấn công HTTP request smuggling</h4>
-
-
-
-<p>Như mình đã giới thiệu bên trên, HRS lần đầu tiên được đưa ra vào <a rel="noreferrer noopener" href="https://www.cgisecurity.com/lib/HTTP-Request-Smuggling.pdf" target="_blank">tài liệu</a> năm 2005 bởi Watchfire, trong đó có nhắc đến 2 kiểu được sử dụng là CL và CL.CL, tác động chủ yếu ở phía người dụng cộng hưởng với việc là kĩ thuật khó , CDN chưa phổ biến do đó nó không được nhắc quá nhiều.Và đến năm 2019, Jame Kettle đã làm cho nó sống lại với <a rel="noreferrer noopener" href="https://www.youtube.com/watch?v=w-eJM2Pc0KI" target="_blank">HTTP Desync Attacks</a> tại Black Hat và DEF CON cùng với đó là 3 kiểu mới được đưa ra là CL.TE, TE.CL và TE.TE.  Như vậy có thể chia ra làm 5 kiểu : CL, CL.CL, CL.TE, TE.CL và TE.TE, mình sẽ giải thích hết luôn hehe.</p>
-<p>  CL và TE lần lượt viết tắt của <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Length" target="_blank">Content-Length</a> và <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding" target="_blank">Transfer-Encoding</a> là 2 HTTP header . Content-Length cho biết kích thước của body của request, tính bằng byte, được gửi cho người nhận còn Transfer-Encoding chỉ định hình thức mã hóa (gzip, chunked.compress….) được sử dụng để đóng gói vận chuyển phần body một cách nhanh chóng, giải quyết được vấn đề của <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Length" target="_blank">Content-Length</a> với dữ liệu lớn. Nhưng  tính năng quan trọng cần nhớ ở đây là 2 header này còn là cách xác định kết thúc một HTTP message. Đây là mấu chốt để thực hiện HRS ! </p>
-<p>À còn một vấn đề nữa trước khi vào vấn đề là việc sử dụng các method HTTP (GET , POST, PUT …) phải hợp lí, không thể dùng bừa bởi vì mỗi methob đều có chức năng riêng và server sẽ xử lí khác nhau. Thế nên nó cũng ảnh hưởng đén việc tấn công bằng HRS,mình sẽ không thể giải thích cả vì nó sẽ quá dài mong các bạn lưu ý cả phần này. OK vào thôi  !</p>
-<h3> **GET Request với CL ** </h3>
-
-
-
-<p>Trong kiểu này không phải chỉ request GET có thể sử dụng, mình chỉ lấy như một ví dụ vì nó rất là điển hình.Tất cả các yêu cầu HTTP không mang body đều có khả năng làm điều này nhưng mình chưa biết hết hihi.</p>
-<p>Trong tài liệu của <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Request_for_Comments" target="_blank">RFC</a> về HTTP/1.1 - <a rel="noreferrer noopener" href="https://tools.ietf.org/html/rfc2616" target="_blank">RFC2616</a> không có quy định nào đề ra về việc cho phép yêu cầu GET mang thêm Body trong request như request POST và chỉ có một câu được đề cập trong phần 4.3.1 của tài liệu mới nhất của nó là  <a rel="noreferrer noopener" href="https://tools.ietf.org/html/rfc7231#section-4.3.3" target="_blank">RFC7231</a>.</p>
-<p>Sending a payload body on a GET request might cause some existing implementations to reject the request<br> </blockquote></p>
-<p>Giả sử Front-End Server (Proxy Server) cho phép  GET request mang Body và Back-end Server không cho phép GET request mang Body.Như vậy Back-end Server sẽ  bỏ qua luônContent-Length header trong request GET và sẽ không xử lý nó.Điều này có thể dẫn đến request Smuggling. Cùng xem ví dụ nha.</p>
-<p>GET / HTTP/1.1\r\n<br>Host: example.com\r\n<br>Content-Length: 44\r\n # 44 byte</p>
-<p>GET / secret HTTP/1.1\r\n #độ dài của đoạn<br>Host: example.com\r\n     # này bằng 44 byte<br>\r\n</p>
-<p>Front-end Server nhận được request và kiểm traContent-Length, xác định rằng đây là một request hoàn chỉnh và  chuyển tiếp nó đến back-end Server.Sau đó back-end Server nhận được nó, vì nó không xử lýContent-Length,  nên nó nghĩ rằng nó đang nhận được hai request. </p>
-<p>First request<br>GET / HTTP/1.1\r\n<br>Host: example.com\r\n</p>
-<p>Second request<br>GET / secret HTTP/1.1\r\n<br>Host: example.com\r\n</p>
-<p>Done !!!</p>
-<h3>CL.CL</h3>
-
-
-
-<p>Trong mục 4.4 của <a rel="noreferrer noopener" href="https://tools.ietf.org/html/rfc2616#section-4.4" target="_blank">RFC2616</a> và mục 4 của 3.3.3 trong  <a rel="noreferrer noopener" href="https://tools.ietf.org/html/rfc7230#section-3.3.3" target="_blank">RFC7230</a>, có ghi rằng khi request  mà máy chủ nhận được chứa hai hoặc nhiều hơn Content-Length header và  giá trị của các header này khác nhau thì nó sẽ trả về status code 400 hoặc 502. Như vậy khả năng cáo Server sẽ không chấp nhận request kiểu này và cũng vì thế người ta chỉ coi kiểu này chỉ ở mức ý tưởng. </p>
-<p>If a message is received without Transfer-Encoding and witheither multiple Content-Length header fields having differingfield-values or a single Content-Length header field having aninvalid value, then the message framing is invalid and therecipient MUST treat it as an unrecoverable error. If this is arequest message, the server MUST respond with a 400 (Bad Request)status code and then close the connection. If this is a responsemessage received by a proxy, the proxy MUST close the connectionto the server, discard the received response, and send a 502 (Bad Gateway) response to the client. If this is a response messagereceived by a user agent, the user agent MUST close theconnection to the server and discard the received response.Các bạn tự dịch nhé !</blockquote></p>
-<p>Nó đã được fix nhưng không sao mình vẫn sẽ trình bày về nó như trong tài liệu của Watchfire sử dụng nó để thực hiện HRS thành công.</p>
-<p>Lần này mình lấy ví dụ dùng POST request,không như GET, server sẽ kiểm tra cả CL header để lấy dữ liệu  nhé !</p>
-<p>POST / HTTP/1.1\r\n<br>Host: example.com\r\n<br>Content-Length: 8\r\n<br>Content-Length: 7\r\n</p>
-<p>12345\r\n<br>a</p>
-<p>Theo như minh tìm hiểu nếu như sử dụng 2 header CL thì thông thường Proxy Server sẽ lấy Content-Length đầu tiên còn Back-End sẽ phân tích và lấy Content-Length cuối cùng, tại sao thì mình chưa tìm ra nhưng nó không ảnh hưởng lắm nên thôi .</p>
-<p> Lúc này độ dài của dữ liệu mà Proxy Server nhận được là 8 bytes , kiểm tra nội dung “12345\r\na” đã đủ và nó chuyển tiếp request như vậy đến BE server.Khi đến Back-end Server sẽ lấy giá trị của CL header cuối  là 7 bytes . Sau khi đọc 7 ký tự đầu tiên “12345\r\n” (Để lại “a” trong cache huhu), Back-end Server xác định rằng request đã được đọc và kết thúc request (Server sẽ gửi response tương ứng cho request này ).Như vậy cache vẫn còn có giữ chữ “a” thừa từ request trước.Lúc này Back-end Server cho rằng “a”là một phần của request tiếp theo.Nếu như thời điểm này có mình hoặc một người dùng thường khác gửi request đến Server như sau:</p>
-<p>GET /index.html HTTP/1.1\r\n<br>Host: example.com\r\n</p>
-<p>Như chúng ta đã biết từ trước, các kết nối TCP thường được sử dụng lại giữa máy chủ proxy và máy chủ nguồn. Nên request này sẽ được ghép vào sau  “a” giống như ổ cắm - Jame Kettle nói . Khi đó Back-end Server nhận được request như này :</p>
-<p>aGET /index.html HTTP/1.1\r\n<br>Host: example.com\r\n</p>
-<p>Làm gì có method aGET đúng không các bạn ? Server sẽ xử lí và trả về một lỗi tương tự như “aGET request method not found”.Như vậy là bạn đã có thể thực hiện một cuộc tấn HRS hay làm ảnh hưởng yêu cầu của người dùng khác và thậm trí mở rộng thành một cuộc tấn công khác như CSRF.</p>
-<h3>CL-TE</h3>
-
-
-
-<p> CL-TE có nghĩa là khi nhận được request có hai header này,  proxy server chỉ xử lý header Content-Length còn Back-End Server phía sau sẽ tuân thủ các quy định về <a rel="noreferrer noopener" href="https://tools.ietf.org/html/rfc2616" target="_blank">RFC2616</a>, bỏ qua Content -Length, xử lý header Transfer-Encoding.</p>
-<p>Transfer-Encoding có thể chỉ định nhiều kiểu mã hóa nhưng chúng ta chỉ cần quan tâm đến chunked -mã hóa kiểu khối .Định dạng dữ liệu chuyển kiểu khối như sau:</p>
-<p>[chunk size][\r\n][chunk data][\r\n][chunk size][\r\n][chunk data][\r\n][chunk size = 0][\r\n][\r\n]</p>
-<p> trong đó giá trị của “size” được biểu thị bằng hệ thập lục phân. Khi chunk size bằng không có nghĩa là kết thúc nội dung của body.</p>
-<img src="/images/HRS/chunk_transfer.png" class="[class names]" title="[500] [500] " alt="Cách đọc body request của TE">
-
-
-
-<p>Mình sẽ sử dụng lab của PortSwigger để làm lấy ví dụ luôn cho sinh động  ( thực tế sẽ khó hơn nhé) cùng với đó mình sẽ sử dụng BurpSuite và extention <a rel="noreferrer noopener" href="https://github.com/PortSwigger/http-request-smuggler" target="_blank">Http request Smuggler</a> của nó (Các bạn tự tìm hiểu nha), ngoài ra có 1 công cụ nữa là <a target="_blank" rel="noopener" href="https://github.com/defparam/smuggler">smuggler</a> rất hữu hiệu cho các bạn săn bug :</p>
-<p><a href="https://portswigger.net/web-security/request-smuggling/lab-basic-cl-te" target="_blank" rel="noreferrer noopener">Link lab Portswigger</a></p>
-<p>Đây là request mình sẽ check đầu tiên , cung như là cấu trúc của một request CL.TE:</p>
-<img src="/images/HRS/image-3.png" class="[class names]" title="[500] [500] " alt="title text">
-
-
-
-
-<p>Vì Front-End Server xử lí  Content-Length, sau khi kiểm tra độ dài của payload body đúng là 36, FE coi đây là một request hoàn chỉnh và forward nó đi. </p>
-<p>Chắc chắn sẽ có bạn thắc mắc về độ cài của body của request khi nhận được.Bạn nhìn  và đếm rõ rảng không đủ 36 bytes như content length hiện. Đây là do trong body còn dùng 2 kí tự ngắt dòng là CR (\r)  và LF  (\n), trong các ví dụ hình ảnh mình đưa ra sẽ lược bỏ nó đi cho đỡ rối mắt. :</p>
-<!-- wp:preformatted -->
-<pre class="wp-block-preformatted">0 \ r \ n
-\ r \ n
-GET /admin HTTP/1.1</pre>
-<!-- /wp:preformatted -->
-
-
-<p>Tiếp tục,khi gói tin được chuyển đến thì back-end sẽ xử lýTransfer-Encoding header.Nhưng đập vào mắt nó là  “0 \ r \ n”, nên Back-end cho rằng đã kết thúc request,để lại đoạn “GET /admin HTTP/1.1” trong cache, chờ đợi request tiếp theo đến. Kết quả trong lab mình thực hiện sẽ như thế này:</p>
-<img src="/images/HRS/image-2.png" class="[class names]" title="[500] [500] " alt="title text">
-
-
-<p>Ok như vậy là đã có dấu hiệu để thực hiện tấn công HRS.</p>
-<h3>TE.CL</h3>
-
-
-
-<p>Khi bạn hiểu được CL.TE rồi thì đối với kiểu này nó cũng tương tự chỉ là đảo vế cho nhau thôi ( FE sẽ xử lí TE còn BE xử lí CL).PortSwigger cũng có lab  tương tự :</p>
-<p><a href="https://portswigger.net/web-security/request-smuggling/lab-basic-te-cl" target="_blank" rel="noreferrer noopener">Link lab Portswigger</a></p>
-<img src="/images/HRS/image-4.png" class="[class names]" title="[500] [500] " alt="title text">
-
-
-
-
-<p>Request đến FE và xử lí TE, khi nó đọc dến “0 \ r \ n \ r \ n”, nó coi là dã đọc xong, request hoàn chỉnh và  chuyển tiếp đến máyBE  server. BE server xử lý CL,khi nó đọc đến “12 \ r \ n:, nó coi như là request đã kết thúc. Còn phần còn lại thì nó cho là của một yêu cầu khác</p>
-<!-- wp:preformatted -->
-<pre class="wp-block-preformatted">GPOST / HTTP/1.1\r\n
-\r\n
-0\r\n
-\r\n</pre>
-
-
-
-<p>Và reponse trả về với lỗi dễ hiểu</p>
-<img src="/images/HRS/image-5.png" class="[class names]" title="[500] [500] " alt="title text">
-
-
-
-
-<p>Ok!</p>
-<h3>TE.TE</h3>
-
-
-
-<p>Đây kiểu cuối cùng, nó cũng tự như CL.CL là sử dụng 2 header TE trong reuqest nhưng mà nó vẫn chưa rõ quy chế như CL.CL (lỗi 400) trong tài liệu của RFC. Ở đây chúng ta cần tìm cách đưa TE.TE về 2 kiểu TE vs CL. Trick được đưa ra trong Portswigger là che dấu header TE, có dùng trong request nhưng không được xử lí.</p>
-<p><a rel="noreferrer noopener" href="https://portswigger.net/web-security/request-smuggling/lab-ofuscating-te-header" target="_blank">Link Lab PortSwigger</a></p>
-<p>Trong trương hợp này cả 2 server đều muôn xử lí TE. Như các bạn đã biết TE sẽ có 5 giá trị mặc định (gzip, chunked, identity…), mình sẽ giấu một header bằng cách cho nó giá trị không tồn tại là “cow” và thêm cả CL vào request.</p>
-<!-- wp:preformatted -->
-<pre class="wp-block-preformatted">POST / HTTP/1.1\r\n
-Host: ac4b1fcb1f596028803b11a2007400e4.web-security-academy.net\r\n
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:56.0) Gecko/20100101 Firefox/56.0\r\n
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n
-Accept-Language: en-US,en;q=0.5\r\n
-Cookie: session=Mew4QW7BRxkhk0p1Thny2GiXiZwZdMd8\r\n
-Content-length: 4\r\n
-Transfer-Encoding: chunked\r\n
-Transfer-encoding: cow\r\n
-\r\n
-5c\r\n
-GPOST / HTTP/1.1\r\n
-Content-Type: application/x-www-form-urlencoded\r\n
-Content-Length: 15\r\n
-\r\n
-x=1\r\n
-0\r\n
-\r\n</pre>
-<!-- /wp:preformatted -->
-
-
-<p>FE sẽ xử lí TE đầu tiên, nó kiểm tra đến khi đọc đến “0\r\n\r\n” . Request hoàn chỉnh và forward đến BE. BE xét header TE cuối nhưng có vấn đề và nó chuyển sang xử lí bằng CL. Như vậy trong trường hợp FE cử lí TE đầu tiền còn BE xử lí TE cuối thì ta đã đưa về kiểu TE.CL, còn nếu như FE xử lí TE cuối  còn BE xứ lí TE đầu thì ngược lại.</p>
-<p>Ngoài cách này ra còn nhiều cách để thực hiện xáo trộn tiêu đề TE này như:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Transfer-Encoding: xchunked</span><br><span class="line"></span><br><span class="line">Transfer-Encoding : chunked</span><br><span class="line"></span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line">Transfer-Encoding: x</span><br><span class="line"></span><br><span class="line">Transfer-Encoding:[tab]chunked</span><br><span class="line"></span><br><span class="line">[space]Transfer-Encoding: chunked</span><br><span class="line"></span><br><span class="line">X: X[\n]Transfer-Encoding: chunked</span><br><span class="line"></span><br><span class="line">Transfer-Encoding</span><br><span class="line">: chunked</span><br></pre></td></tr></table></figure>
-<p>HAproxy CVE-2019-18277 đã xử dụng cách này để khai thác bạn có thể tham khảo thêm. Dưới đây là 1 bài <a target="_blank" rel="noopener" href="https://github.com/o-o-overflow/dc2020q-uploooadit">CTF</a> yêu cầu chụp lại request của người khác dựa vào CVE này và mình đã khai thác thành công. </p>
-<div class="video-container"><iframe src="https://www.youtube.com/embed/SQIbpqVfd14" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
-
-
-
-<p>OK như vậy là mình đã trình bày xong về các kiểu tấn công HRS, bạn không hiểu phần nào hãy để lại comment cho mình.</p>
-<h3 id="6-how-to-prevent-http-request-smuggling">Cách ngăn chặn buôn lậu yêu cầu HTTP</h3>
-
-
-
-<p>Chúng ta đã biết tác hại của lỗ hổng HTTP request Smuggling và chúng ta sẽ đặt câu hỏi: làm thế nào để ngăn chặn nó?Có ba cách phòng thủ chung (không dành riêng cho một máy chủ cụ thể nào cả nha).</p>
-<ul><li>Vô hiệu hóa "reuse" sử dụng kết nối TCP - <a rel="noreferrer noopener" href="https://docs.apigee.com/api-platform/antipatterns/disable-persistent-connections" target="_blank">disable kết nối liên tục</a> (keep -alive) giữa proxy server và back-end server</li><li>Sử dụng giao thức HTTP/2. HTTP/2 có cách ngăn chặn HRS bằng các tính năng mới như "Request multiplexing over a single TCP connection, Compression of request headers"</li><li>Máy chủ front và back end  sử dụng cùng một máy chủ hoặc tất cả các máy chủ chạy cùng một phần mềm máy chủ web có cùng cấu hình ( Tránh các phiên bản cho phép lỗ hổng này diễn ra như <a rel="noreferrer noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2018-8004" target="_blank">Apache Traffic Server</a> (ATS) versions 6.0.0 to 6.2.2 and 7.0.0 to 7.1.3 - <a href="https://regilero.github.io/english/security/2019/10/17/security_apache_traffic_server_http_smuggling/" target="_blank" rel="noreferrer noopener">POC</a>).</li></ul>
-
-
-<p>Tất nhiên các biện pháp trên chỉ có thể giải quyết vấn đề một cách cơ bản và còn nhiều khiếm khuyết như vô hiệu hóa việc sử dụng lại kết nối TCP giữa máy chủ proxy và máy chủ back-end, điều này sẽ làm tăng áp lực lên  back-end server.Sử dụng HTTP/2 thì không thể được quảng bá trong các điều kiện mạng hiện tại, ngay cả khi máy chủ hỗ trợ giao thức HTTP / 2 tương thích với HTTP / 1.1.Và xét về bản chất, lý do dẫn đến HTTP request Smuggling  không phải là vấn đề thiết kế giao thức mà là vấn đề của việc triển khai máy chủ khác nhau.Cá nhân mình nghĩ rằng giải pháp tốt nhất là thực hiện nghiêm túc theo các tiêu chuẩn quy định trong RFC7230-7235, nhưng đây là điều khó khăn nhất để đạt được bởi vì bản chất RFC chỉ là các bản nghiên cứu, tiêu chí phát triển được khuyến nghị chứ không phải là các chuẩn bắt buộc do đó vẫn xảy ra tình trạng bất đồng bộ giữa các máy chủ .</p>
-<p>Cảm ơn các bạn đã đọc , mình rất thích lỗ hổng này nên chắc chắn sẽ có bài viết thêm về nó , mong các bạn đón đọc nha!</p>
-<h2>Tài liệu tham khảo</h2>
-
-
-
-<ul><li><a target="_blank" rel="noopener" href="https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn">https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn</a></li><li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/request-smuggling">https://portswigger.net/web-security/request-smuggling</a></li><li><a target="_blank" rel="noopener" href="https://www.cgisecurity.com/lib/HTTP-Request-Smuggling.pdf">https://www.cgisecurity.com/lib/HTTP-Request-Smuggling.pdf</a></li><li><a target="_blank" rel="noopener" href="https://www.pentestpartners.com/security-blog/http-request-smuggling-a-how-to/">https://www.pentestpartners.com/security-blog/http-request-smuggling-a-how-to/</a></li></ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://blog.hydrasky.ml/2020/06/14/HTTP%20Request%20Smuggling%20Attack/" data-id="ckhqle8u50017o7jmfp3vdj74" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Pentest-Web/" rel="tag">Pentest Web</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -1272,7 +1168,7 @@ x=1\r\n
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BugBoutyTip/" rel="tag">BugBoutyTip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lab/" rel="tag">Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pentest-Web/" rel="tag">Pentest Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BugBoutyTip/" rel="tag">BugBoutyTip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lab/" rel="tag">Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pentest-Mobile/" rel="tag">Pentest Mobile</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pentest-Web/" rel="tag">Pentest Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
     </div>
   </div>
 
@@ -1282,7 +1178,7 @@ x=1\r\n
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/BugBoutyTip/" style="font-size: 13.33px;">BugBoutyTip</a> <a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/Lab/" style="font-size: 10px;">Lab</a> <a href="/tags/Pentest-Web/" style="font-size: 16.67px;">Pentest Web</a> <a href="/tags/Technology/" style="font-size: 20px;">Technology</a>
+      <a href="/tags/BugBoutyTip/" style="font-size: 13.33px;">BugBoutyTip</a> <a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/Lab/" style="font-size: 10px;">Lab</a> <a href="/tags/Pentest-Mobile/" style="font-size: 10px;">Pentest Mobile</a> <a href="/tags/Pentest-Web/" style="font-size: 16.67px;">Pentest Web</a> <a href="/tags/Technology/" style="font-size: 20px;">Technology</a>
     </div>
   </div>
 
@@ -1291,7 +1187,7 @@ x=1\r\n
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
     </div>
   </div>
 
@@ -1302,6 +1198,10 @@ x=1\r\n
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2021/01/08/Pentest_Android_P1/">Pentest Android (Part1)</a>
+          </li>
         
           <li>
             <a href="/2020/11/29/OS%20command%20Injection/">Command Injection TIP</a>
@@ -1319,10 +1219,6 @@ x=1\r\n
             <a href="/2020/06/15/CROSS%20SIDE%20REQUEST%20FORGERY/">Cross Side Request Forgery</a>
           </li>
         
-          <li>
-            <a href="/2020/06/14/Oauth/">OAUTH</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1335,7 +1231,7 @@ x=1\r\n
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2020 Le Binh An<br>
+      &copy; 2021 Le Binh An<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
