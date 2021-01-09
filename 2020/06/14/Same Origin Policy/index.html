@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Same Origin Policy | Hydrasky</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="TL;DRXin chào các bạn, trong bài viết trước mình có giới thiệu với các bạn về  Content Security Policy (CSP) ,hôm nay mình sẽ giới thiệu tiếp một thuật ngữ có liên quan với nó đó là Same Origin Policy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Same Origin Policy">
+<meta property="og:url" content="http://blog.hydrasky.ml/2020/06/14/Same%20Origin%20Policy/index.html">
+<meta property="og:site_name" content="Hydrasky">
+<meta property="og:description" content="TL;DRXin chào các bạn, trong bài viết trước mình có giới thiệu với các bạn về  Content Security Policy (CSP) ,hôm nay mình sẽ giới thiệu tiếp một thuật ngữ có liên quan với nó đó là Same Origin Policy">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-06-14T22:20:34.000Z">
+<meta property="article:modified_time" content="2020-06-14T22:20:34.000Z">
+<meta property="article:author" content="Le Binh An">
+<meta property="article:tag" content="Technology">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hydrasky" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hydrasky</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.hydrasky.ml"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Same Origin Policy" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/Same%20Origin%20Policy/" class="article-date">
+  <time datetime="2020-06-14T22:20:34.000Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Same Origin Policy
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>TL;DR<br>Xin chào các bạn, trong bài viết trước mình có giới thiệu với các bạn về  Content Security Policy (CSP) ,hôm nay mình sẽ giới thiệu tiếp một thuật ngữ có liên quan với nó đó là Same Origin Policy (SOP).</p>
+<p>Như các bạn đều biết CSP đươc triển khai ở phía server, chính sách sẽ được gửi về cho phía trình duyệt thông qua HTTP response và trình duyệt sẽ thực thi theo chính sách. Nếu như phía website không cung cấp các chính sách thì phía trình duyệt cũng sử dụng các chính sách bảo mật chung gọi là Same Origin Policy. Nó không phải là một tiêu chuẩn trên internet và mỗi trình duyệt có thể có cách giải thích khác nhau . Ok cùng tìm hiểu nó nào .</p>
+<h2 id="Same-Origin-Plolicy-la-gi"><a href="#Same-Origin-Plolicy-la-gi" class="headerlink" title="Same Origin Plolicy là gì?"></a>Same Origin Plolicy là gì?</h2><p>Same-Origin Policy (có thể tạm gọi là chính sách cùng gốc ) là một tiêu chuẩn về bảo vệ được tích hợp và yêu cầu bắt buộc với các browser hiện đại, , nhằm ngăn chặn việc tương tác giữa các DOM hoặc Script nằm ở các Origin (hoặc địa chỉ) khác nhau, giúp giảm thiểu một số vertor tấn công có thể .</p>
+<h2 id="Tai-sao-can-Same-Origin-Policy"><a href="#Tai-sao-can-Same-Origin-Policy" class="headerlink" title="Tại sao cần Same-Origin Policy ?"></a>Tại sao cần Same-Origin Policy ?</h2><p>Hãy thử tưởng tượng điểu gì xảy ra khi không có SOP, mk sẽ lấy ví dụ cho dễ hiểu:<br>Bạn đăng kí tài hydrasky.ml và các thông tin cá nhận của bạn  được lưu trong một file có url là <a target="_blank" rel="noopener" href="https://hydrasky.mk/user/profile.json">https://hydrasky.mk/user/profile.json</a> .Để truy cập vào file này tất nhiên bạn phải là user hợp lệ và website sẽ check điều này bằng cookie của bạn.</p>
+<p>Nhưng hãy nhớ , khi trình duyệt thực hiện các request HTTP từ Origin này đến Origin khác thì cookie (có chứa session) được lưu trên trình duyệt cũng sẽ được tự động thêm vào làm một phần của request.  (Để hiểu rõ hơn hãy tham khảo bài viết về <a href="http://blog.hydrasky.ml/2020/06/14/Session%20&%20Cookie/">session và cookie</a>) của mình).</p>
+<p>Lợi dụng điều này, attacker tạo 1 website example.com , sử dụng các đoạn mã javascript để request đến file và lừa bạn truy cập vào example.com  để lấy thông tin mà bạn không ngờ đến . </p>
+<p>Ví dụ: <em>examle.com</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">&lt;script&gt;</span><br><span class="line">var req &#x3D; new XMLHttpRequest();</span><br><span class="line">req.open(&quot;GET&quot;, &quot;https:&#x2F;&#x2F;hydrasky.ml&#x2F;user&#x2F;profile.json&quot;);</span><br><span class="line">req.withCredentials &#x3D; true ; # user&#39;s cookie của hydrasky.ml của bạn sẽ được đính kèm với request  </span><br><span class="line">req.send();</span><br><span class="line">...</span><br><span class="line">&lt;&#x2F;script&gt;</span><br><span class="line">Có 3 lưu ý ở đây là:</span><br><span class="line">1. Bên example.com sẽ không thể đọc và chỉnh sửa được user&#39;s cookie của hydrasky.ml</span><br><span class="line">2. Mặc đinh cookie sẽ không được đính kèm vơi request nếu bạn không đặt Credentical &#x3D; true</span><br><span class="line">3. Không có chuyện user&#39;s cookie của example.com được đính kèm request tới hydrasky.ml , điều này chỉ có thể xảy ra khi 2 origin chỉ cùng host (domain&#x2F;subdomain) mà không phân biệt scheme và port.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>Áp điều này ra ngoài thực tế nếu như không có SOP, người ta có thể đọc được tin nhắn GMAIL , thông tin Facebook của bạn vẫn vân và vân vân… . Thực sự nguy hiểm!!!<br>SOP sẽ ngăn chặn việc này lại bằng cách chặn quyền “read” vào các tài nguyên ở Origin khác. Như vậy trong trường hợp trên sẽ không có bất kì data nào được trả về và hiển thị trên example.com cả.  </p>
+<p> Nhưng chờ đã ,thế tại sao  “Tôi vẫn có tải hình ảnh và script từ các nguồn gốc khác khi tôi code web ?”. Đây là một câu hỏi rất hay. Trình duyệt cho phép chúng ta sử dụng một vài thẻ để nhúng tài nguyên từ một nguồn gốc khác một cách hợp lệ như nhúng:</p>
+<ul>
+<li>CSS bằng <code>&lt;link&gt;</code> hoặc @import , nhưng cần thêm Content-type hợp lệ.</li>
+<li>image bằng <code>&lt;img &gt;</code> tag. </li>
+<li>video bằng  <code>&lt;video&gt;</code> tag .</li>
+<li>script bằng <code>&lt;script&gt;</code> tag , tuy nhiên nếu như tài nguyên bạn muốn lấy là một API thì sẽ bị chặn.</li>
+<li>forms submit với <code>action</code> </li>
+<li><code>iframe</code> nhưng nó còn phụ thuộc vào  <code>X-Frame-Options</code> và việc bạn sử dụng nó làm gì.</li>
+<li>Ngoài ra còn một số trường hợp ngoại lệ bạn có thể tham khảo ở <a target="_blank" rel="noopener" href="https://portswigger.net/web-security/cors/same-origin-policy">đây</a>.</li>
+</ul>
+<p>Như vậy, vai trò của Same-Origin Policy không phải là ngăn chặn các trang Web đọc được nguồn dữ liệu từ Website khác, mà chủ yếu là để ngăn chặn các Website đọc các thông tin cá nhân hóa (hay cụ thể hơn, là dữ liệu xác thực), dữ liệu nhạy cảm hoặc nguồn dữ liệu riêng tư của các Website khác.</p>
+<h2 id="Same-Origin-Policy-hoat-dong-nhu-the-nao"><a href="#Same-Origin-Policy-hoat-dong-nhu-the-nao" class="headerlink" title="Same Origin Policy hoạt động như thế nào ?"></a>Same Origin Policy hoạt động như thế nào ?</h2><p>Đầu tiên, Policy sẽ xác định vào cái gì để xác định được rằng nó cùng nguồn gốc ( <strong>Origin</strong> ) ?</p>
+<p>Nó sẽ dựa vào 3 yếu tố là :</p>
+<ul>
+<li>Host</li>
+<li>Port</li>
+<li>Scheme (Http/Https) </li>
+</ul>
+<p>Ví dụ bạn truy cập vào trang <a target="_blank" rel="noopener" href="https://hydrasky.ml/hacking.html">https://hydrasky.ml/hacking.html</a>  bên dưới nó có những đoạn mã đang chạy, thì sẽ có loại trang Web nào khác mà các đoạn Code có thể tương tác với nó ?</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="http://hydrasky.ml/hacking.html">http://hydrasky.ml/hacking.html</a> : Không thể , bởi vì nó khác protocol (https#http)</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://hydrasky.ml:8080/hacking.html">https://hydrasky.ml:8080/hacking.html</a>: Điều này còn phụ thuộc vào trình duyệt. Bình thường nó sẽ không thể vì nó khác Port (https mặc địch với port 443). Nhưng đối với trình duyệt IE thì nó không quan tâm đến Port thay vào đó nó dùng “Security Zone” nên với IE vẫn có thể tương tác.</p>
+</li>
+<li><p><a href="https://blog.hydrasky.ml/hacking.html">https://blog.hydrasky.ml/hacking.html</a> : Không thể , bởi vì dù là subdomain nhưng nó vẫn coi là khác host. Và  <a target="_blank" rel="noopener" href="http://www.hydrasky.ml/">www.hydrasky.ml</a> cũng không được coi là ngoại lệ.</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://example.com/">https://example.com</a> chắc chắn sẽ không thể rồi.</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://hydrasky.ml/learning.html">https://hydrasky.ml/learning.html</a> mặc dù khác đường dãn nhưng nó vẫn đủ 3 tiêu chí nên có thể .</p>
+</li>
+</ul>
+<h2 id="Cac-van-de-cua-Same-Origin-Policy"><a href="#Cac-van-de-cua-Same-Origin-Policy" class="headerlink" title="Các vấn đề của Same Origin Policy"></a>Các vấn đề của Same Origin Policy</h2><ol>
+<li>SOP ngăn chặn quyền “read”  nhưng không thể can thiệp vào quyền “write” giữa các Origin khác nhau. Quyền “write” ở đây chính là gửi các request thực thi (như chuyển tiền, thay đổi tài khoản) tới các Origin khác. Đó chính là lí do nó không thể chống được một số trường hợp tấn công CSRF.<br>ví dụ:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src&#x3D;http:&#x2F;&#x2F;example.com&#x2F;trans.php?money&#x3D;1000&amp;reid&#x3D;1234 &gt;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>Để ngăn chặn cross-origin “write” , bạn nên sử dụng CSRF token cho website của bạn.</p>
+<ol start="2">
+<li>Bên cạnh việc tự định nghĩa các đoạn mã bên trong thẻ <code>&lt;script&gt;</code>, bạn còn có thể sử dung thuộc tính “src” để tải các đoạn mã từ các nơi khác trên Internet:</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src&#x3D;”http:&#x2F;&#x2F;www.jslibrary.com&#x2F;script.js&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>Điều này do script thuộc loại code (mã lập trình) chứ không phải là data (dữ liệu) nên không dẫn đến việc lộ lọt thông tin nhạy cảm. </p>
+<ol start="3">
+<li>Cùng với vấn đề thứ 2, Với thuộc tính “src” bạn có thể sử dụng thoải mái các thư viện JavaScript như Jquery .Nhưng trong trường hợp bạn muốn lấy tài nguyên không phải là các mã code js thì sao ?<br>Ý mình ở đây chính là dữ liệu với định dạng JSON.<br>Khi bạn nhận được một chuỗi dưới dạng JSON, bạn cần phải chuyển nó sang dạng Object trước khi làm việc với nó bởi vì dữ liệu được gửi đi dưới dạng ký tự, không phải dưới dạng một đối tượng của JavaScript. Tiếp đây là mới điều cần lưu ý đó là bạn không nên làm việc trưc tiếp với dữ liệu định dạng JSON như ví dụ dưới đây:</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var res &#x3D; ‘&#123;“author”: “hydrasky”, “title”: alert(xss), “rel_date”: “1&#x2F;07&#x2F;2020”&#125;’;</span><br><span class="line">&#x2F;&#x2F; Nguy hiểm </span><br><span class="line">var danger &#x3D; eval(&#39;(&#39;+res+&#39;)&#39;)</span><br><span class="line">&#x2F;&#x2F; Thay vào đo bạn nên làm như này sẽ an toàn</span><br><span class="line">var safe &#x3D; JSON.parse(res);</span><br></pre></td></tr></table></figure>
+
+<p>Khuyến nghị khác ở đây là bạn nên dùng JSONP, viết tắt của <code>JSON with Padding</code>. JSONP giống với JSON, ngoại trừ dữ liệu được đặt bên trong một hàm JavsScript được gọi bởi Client gọi tới nó.</p>
+<p>Hàm này nằm ở trên chính trang hiện tại và với tham số là dữ liệu json được lấy từ server.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mycallback &#x3D; function (data) &#123; </span><br><span class="line">  console.log (data) </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>Và rồi bạn đặt cái này vào website của bạn:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src &#x3D; https:&#x2F;&#x2F;www.example.com&#x2F;data?callback&#x3D;mycallback &gt; &lt;&#x2F; script&gt; </span><br></pre></td></tr></table></figure>
+<p>Bạn nhận được kết quả giống như này :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">mycallback(&#123;“author”: “hydrasky”, “title”: alert(xss), “rel_date”: “1&#x2F;07&#x2F;2020”&#125; &#x2F;&#x2F;JSONP</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+<p>Như vậy bạn có thể tránh được một cuộc tấn công XSS rồi . Nhưng ở một khía cạnh nào đó, việc để dữ liệu ở dạng JSON cũng chính là một yếu tố dẫn đến bypass SOP. </p>
+<ol start="4">
+<li>Trong trường hợp như bạn muốn cho phép các đoạn mã có thể tương tác với các subdomain khác. Ví dụ như ứng dụng web yêu đăng nhập tại một nơi như <a target="_blank" rel="noopener" href="http://store.company.com/">http://store.company.com</a> nhưng cần xác thực tại <a target="_blank" rel="noopener" href="http://login.company.com/">http://login.company.com</a> trước chẳng hạn. Bạn có thể  xử lí như sau:</li>
+</ol>
+<ul>
+<li><strong>Thay đổi Origin</strong> :<br>Rõ ràng host của 2 website trên là khác nhau nên vi phạm SOP, chúng ta có thể thiết lập ở cả 2 nơi về cùng gốc bằng lệnh<br>document.domain = “company.com” - Domain chính ;</li>
+<li><strong>Sử dụng Cross Origin Resource Sharing (CORS)</strong><br>Đây là một tính năng mới được tích hợp trong HTML5. CORS cho phép lấy dữ liệu từ một trang khác thông qua XMLHttpRequest. Lập trình viên cần thiết lập request gửi đi có trường<br>Origin: <a target="_blank" rel="noopener" href="http://company.com/">http://company.com</a><br>Và trong response trả về cần có:<br>Access-Control-Allow-Origin: <a target="_blank" rel="noopener" href="http://company.com/">http://company.com</a></li>
+</ul>
+<p>Đây là biện pháp hữu hiệu và an toàn hơn sử dụng JSONP hay thay đổi Origin nhưng yêu cầu cấu hình CORS thật chính xác, nếu không chính điều này sẽ cho phép attacker lấy đi dữ liệu của bạn . (MÌnh sẽ có bài viết về lỗ hổng này nha)</p>
+<p>##Tổng kết</p>
+<p>Ok , Như vậy với SOP giúp tăng tính bảo mật trên trình duyệt của người dùng nhưng vẫn chưa cao , tham khảo thêm <a target="_blank" rel="noopener" href="http://powerofcommunity.net/poc2008/kuza55.pdf">Yếu điểm của SOP</a>.</p>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/UfYfID_r7-U" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+<p> Để cải thiện điều này có thể sử dụng SOP , CSP và CORS cùng nhau như thế sẽ rất an toàn cho phía Client  .  Qua bài viết này chúng ta có thể hiểu được phần nào việc giao tiếp giữa các Origin.<br>Cảm ơn các bạn đã đọc và theo dõi, đón chào các bạn ở các bài viết tiếp theo.</p>
+<h2 id="Link-tham-khao"><a href="#Link-tham-khao" class="headerlink" title="Link tham khảo"></a>Link tham khảo</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://web.dev/same-origin-policy/">https://web.dev/same-origin-policy/</a></li>
+<li><a target="_blank" rel="noopener" href="https://whitehat.vn/threads/same-origin-policy.4731/">https://whitehat.vn/threads/same-origin-policy.4731/</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy">https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/@minosagap/same-origin-policy-and-ways-to-bypass-250effdc4a12">https://medium.com/@minosagap/same-origin-policy-and-ways-to-bypass-250effdc4a12</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.acunetix.com/blog/web-security-zone/what-is-same-origin-policy/">https://www.acunetix.com/blog/web-security-zone/what-is-same-origin-policy/</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.hydrasky.ml/2020/06/14/Same%20Origin%20Policy/" data-id="ckhqle8tt000jo7jmhdt097k3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/14/Oauth/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          OAUTH
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/14/Authentication/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Two-Factor Authentication &amp; Multil-Factor Authentication</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BugBoutyTip/" rel="tag">BugBoutyTip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lab/" rel="tag">Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pentest-Web/" rel="tag">Pentest Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/BugBoutyTip/" style="font-size: 13.33px;">BugBoutyTip</a> <a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/Lab/" style="font-size: 10px;">Lab</a> <a href="/tags/Pentest-Web/" style="font-size: 16.67px;">Pentest Web</a> <a href="/tags/Technology/" style="font-size: 20px;">Technology</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/11/29/OS%20command%20Injection/">Command Injection TIP</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/28/DVWA-Part1/">DVWA (OWASP)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/23/CORS/">Cross-Origin Resource Sharing</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/CROSS%20SIDE%20REQUEST%20FORGERY/">Cross Side Request Forgery</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/Oauth/">OAUTH</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Le Binh An<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

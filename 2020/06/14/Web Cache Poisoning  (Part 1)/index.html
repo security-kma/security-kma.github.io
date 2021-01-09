@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Web Cache Poisoning (PART 1) | Hydrasky</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Là một trong những lỗ hổng yêu thích nên mình sẽ viết hơi dài dòng một chút nên phần này mình dành cho những bạn nào mới tìm hiểu nha . Trong phần này mình sẽ giới thiệu về web cache poisoning và yếu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Web Cache Poisoning (PART 1)">
+<meta property="og:url" content="http://blog.hydrasky.ml/2020/06/14/Web%20Cache%20Poisoning%20%20(Part%201)/index.html">
+<meta property="og:site_name" content="Hydrasky">
+<meta property="og:description" content="Là một trong những lỗ hổng yêu thích nên mình sẽ viết hơi dài dòng một chút nên phần này mình dành cho những bạn nào mới tìm hiểu nha . Trong phần này mình sẽ giới thiệu về web cache poisoning và yếu">
+<meta property="og:locale">
+<meta property="og:image" content="https://infosec-conferences.com/wp-content/uploads/2019/11/logo-conference-series-blackhat-v1.png">
+<meta property="og:image" content="https://i.imgur.com/wNyvExv.png">
+<meta property="og:image" content="https://i.imgur.com/EbyDbkN.png">
+<meta property="og:image" content="https://www.vietsunshine.com.vn/wp-content/uploads/2018/09/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-Pentest-Black-Box-s%E1%BB%AD-d%E1%BB%A5ng-Burp-Suite-Ph%E1%BA%A7n-1-1.jpg">
+<meta property="og:image" content="https://portswigger.net/web-security/images/cache-poisoning.svg">
+<meta property="article:published_time" content="2020-06-14T04:00:00.000Z">
+<meta property="article:modified_time" content="2020-06-14T04:00:00.000Z">
+<meta property="article:author" content="Le Binh An">
+<meta property="article:tag" content="Pentest Web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://infosec-conferences.com/wp-content/uploads/2019/11/logo-conference-series-blackhat-v1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hydrasky" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hydrasky</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.hydrasky.ml"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Web Cache Poisoning  (Part 1)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/Web%20Cache%20Poisoning%20%20(Part%201)/" class="article-date">
+  <time datetime="2020-06-14T04:00:00.000Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Web Cache Poisoning (PART 1)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Là một trong những lỗ hổng yêu thích nên mình sẽ viết hơi dài dòng một chút nên phần này mình dành cho những bạn nào mới tìm hiểu nha . Trong phần này mình sẽ giới thiệu về web cache poisoning và yếu tố dẫn đến lỗ hổng cùng mốt số cách khai thác.</p>
+<p>Ngay khi bước vào tìm hiểu về web security chắc chắn sẽ ít ai để ý đến lỗ hổng này. Thậm trí trong các tài liệu và trong các khóa học đề cập rất ít đến nó nên vì thế lúc đầu  mình cũng không quan tâm cho lắm.Khi tìm hiểu về HTTP request Smuggling/ Response Splitting (lỗ hổng mình yêu thích ) thú vị thay mình tìm hiểu được về WCP. Nó rất thú vị như <a href="https://twitter.com/albinowax" target="_blank" rel="noreferrer noopener" aria-label="James Kettle (opens in a new tab)">James Kettle</a> nói !!! </p>
+<p> Đầu tiên, cần phải biết web cache và cache key là gì đã ? Nếu bạn chưa biết bạn có thể tham khảo một <a target="_blank" rel="noopener" href="http://hydrasky.ml/2020/03/web-cache">bài viết </a>của mình.</p>
+<h4>Web cache poisoning là gì ?</h4>
+
+
+
+<p>Cứ theo tiếng anh mà dịch thì bạn cx đã hiểu được một phần rồi “Đầu độc web cache”. Bằng cách khai thác một sô vấn đề của máy chủ và lợi dụng cache để phản hồi lại các HTTP reponse có nội dung độc hại từ kẻ tấn công cho người khác.Và đặc biệt lỗ hổng này có thể ảnh hưởng với quy mô rộng  lớn khác với lại các lỗ hổng cùng họ như Web Cache Deception.</p>
+<p>Theo như mình tìm kiếm được , WCP  đã được đề cập trong danh sách lỗ hổng từ năm 2009 của OWASP với một cái tên  “<a rel="noreferrer noopener" aria-label="Cache Poisoning (opens in a new tab)" href="https://owasp.org/www-community/attacks/Cache_Poisoning" target="_blank">Cache Poisoning</a>“ (Nghe rất chung chung bởi còn một số kiểu  cache poisoning khác thì sao như DNS cache poisoning-MITM …) . Điều thú vị nữa là vào thời điểm này người ta cho rằng lỗ hổng này chỉ ở mức “lý thuyết” (theoretical) khó thể khai thác thực tế. Và rồi đến năm 2018 , James Kettle là một chuyên gia, giám đốc mảng Web Security của <a rel="noreferrer noopener" aria-label="Portswigger  (opens in a new tab)" href="https://portswigger.net/about" target="_blank">Portswigger</a> đã có một bài thuyết trình  về lỗ hổng này <a target="_blank" rel="noopener" href="https://portswigger.net/research/practical-web-cache-poisoning">Practical Web Cache Poisoning: Redefining ‘Unexploitable’</a> <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=j2RrmNxJZ5c">[Video]</a> của <a target="_blank" rel="noopener" href="https://twitter.com/albinowax">James Kettle</a> trong sự kiện bảo mật thông tin hàng đầu trên thế giới “Blackhat”  và James Kettle đã chững minh cho tất cả thấy rằng Web Cache Poisoning là  “not theoretical “. Các bạn nên xem để hiểu rõ hơn.</p>
+<figure class="wp-block-image"><img src="https://infosec-conferences.com/wp-content/uploads/2019/11/logo-conference-series-blackhat-v1.png" alt=""/><figcaption>Logo của sự kiện BlackHat</figcaption></figure>
+
+
+
+<p>Và mình sẽ phân tích lỗ hổng này dựa vào bài thuyết trình của James Kettle. </p>
+<h4>Một vài điểm lưu ý ở lỗ hổng này ?</h4>
+
+
+
+<p>Xét về tính chất của cache thì ta chia ra làm 2 loại là private cache và pubic (shared) cache. Private cache là cache được lưu trữ phía client (brower cache), được lưu cục bộ  còn public cache là nằm giữa client và server (proxy cache). Với lỗ hổng WCP thì chúng ta chỉ quan tâm  tới việc làm sao đầu độc public cache từ đó tấn công ảnh hưởng đến toàn bộ người dùng cùng proxy cache đó còn Private cache không liên quan.</p>
+<p>Lỗ hổng quan tâm đến <a rel="noreferrer noopener" aria-label="Cache key (opens in a new tab)" href="http://hydrasky.ml/2020/03/web-cache" target="_blank">Cache key</a> , việc attacker xác định được cache key sẽ tăng khả năng bị tấn công. Ví dụ:</p>
+<figure class="wp-block-image"><img src="https://i.imgur.com/wNyvExv.png" alt=""/></figure>
+
+
+
+<p> Cache keys ở đây là phần bôi cam cam ở trên, nếu request nào match 2 cái đó thì resource từ cache sẽ được trả về với nội dung bằng tiếng Anh (en)</p>
+<p>Tương tự như vậy nếu ta request tiếp nhưng thay đổi ngôn ngữ là tiếng Ba Lan: </p>
+<figure class="wp-block-image"><img src="https://i.imgur.com/EbyDbkN.png" alt=""/></figure>
+
+
+
+<p>Cache sẽ so sách cache key và thấy match 2 cái key đó sẽ lại trả nội dung về nhưng không phải là tiếng Ba Lan mà vẫn là tiếng Anh. Trườn hợp nguy hại hơn là một payload độc hại hay một file javascript có chứa lỗ hổng đã được caching cho request trước thì các người dùng sau sẽ đều bị ảnh hưởng cho đến khi một response mới được lưu. Điều đó sẽ có thể dẫn đến lỗ hổng Cache Poisoning. </p>
+<h4>Cách thức tấn công</h4>
+
+
+
+<p> Về cơ bản, Web cache poisoning bao 3 bước. </p>
+<ul><li>Đầu tiên, kẻ tấn công phải tìm ra cách tạo ra response từ máy chủ back-end  bằng cách sử tìm thử các input không phải "cache key".</li><li>Tiếp theo là xem những chỗ input đó có thành lỗi được không.</li><li>Cuối cùng nếu có thì bắt đầu poison shared cache.  </li></ul>
+
+
+<p> <strong>Xác định và đánh giá các input không phải key</strong> </p>
+<p> Bất kỳ cuộc tấn công WCP nào đều phụ thuộc vào các input không phải key, chẳng hạn như các tiêu đề (header) . Bộ đệm web bỏ qua các đầu vào không phải key hoặc không bị khóa khi quyết định có nên trả về response được lưu trong bộ nhớ cache cho người dùng hay không. Điều có nghĩa là bạn có thể sử dụng các đầu vào không bị khóa để gửi payload của mình và tạo ra response bị “poisoned”, nếu được lưu trong bộ nhớ cache, sẽ được trả về cho tất cả người dùng có yêu cầu có khóa bộ đệm tương ứng. Do đó, bước đầu tiên của cuộc tấn công WCP là xác định các đầu vào không bị khóa được máy chủ sử dụng .</p>
+<p> Bạn có thể xác định các đầu vào một cách thủ công bằng cách thêm các header vào các request và quan sát xem chúng có ảnh hưởng đến response hay không. Bạn có thể sử dụng các công cụ có khả năng chặn bắt và thay đổi gói tinh như <a rel="noreferrer noopener" aria-label="Burp Suite (opens in a new tab)" href="https://portswigger.net/burp/communitydownload" target="_blank">Burp Suite</a> của PortSwigger hoặc <a rel="noreferrer noopener" aria-label="ZAP  (opens in a new tab)" href="https://www.zaproxy.org/download/" target="_blank">ZAP </a>của OWASP. Cách có thể rất trực quan nhưng nó đòi hỏi nhiều công sức và thời gian. </p>
+<!-- wp:image {"align":"center","width":399,"height":263} -->
+<div class="wp-block-image"><figure class="aligncenter is-resized"><img src="https://www.vietsunshine.com.vn/wp-content/uploads/2018/09/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-Pentest-Black-Box-s%E1%BB%AD-d%E1%BB%A5ng-Burp-Suite-Ph%E1%BA%A7n-1-1.jpg" alt="Hướng dẫn Pentest Black Box sử dụng Burp Suite (Phần 1)" width="399" height="263"/><figcaption>Burp Suite</figcaption></figure></div>
+
+
+
+<p>Thay vì vậy bạn có thể sử dụng các công cụ hỗ trợ như <a rel="noreferrer noopener" aria-label="Acunetix  (opens in a new tab)" href="https://www.acunetix.com/" target="_blank">Acunetix </a>- Scan lỗ hổng web tự động nhưng ta sẽ hơi bị động, <a rel="noreferrer noopener" aria-label="Param Miner (opens in a new tab)" href="https://portswigger.net/bappstore/17d2949a985c4b7ca092728dba871943" target="_blank">Param Miner</a> - một extention của Burp Suite giúp xác định các tham số (parm) bị ẩn, không liên  kết, đặc biệt hữu ích để tìm lỗ hổng độc hại bộ đệm web. </p>
+<p>Mình khuyến khích các bạn nên dùng Burp Suite, nó thực sự hiệu quả.</p>
+<p> <strong>Tìm ra mục độc hại trong các phản hồi từ server của mỗi input</strong> </p>
+<p> Khi bạn đã xác định được đầu vào không phải key hoặc không bị khóa, bước tiếp theo là đánh giá chính xác cách trang web xử lý nó. Hiểu điều này là điều cần thiết để có thể tạo ra response độc hại. Nếu như giá trị từ đầu vào được nằm trong response từ máy chủ mà không bị loại bỏ hoặc được sử dụng tạo đường dẫn đến dữ liệu khác ( <strong>Host Header Attack</strong> ), thì đây là yếu tố có khả năng để làm ngộ độc web cache.</p>
+<p> <strong>Lấy phản hồi được lưu trữ</strong> </p>
+<p>Bước này chỉ là để kiểm tra việc đầu độc web cache đã thành công hay chưa. Việc đầu độc cache chiếm 50% tỉ lệ thành công còn lại phụ thuộc vào nhiều yếu tố khác như extention của file,content type, router,status code và response header.</p>
+<p> Bạn nên dành một chút thời gian để tìm hiểu về các header, các request đến các server khác nhau  và nghiên cứu cách bộ đệm hoạt động thì việc hiểu và thực hiện tấn công sẽ dễ dàng hơn.</p>
+<h4>Các mối đe dọa có thể xảy ra ?</h4>
+
+
+<!-- wp:image {"width":592,"height":159} -->
+<figure class="wp-block-image is-resized"><img src="https://portswigger.net/web-security/images/cache-poisoning.svg" alt="web cache poisoning" width="592" height="159"/></figure>
+
+
+
+<p> Như với hầu hết các loại tấn công,  Web cache poisoning  cũng có thể được sử dụng kết hợp với các cuộc tấn công khác để leo thang tác động lớn hơn nữa ví dụ các lỗ hổng phổ biến như XSS, JavaScript inject, Open redirect, v.v. </p>
+<p> Response độc hại chỉ ảnh hưởng đến người dùng truy cập trang bị ảnh hưởng trong khi cache bị đầu độc. Do đó, tác dộng có thể dao động từ không tồn tại đến lớn tùy thuộc vào việc trang có phổ biến hay không. Ví dụ, nếu kẻ tấn công quản lý để đầu độc một phản hồi được lưu trong bộ nhớ cache trên trang chủ của một trang web lớn như Facebook , thì cuộc tấn công có thể ảnh hưởng đến hàng ngàn người dùng mà không có bất kỳ tương tác nào sau đó từ kẻ tấn công. </p>
+<h4>Cách thức ngăn chặn lỗ hổng này</h4>
+
+
+
+<p>Về vấn dề ngăn chặn lỗ hổng này mình không tìm được nhiều tài liệu chi tết. chỉ trung trung vào việc cấu hình năng cao cho việc lưu trữ vào cache trên server nhưng vấn đề còn phụ thuộc vào mục đích , công việc kinh doanh và do bên thứ 3 như các CDN.</p>
+<p> Ngoài ra còn có các công cụ có sẵn để giúp các tổ chức ngăn chặn các cuộc tấn công ngộ độc cache. Công cụ ngăn chặn ngộ độc bộ nhớ cache phổ biến nhất có lẽ là DNSSEC ( Domain Name System Security Extension). DNSSEC là một công cụ chống độc cache được phát triển bởi Lực lượng đặc nhiệm kỹ thuật Internet ( Internet Engineering Task Force ) để cung cấp xác thực dữ liệu DNS an toàn. </p>
+<p>Ok như vậy là minh đã xong phần giới thiệu về lỗ hổng Web Cache Poisoning , trong phần tiếp theo mình sẽ trình bày các kĩ thuật và cách đầu độc Cache. Cảm ơn và mời các bạn đón đọc!!!! Bye</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.hydrasky.ml/2020/06/14/Web%20Cache%20Poisoning%20%20(Part%201)/" data-id="ckhqle8u0000yo7jm2cudcown" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Pentest-Web/" rel="tag">Pentest Web</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/14/Web%20Cache%20&%20Cache%20Key/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Web Cache &amp; Cache Key
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/14/HTTP%20Request%20Smuggling%20Attack/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">HTTP Request Smuglling</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BugBoutyTip/" rel="tag">BugBoutyTip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lab/" rel="tag">Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pentest-Web/" rel="tag">Pentest Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/BugBoutyTip/" style="font-size: 13.33px;">BugBoutyTip</a> <a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/Lab/" style="font-size: 10px;">Lab</a> <a href="/tags/Pentest-Web/" style="font-size: 16.67px;">Pentest Web</a> <a href="/tags/Technology/" style="font-size: 20px;">Technology</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/11/29/OS%20command%20Injection/">Command Injection TIP</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/28/DVWA-Part1/">DVWA (OWASP)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/23/CORS/">Cross-Origin Resource Sharing</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/CROSS%20SIDE%20REQUEST%20FORGERY/">Cross Side Request Forgery</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/Oauth/">OAUTH</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Le Binh An<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

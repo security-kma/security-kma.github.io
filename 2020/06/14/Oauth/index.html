@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>OAUTH | Hydrasky</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Xin chào các bạn mình đã quay trở lại với … bài viết dài , thôi vào nội dung luôn . Khái niệm     OAuth  (Open Authorization) là một phương thức ủy quyền để cung cấp khả năng truy cập các tài nguyên">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OAUTH">
+<meta property="og:url" content="http://blog.hydrasky.ml/2020/06/14/Oauth/index.html">
+<meta property="og:site_name" content="Hydrasky">
+<meta property="og:description" content="Xin chào các bạn mình đã quay trở lại với … bài viết dài , thôi vào nội dung luôn . Khái niệm     OAuth  (Open Authorization) là một phương thức ủy quyền để cung cấp khả năng truy cập các tài nguyên">
+<meta property="og:locale">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/OAUTH/oauth2.jpg">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/OAUTH/oauth3.png">
+<meta property="og:image" content="https://i2.wp.com/blogs.innovationm.com/wp-content/uploads/2019/07/blog-open1.png?resize=625%2C348">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/OAUTH/auth-sequence-implicit-form-post.png">
+<meta property="og:image" content="https://cdn2.auth0.com/docs/media/articles/api-auth/password-grant.png">
+<meta property="og:image" content="https://cdn2.auth0.com/docs/media/articles/flows/concepts/auth-sequence-client-credentials.png">
+<meta property="article:published_time" content="2020-06-14T22:20:34.000Z">
+<meta property="article:modified_time" content="2020-06-14T22:20:34.000Z">
+<meta property="article:author" content="Le Binh An">
+<meta property="article:tag" content="Technology">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.hydrasky.ml/images/OAUTH/oauth2.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Hydrasky" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hydrasky</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.hydrasky.ml"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Oauth" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/Oauth/" class="article-date">
+  <time datetime="2020-06-14T22:20:34.000Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      OAUTH
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/images/OAUTH/oauth2.jpg" class="[class names]" title="[500] [500] " alt="Oauth2">
+
+<p>Xin chào các bạn mình đã quay trở lại với … bài viết dài , thôi vào nội dung luôn .</p>
+<h2>Khái niệm</h2>
+
+
+
+<p> <strong>OAuth</strong>  (Open Authorization) là một phương thức ủy quyền để cung cấp khả năng truy cập các tài nguyên qua giao thức HTTP . OAuth cho phép các trang web hoặc ứng dụng (Customer) truy cập tài nguyên được bảo vệ từ dịch vụ web (Service Provider) thông qua API mà không yêu cầu người dùng tiết lộ thông tin đăng nhập được cấp bởi nhà cung cấp dịch vụ cho bên thứ ba. Nó hoạt động như một trung gian thay mặt cho người dùng cuối, cấp quyền sử dụng thông tin của tài khoản được chia sẻ cho dịch vụ của bên thứ ba với access token.</p>
+<h2>Lịch sử</h2>
+
+
+
+<p>OAuth được phát hành lần đầu tiên vào năm 2007 là phương thức ủy quyền sử dụng cho Twitter application program interface (API) với tên gọi là OpenID . Năm 2010, OAuth 1.0 Revision được xuất bản đê giải quyết về vấn đề session fixation tồn tại. Năm 2012, Nhóm làm việc OAuth của IETF đã xuất bản bản thảo đầu tiên của giao thức OAuth 2.0. Giống như OAuth ban đầu, OAuth 2.0 cung cấp cho người dùng khả năng cấp quyền truy cập ứng dụng của bên thứ ba vào tài nguyên web mà không cần chia sẻ mật khẩu. Tuy nhiên, đây là một giao thức hoàn toàn mới và không tương thích ngược với OAuth 1.0. Các tính năng được cập nhật bao gồm uồng cấp mã ủy quyền mới để áp dụng cho các ứng dụng di động, chữ ký được đơn giản hóa và token tồn tại trong thời gian ngắn với các ủy quyền tồn tại lâu dài. Và hiện tại OAuth đãng triển khai , phát triển phiên bản OAuth 2.1.</p>
+<p>Trong bài viết này mình sẽ chỉ trình bày các thứ liên quan đến phiên bản OAuth2 bởi một phần OAuth 2 đã được sử dụng phổ biến hơn và  nếu mk trình bày cả OAuth1 nữa rất là dài. cực kì nhiều thứ nên các bạn có thể tham khảo bên ngoài hoặc đợi một ngày nào đó mình sẽ viết về nó.</p>
+<h2>Các thuật ngữ sử dụng</h2>
+
+
+
+<p> <strong>Resource owner</strong>  (User) Một thực thể có khả năng cấp quyền truy cập vào một tài nguyên được bảo vệ. Khi chủ sở hữu tài nguyên là một người , nó được gọi là một người dùng cuối.</p>
+<p> <strong>Client</strong>  (Application) Một ứng dụng thực hiện các yêu cầu đến tài nguyên được bảo vệ thay mặt cho chủ sở hữu tài nguyên và với sự ủy quyền của nó . Hiểu một cách đơn giản hơn là những ứng dụng mong muốn truy cập vào dữ liệu người dùng.</p>
+<p> <strong>Authorization server</strong>  (API) Máy chủ cấp phát access token cho client sau khi xác thực thành công với chủ sở hữu tài nguyên và có được ủy quyền.</p>
+<p> <strong>Resource Server</strong>  (API) Máy chủ lưu trữ các tài nguyên được bảo vệ, có quyền chấp nhận và phản hồi các requests có chứa access token đến tài nguyên được bảo vệ, hay chính là xác thực ủy quyền</p>
+<p>Resource Server và Authorization Server là một điểm khác biệt giữa OAuth2 và OAuth1 khi tách biệt hai thao tác: cấp mã ủy quyền (access token) và xác thực ủy quyền (Authentication) thành 2 Server còn OAuth1 thực hiện trên cùng một server gọi là  <strong>Sevice Provider</strong> .</p>
+<h2>OAuth hoạt động như thế nào?</h2>
+
+
+<!-- wp:image {"id":345,"sizeSlug":"large"} -->
+<img src="/images/OAUTH/oauth3.png" class="[class names]" title="[500] [500] " alt="Oauth2">
+
+
+<!-- wp:list {"ordered":true} -->
+<ol><li>Client sẽ yêu cầu ủy quyền truy cập các Protected Resource từ Resource owner (User). Cient có thể trực tiếp thực hiện yêu cầu ủy quyền tới Resource owner hoặc thông qua Authorization server enpoint để User cho phép truy cập.</li><li>User sẽ xác thực và ủy quyền truy cập tới Resource cho client , lúc này Ứng dụng sẽ nhận được Cấp phép (Authorization Grant) . Sẽ có 4 kiểu cấp quyền nên việc cấp như thế nào client sẽ phụ thuộc vào loại ứng dụng dùng để truy cập vào tài nguyên. Đây được coi như là chứng chỉ đại diện cho sự ủy quyền của Resource Owner.</li><li>Ứng dụng client yêu cầu access token từ Authorization Server bằng cách chuyển Authorization Grant cùng với các thông tin khác để xác thực, chẳng hạn như  **client ID** ,  **client secret** , and  **grant_type** .</li><li>Khi xác thực thành công, Authorization Server sẽ phát hành  **Access Token**  và  **Refresh Token**  cho ứng dụng client.</li><li>Ứng dụng yêu cầu quyền truy cập vào Protected Resource từ Resource Server và xác thực bằng cách đưa ra Access Token .</li><li>Khi xác thực thành công yêu cầu của máy khách, Resource Server sẽ trả về tài nguyên được yêu cầu.</li></ol>
+
+
+<p>Mục đích  <strong>Refresh token</strong>  ở đây là dùng để xác thực với Authorization Server thay vì nhờ User như trên để lấy Access token mới khi Access token cũ đã bị hết hạn. Lưu ý là không phải   <strong>Grant Types</strong>  nào cũng hỗ trợ refresh_token và việc có nhận, sử dụng nó là không bắt buộc, là tùy chọn của bạn.</p>
+<p>grant_type=refresh_token&amp;refresh_token=tGzv3JOkF0XG5Qx2TlKWIA</p>
+<h2> **Authorization grant types** </h2>
+
+
+
+<p>OAuth 2.0 Authorization Framework đã đưa ra 4 luồng để lấy Access Token, các luồng này được gọi là “ <strong>Grant types</strong> “ .</p>
+<h3>Authorization Code Flow</h3>
+
+
+
+<p>Đây là một hình thức ủy quyền được dùng phổ biến nhất hiện nay, thường được sử dụng bởi các ứng dụng web triển khai trên máy chủ và nó có thể cung cấp cả Access Token và Refresh Token. Authentization Code thuộc kiểu  <strong>redirection-based flow</strong>  nên Client có thể tương tác với resource owner và có khả năng nhận các yêu cầu đến từ Authorization Server .</p>
+<h4>Flow</h4>
+
+
+
+<figure class="wp-block-image"><img src="https://i2.wp.com/blogs.innovationm.com/wp-content/uploads/2019/07/blog-open1.png?resize=625%2C348" alt="Oauth2 authorization code flow "/></figure>
+
+
+
+<p>Đầu tiên, chọn đăng nhập thông qua một bên thứ 3 nào đấy , ví dụ trong hình “Login in with Google”</p>
+<p>Ứng dụng (Client)  sẽ chuyển hướng người dùng đến Authorization Server (/authorize endpoint) .</p>
+<p>https:&#47;&#47;accounts.google.com/oauth/authorize?response_type=code&amp;client_id=CLIENT_ID&amp;redirect_uri=yelp.com/callback&amp;scope=profile_contact<br>Trong đó : </p>
+<ul>
+<li>response_type là tham số  chỉ định ứng dụng đang yêu cầu nhận authorization_code </li>
+<li>client_id là ID của ứng dụng đăng kí với service bên thứ 3 đó, Authorization Server sẽ biết khách hàng của ứng dụng nào đang yêu cầu xin ủy quyền.</li>
+<li>redirect_uri là nơi sẽ truyển hướng về khi nhận code</li>
+<li>scope : là phạm vi quyền truy cập</li>
+</ul>
+<p>Authorization Server sẽ chuyến hướng User đến mục đăng nhập nếu như bạn chưa đăng nhập và lời nhắc có cho chép ủy quyền hay không? </p>
+<p>Sau khi User cho phép , Authorization Server sẽ tiếp tục chuyến hướng người dùng quay trở lại ứng dụng  (Client) với Authorization  <strong>CODE</strong>  .( Các bước sau không còn cần tác nhân User)</p>
+<p>https:&#47;&#47;yelp.com/callback?code=AUTHORIZATION_CODE</p>
+<p>Sau khi nhận được, Client sẽ thực hiện một request POST gửi Authorization  <strong>CODE</strong>  đó đến Authorization Server (/oauth/token endpoint) cùng với lại các tham số CLIENT ID và CLIENT SECRET của ứng dụng để Server xác thực . </p>
+<p>https:&#47;&#47;accounts.goole.com/oauth/token?client_id=CLIENT_ID&amp;client_secret=CLIENT_SECRET&amp;grant_type=authorization_code&amp;code=AUTHORIZATION_CODE&amp;redirect_uri=CALLBACK_URL<br>Trong đó :<br>CLIENT SECRET ở đây là một giá trị bí mật chỉ cho phép APP và Authorization Server biết.</p>
+<p>Phía Authorization Server sẽ thực hiện xác thức các giá trị được gửi.</p>
+<p>Nếu như thành công , Authorization Server trả về ID Token và Access Token ( Refresh Token).</p>
+<p>Bây giờ ứng dụng  có thể sử dụng Access Token để truy cập thông tin  của người dùng User thông qua API.</p>
+<p>Grant Type này còn thường được dùng cho mobile apps nhưng có đôi chút khác biệt trong quá trình xin ủy quyền. Nguyên nhân là do native apps hay Single-page apps  không thể lưu trữ hay đảm bảo được tính bí mật cho  <strong>CLIENT SECRET</strong>   nên không thể sử dụng cái giá trị này để Authorization Server xác thực định danh ứng dụng. Và đó là lí do Flow sẽ bị thay đổi với cái tên là Authorization Code Flow với  <strong>Proof Key for Code Exchange (PKCE)</strong> . Lúc này thay vì sử dụng CLIENT SECRET  nó sẽ sử dụng  <strong>CODE VERIF</strong> IER và  <strong>Challenge</strong> . Chi tiết hơn bạn có thể tham khảo <a href="https://auth0.com/docs/flows/concepts/auth-code-pkce" target="_blank" rel="noreferrer noopener">tại đây</a> .</p>
+<p><strong>Implicit Flow</strong></p>
+<p>Loại ủy quyền này thường được sử dụng cho các ứng dụng chạy trên trình duyệt (VD: Chrome Extension) và có thể ấp dụng cho các ứng dụng mà không sử dụng Client Secret nhưng người ta vẫn khuyến cáo bạn nên dùng  ** <strong>PKCE</strong> **  hơn bởi Implicit không quá bảo mật .</p>
+<p>Khác với lại Authorization code , Authorization Server sẽ trả về Access Token luôn thay vì tiến hành trao đổi như Authorization code ,thứ 2 Implicit là  chỉ dùng để lấy access token và không hỗ trợ  Refresh Token.</p>
+<p><strong>FLow</strong></p>
+<img src="/images/OAUTH/auth-sequence-implicit-form-post.png" class="[class names]" title="[500] [500] " alt="Implicit Flow">
+
+
+
+<p>Đầu tiên  User sẽ chọn login với App thông qua bên thứ 3 </p>
+<p>Trình duyệt/APP lúc này sẽ chuyển hướng người dùng đến Authorizarion Server (/authorize endpoint) cùng với các tham số như response_type=id_token cho biết loại thông tin xác thực được yêu cầu. Nó cũng chuyển cùng một tham số response_mode của form_post để đảm bảo tính bảo mật.</p>
+<p>/authorize?response_type=token&amp;client_id=s6BhdRkqt3&amp;state=xyz&amp;redirect_uri=<a target="_blank" rel="noopener" href="https://client.example.com/callback">https://client.example.com/callback</a> </p>
+<p>Phía AS yêu cầu USER xác thực bằng form đăng nhập. User tiến hành xác thực  và ủy quyền cho ứng dụng .</p>
+<p>Authorization Server chuyển hướng người dùng quay trở lại APP cùng với ID Token (Tương tự accsess token).</p>
+<p>http:&#47;&#47;example.com/callback#access_token=2YotnFZFEjr1zCsicMWpAA&amp;state=xyz&amp;token_type=example&amp;expires_in=3600</p>
+<p>Ok như vậy nếu như ứng dụng là 1 web-based app thì đến đây là có thể call API với Access Token để lấy dữ liệu từ Resource Owner. Còn đối với Mobile Application sẽ cần phải có các bước khác để trích xuất Access Token trong URI bằng script và gửi về cho nó. Nhưng một phần vì mình chưa có cơ hội được thực nghiệm nên mình sẽ không trình bày về nó , và dù tài liệu có nói nhưng rất khó mường tượng ra. Bạn có thể tham khảo ở <a rel="noreferrer noopener" href="https://tools.ietf.org/html/rfc6749#section-4.2" target="_blank">đây</a>.</p>
+<h2>Resource owner credentials grant</h2>
+
+
+
+<p>Grant type này chỉ áp dụng cho  cho những ứng dụng có mức độ tin tưởng cao ( ví dụ như các ứng dụng của các dịch vụ đó phát hành hoặc các ứng dụng mặc định trên hệ thống )  . Bởi vì User sẽ phải cung cấp thông tin username và password trực tiếp cho Application sử dụng để lấy access_token.</p>
+<h4>Flow</h4>
+
+
+
+<figure class="wp-block-image"><img src="https://cdn2.auth0.com/docs/media/articles/api-auth/password-grant.png" alt="Tài nguyên mật khẩu của chủ sở hữu"/></figure>
+
+
+
+<p>Đầu tiên User nhập thông tin đăng nhập (Username/Password) vào ứng dụng.</p>
+<p>grant_type=password&amp;username=johndoe&amp;password=A3ddj3w</p>
+<p>Ứng dụng chuyển tiếp thông tin đăng nhập đến Authorization Server.</p>
+<p>Authorization Server xác thực thông tin và trả về Access Token và Refresh Token.</p>
+<p>Ứng dụng có thể sử dụng Access Token để gọi API .</p>
+<h2>Client Credentials Flow</h2>
+
+
+
+<p>Với các ứng dụng machine-to-machine (M2M), chẳng hạn như CLI, daemon hoặc dịch vụ chạy trên back-end của bạn, hệ thống sẽ xác thực và ủy quyền cho ứng dụng thay vì người dùng. Ứng dụng có thể yêu cầu lấy Access Token bằng bằng các thông tin của ứng dụng như CLIENT ID , CLIENT SECRET.</p>
+<h4>Flow</h4>
+
+
+
+<figure class="wp-block-image"><img src="https://cdn2.auth0.com/docs/media/articles/flows/concepts/auth-sequence-client-credentials.png" alt="Trình tự xác thực luồng thông tin khách hàng"/></figure>
+
+
+
+<p>Client  xác thực với Authorization Server bằng CLIENT ID và CLIENT SECRET .</p>
+<p>Authorization Server  xác thực và  phản hồi với Access Token.</p>
+<p>Ứng dụng của bạn có thể sử dụng Access Token để gọi API cho chính nó.</p>
+<p>Ok như vậy là mình trình bày khá tổng quát về các thứ của OAuth2, mình khuyến khích các bạn đọc thêm về nó chứ mình không thể nào viết chi tiết hơn được nữa mặc dù không khó hiểu nhưng nó quá dài. Mình sẽ để link bài viết ở cuối để các bạn tham khảo.</p>
+<p>Qua bài viết này tôi đã giới thiệu với các bạn về OAuth2: khái niệm, các đối tượng tham gia, các luồng hoạt động , còn việc triển khai thì mình sẽ không trình bày các bạn nên tự tìm hiểu. Còn vấn đề về bảo mật và cách cách bypass thì mình sẽ trình bày vào bài viết sau. Cái gì cũng cần phải lắm chắc lý thuyết trước đã nhé.</p>
+<h2>THAM KHẢO</h2>
+
+
+
+<ul><li><a target="_blank" rel="noopener" href="https://auth0.com/docs/getting-started">https://auth0.com/docs/getting-started</a></li><li><a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc6749">https://tools.ietf.org/html/rfc6749</a> ***</li><li><a target="_blank" rel="noopener" href="https://alexbilbie.com/guide-to-oauth-2-grants/#which-oauth-20-grant-should-i-use">https://alexbilbie.com/guide-to-oauth-2-grants/#which-oauth-20-grant-should-i-use</a></li><li><a target="_blank" rel="noopener" href="https://curity.io/resources/develop/oauth/oauth-code-flow/">https://curity.io/resources/develop/oauth/oauth-code-flow/</a></li></ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.hydrasky.ml/2020/06/14/Oauth/" data-id="ckhqle8tl000ao7jm35twg71j" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/15/CROSS%20SIDE%20REQUEST%20FORGERY/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Cross Side Request Forgery
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/14/Same%20Origin%20Policy/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Same Origin Policy</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BugBoutyTip/" rel="tag">BugBoutyTip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lab/" rel="tag">Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pentest-Web/" rel="tag">Pentest Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/BugBoutyTip/" style="font-size: 13.33px;">BugBoutyTip</a> <a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/Lab/" style="font-size: 10px;">Lab</a> <a href="/tags/Pentest-Web/" style="font-size: 16.67px;">Pentest Web</a> <a href="/tags/Technology/" style="font-size: 20px;">Technology</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/11/29/OS%20command%20Injection/">Command Injection TIP</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/28/DVWA-Part1/">DVWA (OWASP)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/23/CORS/">Cross-Origin Resource Sharing</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/CROSS%20SIDE%20REQUEST%20FORGERY/">Cross Side Request Forgery</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/Oauth/">OAUTH</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Le Binh An<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

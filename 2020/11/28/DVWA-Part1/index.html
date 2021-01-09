@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>DVWA (OWASP) | Hydrasky</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="TL;DR:Damn Vulnerable Web Application (DVWA) là một ứng dụng mã nguồn PHP&#x2F;MySQL tập hợp sẵn các lỗi logic về bảo mật ứng dụng web trong mã nguồn PHP. Lỗi logic khi lập trình có thể áp dụng đối với các">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DVWA (OWASP)">
+<meta property="og:url" content="http://blog.hydrasky.ml/2020/11/28/DVWA-Part1/index.html">
+<meta property="og:site_name" content="Hydrasky">
+<meta property="og:description" content="TL;DR:Damn Vulnerable Web Application (DVWA) là một ứng dụng mã nguồn PHP&#x2F;MySQL tập hợp sẵn các lỗi logic về bảo mật ứng dụng web trong mã nguồn PHP. Lỗi logic khi lập trình có thể áp dụng đối với các">
+<meta property="og:locale">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/DVWA/bruteforce1.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/DVWA/bruteforce2.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/DVWA/bruteforce3.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/DVWA/bruteforce5.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/DVWA/bruteforce4.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/DVWA/bruteforce6.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/DVWA/bruteforce7.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/DVWA/bruteforce8.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/DVWA/cmdinjecton1.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/DVWA/cmdinjecton2.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/DVWA/cmdinjecton3.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/DVWA/cmdinjecton4.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/DVWA/cmdinjecton5.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/DVWA/cmdinjecton6.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/DVWA/cmdinjecton7.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/DVWA/cmdinjecton8.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/DVWA/csrf1.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/DVWA/csrf2.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/DVWA/csrf3.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/DVWA/csrf4.png">
+<meta property="article:published_time" content="2020-11-28T05:00:00.000Z">
+<meta property="article:modified_time" content="2020-11-28T05:00:00.000Z">
+<meta property="article:author" content="Le Binh An">
+<meta property="article:tag" content="Lab">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.hydrasky.ml/images/DVWA/bruteforce1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hydrasky" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hydrasky</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.hydrasky.ml"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-DVWA-Part1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/28/DVWA-Part1/" class="article-date">
+  <time datetime="2020-11-28T05:00:00.000Z" itemprop="datePublished">2020-11-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      DVWA (OWASP)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>TL;DR:<br>Damn Vulnerable Web Application (DVWA) là một ứng dụng mã nguồn PHP/MySQL tập hợp sẵn các lỗi logic về bảo mật ứng dụng web trong mã nguồn PHP. Lỗi logic khi lập trình có thể áp dụng đối với các loại ngôn ngữ lập trình nhằm giảm thiểu khả năng tạo ra lổ hổng bảo mật từ tư duy lập trình chưa cẩn thận. Bản thân mk thấy DVWA rất thích hợp cho các bạn nào mới bắt đầu với pentest web. Các bạn nên hoàn thành và hiểu nó trong những bước đầu nha. </p>
+<p>Xin chào tất cả các bạn hôm nay mình quay lại với series phân tích các lỗ hổng trong các bài lab của DVWA. Để giải hầu hết các bài lab này các bạn có thể tìm thấy solution ở rất nhiều nơi như blog, youtube nhưng hầu như không ai giải thích nguyên nhân cụ thể của lỗ hổng và tại sao lại dùng payload như vậy.<br>Đối với người mới thì như vậy là cách học rất là mù mịt và máy móc. Do đó hôm nay sẽ viết series này chủ yếu để giải thích cho các bạn hiểu về lỗ hổng và cách khai thác chứ không chỉ chăm chú vào kết quả cuối cùng. Okie vào từng phần thôi nào ! À sẽ có những lỗi cơ bản nên mình xin phép sẽ không nói nhiều nha!.</p>
+<h2 id="Brute-force"><a href="#Brute-force" class="headerlink" title="Brute force"></a>Brute force</h2><p>Đây là một lỗ hổng rất dễ hiểu và khai thác, căn bản nó như kiểu không có “rate limited” - giói hạn request ,cho phép attacker gửi request liên tục mà không có bất cứ cơ chế chặn nào. Nghe thì dường như chẳng có xấu xa gì nhưng nó lại bàn đạp để leo thang thành nhiều lỗ hổng khác như chiếm tài khoản qua brute force password, mã otp ; spam ; DOS ; liệt kê danh sách bí mật … Do đó brute force vẫn luôn được coi là một lỗ hổng đáng để quan tâm.</p>
+<p>Trong DVWA, bài lab sử dụng lỗ hổng này để  chiếm tài khoản với 4 mức easy, medium , high và Impossible .<br><img src="/images/DVWA/bruteforce1.png" class="[class names]" title="[500] [500] " alt="title text"></p>
+<h4> Level Easy + Medium </h4> 
+
+<img src="/images/DVWA/bruteforce2.png" class="[class names]" title="[500] [500] " alt="Easy lab">
+<p>Đầu tiên ta có thể thấy 2 lỗ hỗng là SQL injection và Bruteforce nhưng ở đây ta chỉ cần quan tâm đến BF thui. Điều dễ thấy ở đây là phần “check the database “ đã gửi đi query và chẳng có gì để giới hạn request cả lúc này chỉ đơn là sử dụng 1 công cụ nào đó để bruteforce các username và password có thể .</p>
+<p>Chuyển sang Medium thì cũng không có gì thêm ngoại việc bổ sung hàm loại bỏ các kí tự đặc biệt trong giá trị truyền vào (mysqli_real_escape_string) của usernamr và password để chặn SQLi. Do đó vẫn brute force bình thường.</p>
+<img src="/images/DVWA/bruteforce3.png" class="[class names]" title="[500] [500] " alt="Medium lab">
+<h4> Level High </h4>
+
+<p>Mức này bổ sung thêm 1 chút an toàn đó là csrf token </p>
+<img src="/images/DVWA/bruteforce5.png" class="[class names]" title="[500] [500] " alt="High lab">
+<p>và check nó bằng hàm checkToken()- hàm này tự tạo không có trong thư viện nào của PHP.</p>
+<img src="/images/DVWA/bruteforce4.png" class="[class names]" title="[500] [500] " alt="High lab">
+<img src="/images/DVWA/bruteforce6.png" class="[class names]" title="[500] [500] " alt="High lab">
+<p>Hàm này sẽ kiểm tra các giá trị “user_token”- trên URL và “session_token”-trong cookie của request nhận được nếu 2 giá trị này bằng nhau thì request này mới được coi là hợp còn không sẽ redirect về trang “index.php”.<br>Qúa dởm đúng không các bạn (^^) , csrftoken không xác thực lại đi xác thực cái mẹ gì ko ?<br>Điều này rất dễ bypass bằng cách attacker chỉ cần cho giá trị của user_token là bất kì và thêm vào cookie một field là session_token với giá trị là user_token vừa đặt là xong.Thế là bạn lại tiếp tục có thể bruteforce.</p>
+<h4> Level Impossible </h4> 
+
+<p>Đúng với cái tên, Mức này thực chât không phải để chúng ta khai thác mà là cho chúng ta thấy cách lập trình an toàn đầy đủ để phòng tránh lỗ hổng này. O đây ta có thể thấy họ đã bổ sung thêm một số an toàn như sau:</p>
+<img src="/images/DVWA/bruteforce7.png" class="[class names]" title="[500] [500] " alt="Impossible lab">
+<p> Các giá trị đếm số lần đăng nhập sai, thời gian khóa tài khoản , tài khoản có bị khóa hay không và hàm kiểm tra các giá trị đó.</p>
+ <img src="/images/DVWA/bruteforce8.png" class="[class names]" title="[500] [500] " alt="High lab">
+<p>Bên canh đó còn sét thời gian trễ sau mỗi lần đăng nhập sai và cập nhật vào cơ sỡ dữ liệu ngay.<br>… (Bạn nên tự đọc thêm sourcecode mức này dể hiểu)</p>
+<p>Ngoài ra bạn có thể tự thêm tính năng hủy session sau một khoảng thời gian cũng là một biện pháp hay …</p>
+<p>##Command Injection</p>
+<p>Command injection là một lỗ hổng rất là nghiêm trọng , thuộc các lỗ hổng của RCE,  attacker có thể chèn các payload là các câu lệnh của hệ thống thông qua các đầu vào và thực thi nó từ xa. Bạn có  thể nhầm lẫn với một họ hàng của nó là Code Injection nhưng thực chất là nó khác nhau đó. Nhưng chỉ cần hiểu đơn giản là command chỉ chèn lệnh còn Code thì chèn code (function). Lỗ hổng này xảy ra do phần xử lí phía backend, với các ngôn ngữ có thể giao tiếp với hệ thống như PHP, JAVA, PYTHON …. và bất cứ hệ điều hành nào Windows/Linux/Unix/Mac</p>
+<img src="/images/DVWA/cmdinjecton1.png" class="[class names]" title="[500] [500] " alt=" ">
+<p>O trong bài lab này chúng ta sẽ thực hiện khai thác lỗ hổng này trên Linux Server và ngôn ngữ được sử dụng lúc này là PHP. Bổ sung thêm cho mọi người luôn là PHP cung cấp rất nhiều hàm để thực thi lệnh trên hệ thống như system|exec|shell_exec|passthru|proc_open|popen|curl_exec|curl_multi_exec|parse_ini_file|show_source.</p>
+<h4> Level Easy + Medium </h4>
+
+<img src="/images/DVWA/cmdinjecton2.png" class="[class names]" title="[500] [500] " alt=" ">
+<p>Nêu như bạn hiểu được đoạn code này thì thấy nó rất dễ để khai thác</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$target &#x3D; $_REQUEST[ &#39;ip&#39; ] &#x3D;&gt; shell_exec( &#39;ping  &#39; . $target ) &#x3D;&gt; RCE</span><br></pre></td></tr></table></figure>
+<p>Hàm shell_exec() [giống như exec() nhưng nó trả về dữ liệu dạng string] thực thi cấu lênh “ ping [input] “và trả về kết quả. Lúc này chúng ta có thê thấy họ truyền trực tiếp giá trị của “IP” vào “ping [IP]” như vậy phải tìm cách chèn thêm câu lệnh thông qua “input” đó và hệ điều hành cung cho phép thực thi câu lệnh trong 1 lần nhập (ping 8.8.8.8 &amp;&amp; whoami) bằng rất nhiều cách như  :</p>
+<ul>
+<li>Nối 2 câu lệnh bằng  <ul>
+<li>&amp;</li>
+<li>&amp;&amp;</li>
+<li>|</li>
+<li>||</li>
+</ul>
+</li>
+<li>Trên hệ điều hành Unix có thể sử dụng :<ul>
+<li>;</li>
+<li>Xuống dòng (0x0a or \n)</li>
+</ul>
+</li>
+</ul>
+<img src="/images/DVWA/cmdinjecton3.png" class="[class names]" title="[500] [500] " alt=" ">
+<p>Okie như vậy chắc chắn bạn đã hiểu cách để khai thác các bài lab như này rồi đúng không !</p>
+<img src="/images/DVWA/cmdinjecton4.png" class="[class names]" title="[500] [500] " alt=" ">
+<p>Đối với những bài hay như này bạn có thể enable PHPIDS để tăng thêm phần khó và kịch tính để tăng level của bạn.</p>
+<h4> Level Medium </h4><br>Mức này họ thêm blacklist để loại bỏ các kí tự đặc biệt để chèn thêm command nhưng như bạn thấy nó vẫn thiếu quá nhiều do đó bạn chỉ cần dùng các kí tự không nằm trong black là bypass được hoặc sử dụng cách encode kí tự là xong.<br><br><img src="/images/DVWA/cmdinjecton5.png" class="[class names]" title="[500] [500] " alt=" "><br><br><h4> Level High </h4>
+
+<p>O mức này nhìn thấy danh sách có vẻ đầy đủ đó nhưng lại bị sai 1 thứ :<br><img src="/images/DVWA/cmdinjecton6.png" class="[class names]" title="[500] [500] " alt=" "></p>
+<p>Dễ như ăn cơm , bh chúng ta chỉ cần sử dụng payload “|id” - Ko dấu cách nha!!!! Done</p>
+<img src="/images/DVWA/cmdinjecton7.png" class="[class names]" title="[500] [500] " alt=" ">
+<h4> Level Impossible </h4>
+
+<p>Chúng ta cùng xem cách lập trình an toàn cho bài này như thế nào nha</p>
+<img src="/images/DVWA/cmdinjecton8.png" class="[class names]" title="[500] [500] " alt=" ">
+<ul>
+<li>Họ đã sử dụng hàm stripslashes() để lọc các kí tự gạch chéo trong giá trị truyền vào ,ví dụ “C:\user\config.php” =&gt; “C:userconfig.php”</li>
+<li>Sử dụng hàm explode() để phân tách chuỗi giá trị đầu vào theo dấu “.” ( Giống với preg_split nhưng không linh hoạt bằng ) thành một mảng các giá trị và tiến hành kiểm tra xem có phải là các số hay không “is_numeric()” ? Nhưng vậy là đã tránh được việc truyền các câu lệnh bằng chữ rồi và cũng chẳng có câu lệnh nào là toàn số cả trừ khi bạn thiết lập thành alias.</li>
+</ul>
+<p>Đây là cách fix nhưng mình thấy cơ bản thì chỉ ap dụng cho bài này chứ thực tế để ngăn chặn command injection thì sẽ cần phải mở rộng hơn.</p>
+<p>##CSRF</p>
+<p>CSRF ( Cross Site Request Forgery) là kĩ thuật tấn công bằng cách sử dụng quyền chứng thực của người sử dụng đối với 1 website khác. Các ứng dụng web hoạt động theo cơ chế nhận các câu lệnh HTTP từ người sử dụng, sau đó thực thi các câu lệnh này. Mk có viêt một bài riêng về lỗ hổng này các bạn có thể tham khảo. Lỗ hổng này thường ở các yêu cầu submit hoặc API, mức độ nguy hiểm thì cũng tùy thuộc vào target mà request hướng đến.Nguy hiểm nhất vẫn thường là dùng để chiếm tài khoản, chuyển tiền, yêu cầu xác thực …</p>
+<img src="/images/DVWA/csrf1.png" class="[class names]" title="[500] [500] " alt=" ">
+<p>Trong bài lab lần này ta sẽ cố gắng chiếm tài khoản của admin  bằng cách đổi password thông qua lỗ hổng CSRF. Những ai hểu lỗ hổng này rồi sẽ biêt cách khai thác ngay lập tức còn chưa thì lên đọc qua tài liệu chứ mình sẽ không giải thích cụ thể trong bài viết này đâu .</p>
+<ul>
+<li>Level Low dễ quá rồi không cơ chế an toàn nào ở đây cả nên mk không giải thích cách khai thác nữa.</li>
+<li><p>Sang level Medium, thì có bổ sung thêm check HTTP referer - <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer">Header của HTTP request</a> , cách này trước đây khá hay dùng nhưng bh thì không vì nó quá dễ để bypass. Nó tiến hành kiểm tra xem giá trị của 2 header “Host” và “Referer” có giống nhau hay không? </p>
+<img src="/images/DVWA/csrf2.png" class="[class names]" title="[500] [500] " alt=" ">
+</li>
+<li><p>Level High, giống hệt bài bruteforce 3 đó là sử dụng hàm checkToken() lởm </p>
+<img src="/images/DVWA/csrf3.png" class="[class names]" title="[500] [500] " alt=" ">
+</li>
+</ul>
+<h4>Level Impossible</h4>
+
+<p>Cách ngăn chặn CSRF trong đổi mật khẩu tốt nhất bây giờ mình thấy đó vẫn là sử dụng xác thực bằng mật khẩu cũ, Sử dụng CSRFtoken cũng là một cách hay nhưng đôi khi lại lỗi trong việc lập trình dẫn đến unsecure flow.<br>Việc sủ dụng mật khẩu cũ kết hợp với CSRF Token để xác thực ngày nay giống như một tiêu chuẩn được đề ra vậy.</p>
+<img src="/images/DVWA/csrf4.png" class="[class names]" title="[500] [500] " alt=" ">
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.hydrasky.ml/2020/11/28/DVWA-Part1/" data-id="ckik1yr770000esjm8e2tbe55" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Lab/" rel="tag">Lab</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/11/29/OS%20command%20Injection/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Command Injection TIP
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/07/23/CORS/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Cross-Origin Resource Sharing</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BugBoutyTip/" rel="tag">BugBoutyTip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lab/" rel="tag">Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pentest-Web/" rel="tag">Pentest Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/BugBoutyTip/" style="font-size: 13.33px;">BugBoutyTip</a> <a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/Lab/" style="font-size: 10px;">Lab</a> <a href="/tags/Pentest-Web/" style="font-size: 16.67px;">Pentest Web</a> <a href="/tags/Technology/" style="font-size: 20px;">Technology</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/11/29/OS%20command%20Injection/">Command Injection TIP</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/28/DVWA-Part1/">DVWA (OWASP)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/23/CORS/">Cross-Origin Resource Sharing</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/CROSS%20SIDE%20REQUEST%20FORGERY/">Cross Side Request Forgery</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/Oauth/">OAUTH</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Le Binh An<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

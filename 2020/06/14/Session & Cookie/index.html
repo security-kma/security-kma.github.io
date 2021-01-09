@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Session &amp; Cookie | Hydrasky</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Mục tiêu của các cuộc tấn công như XSS  là lấy được session và cookie của nạn nhận. Vậy chúng là gì và tại sao là chúng mà không phải là username, password. Ok chúng ta cùng tìm hiểu nha. COOKIE  Đầu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Session &amp; Cookie">
+<meta property="og:url" content="http://blog.hydrasky.ml/2020/06/14/Session%20&%20Cookie/index.html">
+<meta property="og:site_name" content="Hydrasky">
+<meta property="og:description" content="Mục tiêu của các cuộc tấn công như XSS  là lấy được session và cookie của nạn nhận. Vậy chúng là gì và tại sao là chúng mà không phải là username, password. Ok chúng ta cùng tìm hiểu nha. COOKIE  Đầu">
+<meta property="og:locale">
+<meta property="og:image" content="https://www.cookingclassy.com/wp-content/uploads/2014/06/chocolate-chip-cookie-16.jpg">
+<meta property="og:image" content="https://media.hoclaptrinh.vn/images/session-la-gi-5c370b6a76d46.gif">
+<meta property="article:published_time" content="2020-06-14T04:00:00.000Z">
+<meta property="article:modified_time" content="2020-06-14T04:00:00.000Z">
+<meta property="article:author" content="Le Binh An">
+<meta property="article:tag" content="Technology">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.cookingclassy.com/wp-content/uploads/2014/06/chocolate-chip-cookie-16.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Hydrasky" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hydrasky</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.hydrasky.ml"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Session &amp; Cookie" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/Session%20&%20Cookie/" class="article-date">
+  <time datetime="2020-06-14T04:00:00.000Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Session &amp; Cookie
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Mục tiêu của các cuộc tấn công như XSS  là lấy được session và cookie của nạn nhận. Vậy chúng là gì và tại sao là chúng mà không phải là username, password. Ok chúng ta cùng tìm hiểu nha.</p>
+<h2>COOKIE</h2>
+
+<p>Đầu tiên chúng ta cùng đến với cookie</p>
+<div class="wp-block-media-text alignwide is-stacked-on-mobile"><figure class="wp-block-media-text__media"><img src="https://www.cookingclassy.com/wp-content/uploads/2014/06/chocolate-chip-cookie-16.jpg" alt="One Chocolate Chip Cookie - Cooking Classy"/></figure><div class="wp-block-media-text__content">
+<p class="has-large-font-size">Cookie
+</div></div>
+
+<p>Cookie là một tệp tin chứa các thông tin nhỏ và hỗn tạp như id, username, timestamp … (mỗi giá trị này sẽ có một  <strong>key-value</strong>  ví dụ như <span style="text-decoration: underline;"><em> <strong>uuid</strong> </em></span>=12345 ) của người dùng vì vậy nó được ví như bánh cookie .Nó được tạo ra khi người dùng truy cập đến các trang web, server sẽ gửi nó đến browser và lưu trên máy tính của chúng ta. Nó sẽ được lưu tạm thời trong một khoảng thời gian (timeout) có thể là vài tuần hoặc tháng  .Khi người dùng truy cập đến trang web lần sau , browser sẽ gửi lại các thông tin này đến server .</p>
+<p>Dựa vào tính chất có thể phân ra làm 2 loại cookie là Persistent cookie  và Session cookie, nó cũng chính là cookie và session. </p>
+<h4>Mục đích của cookie để làm gì ?</h4>
+
+<p>Cookie được xem là thành phần không thể thiếu đối với những website có lượng lớn dữ liệu, số lượng người dùng đông. Tác dụng đầu tiên có thể kể đến ở đây là cookie có thể dùng để duy trì trạng thái đăng nhập. Thay vì cứ mỗi lần truy cập vào trang web bạn phải đăng nhập lại thì cookie sẽ làm giúp bạn điều này .  Ngoài ra với cookie, các website còn có thể xác định các hành vi của người dùng như số khách hàng truy cập đến , tần xuất truy cập của một khách hàng vào trang, khách hàng mới hay khách hàng cũ, khách hàng đã xem cái gì. Vì vậy nó rất có ích và tiện lợi cho các web site thương mại điện tử.</p>
+<p>Chắc bạn cũng thắc mắc tại sao khi mình truy cập vào các trang web A  xem cách sản phẩm sau đó truy cập vào các trang web B thì thấy nó quảng cáo sẩn phẩm A như kiểu mình bị theo dõi vậy haha. Nó là do website B sử dụng cookie của website A tạo ra  nó gọi là cookie bên thứ 3 (third party). Nó đôi khi khó chịu nhưng thôi cũng kệ !!!</p>
+<p>Ở một số web, người ta sử dụng các tham số trong Cookies để tạo ra Session nhưng điều này thì không được khuyến nghị.</p>
+<h4>Cookie có cần bảo mật không ?</h4>
+
+<p>Tất nhiên là có, nó rất quan trọng ấy chứ!</p>
+<p>Cookie lưu trữ các dữ liệu nhạy cảm vi nó chứa các thông tin của người dùng và đặc biệt là sessionid . Vì vậy để tránh bị tiết  lộ rộng rãi , chỉ cho phép website chứa cookie  mới có thể xem được thông tin này. Một số trình duyệt hiện tại có chức năng ngân chặn bên thứ 3 hoặc yêu cầu người dùng phải cấp quyền đọc cookie.<br>Ngoài ra có một số cách bảo vệ cookie hữu hiệu khỏi việc bị đọc trên trình duyêt (tấn công xss) hay trên kết nỗi tới server đó là sử dụng HTTPonly và Security flag. </p>
+<h2>SESSION</h2>
+
+<div class="wp-block-image"><figure class="aligncenter"><img src="https://media.hoclaptrinh.vn/images/session-la-gi-5c370b6a76d46.gif" alt="Session Là Gì?"/></figure></div>
+
+<p>Session hay dân ta gọi là phiên làm việc hoặc trạng thái làm việc, một session bắt đầu khi client gửi request đến server, nó tồn tại xuyên suốt từ trang này đến trang khác trong ứng dụng web và chỉ kết thúc khi hết thời gian timeout hoặc khi bạn đóng ứng dụng. Với mỗi session sẽ được cấp phát một định danh duy nhất SessionID .Sẽ không có chuyện trùng lặp nha các bạn kể cả cùng một tài khoản đăng nhập trên hai trình duyệt . Và một điều nữa, khác với cookie , Session sẽ được lưu lại ở phía server.</p>
+<p>Có bạn sẽ thắc mắc là “ Ơ thế sao tôi lại thấy session ở trong cookie gửi từ client lên?” hoặc “làm sao để server xác định session đó là của client nào?”</p>
+<p> Session được tạo ra và lưu trên server (mk cx chưa biết mặt mũi nó thế nào nhưng cũng không cần quan tâm ),đồng thời nó tạo ra một tệp tin chứa id session gọi là session cookie (sessionid) gửi cho client  lưu trên bộ nhớ cache của trình duyệt. Do đó cái chúng ta thường thấy trong cookie của request đó là Sessionid chứ không phải là session. </p>
+<p> Còn làm sao để xác thực thì bạn biết rồi đấy, nó đi cùng cookie mà nhưng cũng chính vì điều này mà hacker có thể chiếm session của bạn.</p>
+<h4>Thế mục đích của Session để làm gì ?</h4>
+
+<p>Một session có thể lưu trữ tạm thời thông tin liên quan đến các hoạt động ở của người dùng  trong khi kết nối . Ví dụ như bạn click vào sản phẩm, thêm sản phẩm vào mục xem sau, … . Nó chỉ có tác dụng kiểm tra khi 1 phiên bắt đầu và kết thúc tại thời điểm nào .</p>
+<p>Tùy vào mục đích công việc mà bạn nên sử dụng session hợp lý nhất nhằm mang lại hiệu quả tối đa. Dưới đây là những lĩnh vực cần:</p>
+<p> <strong>Các ứng dụng thương mại điện tử</strong> : Có thể xem xét các phiên để xem người dùng mất bao lâu để chuyển đổi hoặc thời gian trung bình của người dùng theo từng trang. Mục đích này sẽ giúp họ biết được sản phẩm nào được người dùng chú ý.</p>
+<p> <strong>Các nhà phát triển trò chơi, game online</strong> : Có thể phân tích thời lượng phiên của họ để xem liệu người dùng có đầu tư đủ thời gian vào trò chơi để tận hưởng trải nghiệm được cung cấp hay không.</p>
+<p> <strong>Các ứng dụng truyền thông xã hội</strong> : Có thể kiểm tra số phiên trong suốt một ngày để xem liệu người dùng có biến công cụ này thành một phần thiết yếu trong cuộc sống hàng ngày của họ hay không.</p>
+<p>Nhưng giống với cookie, session cũng có thể dùng để duy trì trạng thái đăng nhập nhưng chỉ trong thời gian ngắn. Và đây là nguyên nhân hacker  muốn chiến session bạn.</p>
+<h4>Bảo mật cho session ?</h4>
+
+
+
+<p>Ngoài việc server tạo các session có thể dễ đoán ra thì bình thường nó vẫn rất an toàn, an toàn hơn nhiều so với cookie. Bởi nó  không thể thay đổi giá trị  khi được lưu trữ trên server. Hacker chỉ có thể tìm cách là ăn trộm nó qua các lỗ hổng như XSS, Session hijacking và đọc được request của bạn.</p>
+<p>Một khuyến nghị cho các bạn đọc là không nên thực hiện các giao dịch hay truy cập tài khoản ở các điểm truy cập internet công cộng, bạn sẽ rất dễ bị hack.</p>
+<p>###So Sánh Cookie vs Session</p>
+<p>Bây giờ chúng ta cùng Cùng so sánh các điểm khác biệt giữa chúng nha.</p>
+<!-- wp:table -->
+<figure class="wp-block-table"><table><tbody><tr><td>                           **Cookie** </td><td>                          **Session** </td></tr><tr><td>Cookie được lưu trữ trên trình duyệt của người dùng.</td><td>Session không được lưu trữ trên trình duyệt.</td></tr><tr><td>Dữ liệu cookie được lưu trữ ở phía client.</td><td>Dữ liệu session được lưu trữ ở phía server.</td></tr><tr><td>Dữ liệu cookie dễ dàng sửa đổi hoặc đánh cắp khi chúng được lưu trữ ở phía client.</td><td>Dữ liệu session không dễ dàng sửa đổi vì chúng được lưu trữ ở phía máy chủ.</td></tr><tr><td>Dữ liệu cookie có sẵn trong trình duyệt đến khi expired.</td><td>Sau khi đóng trình duyệt sẽ hết phiên làm việc (session)</td></tr></tbody></table></figure>
+<!-- /wp:table -->
+
+
+<p>Ok như vậy là mình dã trình bày một số kiển thức về session và token. Các bạn có ý kiến gì hãy để lại comment cho minh nhé!</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.hydrasky.ml/2020/06/14/Session%20&%20Cookie/" data-id="ckhqle8tv000oo7jm3sf160o2" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/14/Server%20Side%20Request%20Forgery%20(Part1)/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Server Side Request Forgery (PART 1)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/14/Session%20vs%20Token-Based%20Authentication/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Session &amp; Token-Based Authentication</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BugBoutyTip/" rel="tag">BugBoutyTip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lab/" rel="tag">Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pentest-Web/" rel="tag">Pentest Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/BugBoutyTip/" style="font-size: 13.33px;">BugBoutyTip</a> <a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/Lab/" style="font-size: 10px;">Lab</a> <a href="/tags/Pentest-Web/" style="font-size: 16.67px;">Pentest Web</a> <a href="/tags/Technology/" style="font-size: 20px;">Technology</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/11/29/OS%20command%20Injection/">Command Injection TIP</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/28/DVWA-Part1/">DVWA (OWASP)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/23/CORS/">Cross-Origin Resource Sharing</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/CROSS%20SIDE%20REQUEST%20FORGERY/">Cross Side Request Forgery</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/Oauth/">OAUTH</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Le Binh An<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

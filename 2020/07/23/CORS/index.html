@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Cross-Origin Resource Sharing | Hydrasky</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="TL;DR Trước khi nói về C0RS, Mk muốn nói lại một chút về Cross-Origin access. Như trong phần trước về SOP mình cũng đã trình bày, việc các request đến các tài nguyên giữa các nguồn (Origin ) khác nha">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cross-Origin Resource Sharing">
+<meta property="og:url" content="http://blog.hydrasky.ml/2020/07/23/CORS/index.html">
+<meta property="og:site_name" content="Hydrasky">
+<meta property="og:description" content="TL;DR Trước khi nói về C0RS, Mk muốn nói lại một chút về Cross-Origin access. Như trong phần trước về SOP mình cũng đã trình bày, việc các request đến các tài nguyên giữa các nguồn (Origin ) khác nha">
+<meta property="og:locale">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/CORS/simple-req-updated.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/CORS/CORS1.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/CORS/CORS2.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/CORS/CORS3.png">
+<meta property="article:published_time" content="2020-07-23T04:00:00.000Z">
+<meta property="article:modified_time" content="2020-07-23T04:00:00.000Z">
+<meta property="article:author" content="Le Binh An">
+<meta property="article:tag" content="Technology">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.hydrasky.ml/images/CORS/simple-req-updated.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hydrasky" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hydrasky</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.hydrasky.ml"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-CORS" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/23/CORS/" class="article-date">
+  <time datetime="2020-07-23T04:00:00.000Z" itemprop="datePublished">2020-07-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Cross-Origin Resource Sharing
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p> TL;DR<br> Trước khi nói về C0RS, Mk muốn nói lại một chút về Cross-Origin access. Như trong phần trước về SOP mình cũng đã trình bày, việc các request đến các tài nguyên giữa các nguồn (Origin ) khác nhau được gọi là Cross-Origin.</p>
+<p> Ví dụ, web hydrasky.ml tạo một request lấy ảnh từ web hydrasky.com</p>
+<p>Vì lý do bảo mật, các trình duyệt hạn chế cho phép Cross-Origin bằng chính sách cùng nguồn gốc (SOP). Nhưng cái gì cũng có ngoại lệ, trong một số trường hợp bạn muốn chia sẻ các dữ liệu cho các Origin tin cậy thì bạn có thể sử dụng CORS để làm điều này.Tuy nhiên, nó lại mở cánh cửa cho một số cuộc tấn công dựa Cross-Origin nếu chính sách CORS của trang web được cấu hình và triển khai kém. Ok chúng ta cùng tìm hiểu sâu nào !</p>
+<h2 id="CORS-la-gi"><a href="#CORS-la-gi" class="headerlink" title="CORS là gì ?"></a>CORS là gì ?</h2><p> CORS viết tắt của Cross-Origin Resource Sharing, là một cơ chế của trình duyệt cho phép truy cập có kiểm soát vào các tài nguyên nằm ở các Origin khác nhau. Bởi vì có chính sách cùng nguồn gốc (SOP) nên mới sinh ra CORS, nó giúp mở rộng và thêm tính linh hoạt cho SOP.</p>
+<h2 id="Cach-CORS-lam-viec"><a href="#Cach-CORS-lam-viec" class="headerlink" title="Cách CORS làm việc ?"></a>Cách CORS làm việc ?</h2><p>Sẽ có 2 kịch bản chính có khả năng xảy ra để xem cách CORS hoạt động. Trong các ví dụ dưới đây sẽ sử dụng XMLHttpRequest để thực hiện gửi request , môi trường thực hiện sẽ là chung, không phân biệt các trình duyệt nào.</p>
+<h4 id="Kich-ban-1-Request-don-gian"><a href="#Kich-ban-1-Request-don-gian" class="headerlink" title="Kịch bản 1: Request đơn giản"></a>Kịch bản 1: Request đơn giản</h4><p> Một request đơn giản ở đây phải đầy đủ các điều kiện sau :</p>
+<ul>
+<li>Sử dụng một trong các phương thức sau :<ul>
+<li>GET</li>
+<li>POST</li>
+<li>HEAD</li>
+</ul>
+</li>
+<li>Ngoài các header được đặt tự động bởi các tác nhân như Connection , User-Agent hay các header nằm trong danh sách các <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Glossary/Forbidden_header_name#:~:text=A%20forbidden%20header%20name%20is,retains%20full%20control%20over%20them.">Forbidden header name</a> cho Fetch API thì chỉ cho phép bạn set thủ công các header nằm trong danh sách <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Glossary/CORS-safelisted_request_header">CORS-safelisted request header</a>, ví dụ như :<ul>
+<li>Accept</li>
+<li>Accept-Language</li>
+<li>Content-Language</li>
+<li>Content-Type </li>
+</ul>
+</li>
+<li>Chỉ sử dụng các value sau đây cho Content-Type header:<ul>
+<li>application/x-www-form-urlencoded</li>
+<li>multipart/form-data</li>
+<li>text/plain</li>
+</ul>
+</li>
+<li>Không sử dụng <strong>ReadableStream</strong> object trong request.</li>
+<li>Không có bất kì trình lắng nghe sự kiện nào được đăng ký trên bất kỳ  <strong>XMLHttpRequestUpload</strong> object nào được sử dụng trong request.</li>
+</ul>
+<p>Ví dụ : Trên <a target="_blank" rel="noopener" href="https://hydrasky.ml/">https://hydrasky.ml</a> thực hiện một reuqest đơn giản đến hydrasky.com </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const xhr &#x3D; new XMLHttpRequest();</span><br><span class="line">const url &#x3D; &#39;https:&#x2F;&#x2F;hydrasky.com&#x2F;resources&#x2F;public-data&#x2F;&#39;;  </span><br><span class="line">xhr.open(&#39;GET&#39;, url);</span><br><span class="line">xhr.onreadystatechange &#x3D; someHandler;</span><br><span class="line">xhr.send(); </span><br></pre></td></tr></table></figure>
+
+<p>Điều này sẽ thực hiện một trao đổi đơn giản giữa máy khách và máy chủ, CORS sẽ xử lí như sau:</p>
+<img src="/images/CORS/simple-req-updated.png" class="[class names]" title="[500] [500] " alt="title text">
+
+<p>Phía Client (Browser) sẽ gửi một GET request đến tài nguyền của một ORIGIN nào đó trên server , Origin header được đính kèm với request để nói cho server biết nơi đang yêu cầu tải tài nguyên đó.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Origin: https:&#x2F;&#x2F;foo.example</span><br></pre></td></tr></table></figure>
+<p>Khi CORS được kích hoạt, nếu nhận được một request đơn giản thì Server sẽ phản hồi về với <strong>Access-Control-Allow-Origin</strong> header.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Access-Control-Allow-Origin: *</span><br></pre></td></tr></table></figure>
+<p>Nếu value là *<em>“ * “*</em> như ở trên thì điểu đó có nghĩa là tài nguyên đó có thể được yêu cầu bởi bất kì ORIGIN nào. Nếu như bạn muốn chỉ cho phép một ORIGIN cụ thể nào đó thì có thể set :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Access-Control-Allow-Origin: https:&#x2F;&#x2F;foo.example</span><br></pre></td></tr></table></figure>
+<p>Như vậy sẽ an toàn hơn.</p>
+<h4 id="Kich-ban-2-Preflighted-Request"><a href="#Kich-ban-2-Preflighted-Request" class="headerlink" title="Kịch bản 2: Preflighted Request"></a>Kịch bản 2: Preflighted Request</h4><p>Preflighted có nghĩa là “được chiếu trước”, nếu dùng tên tiếng việt thì nghe không xuôi lắm đúng không các bạn vì vậy mình sẽ để nguyên là Preflighted Request. Việc “ Chiếu trước “ ở đây là nó ám chỉ việc browser gửi một <strong>OPTIONS</strong> request để hỏi thăm trước khi thực hiện request sau đó. Tại sao lại như vậy ?</p>
+<p>Đầu tiên bạn cần phải biết,để Prefighted request thì bao gồm những điều kiện gì :</p>
+<img src="/images/CORS/CORS1.png" class="[class names]" title="[500] [500] " alt="title text">
+
+<p>Một ví dụ request dưới đây sẽ được Preflighted  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const xhr &#x3D; new XMLHttpRequest();</span><br><span class="line">xhr.open(&#39;POST&#39;, &#39;https:&#x2F;&#x2F;hydrasky.ml&#x2F;resources&#x2F;post-here&#x2F;&#39;);</span><br><span class="line">xhr.setRequestHeader(&#39;X-PINGOTHER&#39;, &#39;pingpong&#39;);</span><br><span class="line">xhr.setRequestHeader(&#39;Content-Type&#39;, &#39;application&#x2F;xml&#39;);</span><br><span class="line">xhr.onreadystatechange &#x3D; handler;</span><br><span class="line">xhr.send(&#39;&lt;person&gt;&lt;name&gt;Arun&lt;&#x2F;name&gt;&lt;&#x2F;person&gt;&#39;);</span><br></pre></td></tr></table></figure>
+<p>Nhìn vào ví dụ có thể thấy, <strong>Conttent-Type</strong> được đặt là <strong>application/xml</strong> và một header tự tạo là <strong>X-PINGOTHER</strong> được set trong request ==&gt;  <strong>Preflighted</strong>.</p>
+<p>Điều này sẽ thực hiện một cuộc thăm dò giữa máy khách và máy chủ, CORS sẽ xử lí như sau:</p>
+<img src="/images/CORS/CORS2.png" class="[class names]" title="[500] [500] " alt="title text">
+
+<p>Đầu tiên trình , Browser sẽ tiến hành gửi <strong>OPTIONS</strong> request với các header được đính kèm trong POST request được thiết lập. Server sẽ gửi lại các thông tin về các thành phần trong header được cho phép thông qua <strong>Response</strong> với các Response header sau :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Access-Control-Allow-Origin: http:&#x2F;&#x2F;foo.example</span><br><span class="line">Access-Control-Allow-Methods: POST, GET, OPTIONS</span><br><span class="line">Access-Control-Allow-Headers: X-PINGOTHER, Content-Type</span><br><span class="line">Access-Control-Max-Age: 86400</span><br></pre></td></tr></table></figure>
+<p>Browser sẽ tiếng hành kiểm tra request đã được thiết lập, nếu request hợp lệ sẽ gửi nó tới Server.</p>
+<p>Mục đích chính của Prefligted là để xác định xem yêu cầu thực tế có an toàn để gửi hay không, vì một số yêu cầu từ các ORIGIN khác có thể liên quan đến dữ liệu người dùng. </p>
+<h2 id="Cac-lo-hong-phat-sinh-tu-cac-van-de-cau-hinh-CORS"><a href="#Cac-lo-hong-phat-sinh-tu-cac-van-de-cau-hinh-CORS" class="headerlink" title="Các lỗ hổng phát sinh từ các vấn đề cấu hình CORS"></a>Các lỗ hổng phát sinh từ các vấn đề cấu hình CORS</h2><h4 id="1-Serve-tao-Access-Control-Allow-Origin-tu-Origin-header-cua-client-chi-dinh-vi-du"><a href="#1-Serve-tao-Access-Control-Allow-Origin-tu-Origin-header-cua-client-chi-dinh-vi-du" class="headerlink" title="1. Serve tạo Access-Control-Allow-Origin từ  Origin header của client chỉ định,ví dụ :"></a>1. Serve tạo <strong>Access-Control-Allow-Origin</strong> từ  Origin header của client chỉ định,ví dụ :</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GET &#x2F;sensitive-victim-data HTTP&#x2F;1.1</span><br><span class="line">Host: hydrasky.ml</span><br><span class="line">Origin: https:&#x2F;&#x2F;malicious-website.com</span><br><span class="line">Cookie: sessionid&#x3D;...</span><br></pre></td></tr></table></figure>
+
+<p>Phản hồi từ Server:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HTTP&#x2F;1.1 200 OK</span><br><span class="line">Access-Control-Allow-Origin: https:&#x2F;&#x2F;malicious-website.com</span><br><span class="line">Access-Control-Allow-Credentials: true</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>Điều này tương đương với việc bạn cấu hình phản hồi mặc định “Access-Control-Allow-Origin: * ,nó đều cho phép các quyền “read” cross-origin từ malicious-website.com đến hydrasky.ml.Và bạn để ý một chút nữa đó là việc bạn cấu hình “Access-Control-Allow-Credentials: true”- cho phép gửi cookie đính kèm, thì vấn đề lộ thông tin các nhân, bí mật sẽ còn lớn hơn nếu phía malicious-website.com thực hiện các request cần xác thực người dùng.</p>
+<h4 id="2-Loi-phan-tich-Origin-header"><a href="#2-Loi-phan-tich-Origin-header" class="headerlink" title="2. Lỗi phân tích Origin header"></a>2. Lỗi phân tích Origin header</h4><p>   Mặc dù bạn đã cấu hình chỉ cho phép truy cập giữa các domain được chỉ định ,tạo ra môt whitelist các origin nhưng cách áp dụng thì lại có vấn đề. Nó thường xuất phát từ các nhu cầu như là cho phép truy cập từ các subdomain hoặc tên miền phụ , thậm chí còn chưa được đăng kí. Để linh hoạt, đỡ tốn thời gian họ  triển khai bằng cách khớp các tiền tố hoặc hậu tố của Orgin như *<em><em>“*hydrasky.ml”</em>*</em> hoặc sử dụng các biểu thức regular expressions nên dễ bị bypass, ví dụ như :</p>
+<p>Ứng dụng cho phép tất cả các domain cùng hậu tố sau được phép truy cập:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hydrasky.ml</span><br></pre></td></tr></table></figure>
+<p>Attacker có thể sử dụng các cách như sau :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- blog.hydrasky.ml</span><br><span class="line">- hackerhydrasky.ml</span><br></pre></td></tr></table></figure>
+<p>Ngoài ra thì có thể sử dụng các kí tự đặc biệt </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">,&amp;&#39;&quot;;!$^*()+&#x3D;&#96;~-_&#x3D;|&#123;&#125;%</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; non printable chars</span><br><span class="line">%01-08,%0b,%0c,%0e,%0f,%10-%1f,%7f</span><br></pre></td></tr></table></figure>
+<p>Nhưng một lưu ý là nó còn phụ thuộc vào loại trình duyệt. Tham khảo thêm ở <a target="_blank" rel="noopener" href="https://medium.com/bugbountywriteup/think-outside-the-scope-advanced-cors-exploitation-techniques-dad019c68397">đây</a>   </p>
+<pre><code>- .hydrasky.ml!.evil.com 
+- .hydrasky.ml&quot;.evil.com 
+- .hydrasky.ml$.evil.com 
+- .hydrasky.ml%0b.evil.com 
+- .hydrasky.ml%60.evil.com</code></pre>
+<h4 id="3-Whitelist-Origin-chap-nhan-value-la-NULL"><a href="#3-Whitelist-Origin-chap-nhan-value-la-NULL" class="headerlink" title="3. Whitelist Origin chấp nhận value là NULL"></a>3. Whitelist Origin chấp nhận value là NULL</h4><p>Trong một số trường hợp, Browser sẽ gửi giá trị NULL cho Origin header. Kẻ tân công sẽ sử dụng các kĩ thuật như tạo các cross-origin request bằng iframe để tạo ra giá trị NULL cho Origin header. Phần này thì mình chưa hiểu rõ cách tấn công lắm nhưng các bạn có thể tham khảo ở trên <a target="_blank" rel="noopener" href="https://portswigger.net/web-security/cors">Portswigger</a>.<br>Và còn một số vấn đề nữa nếu đứng từ local do lỗi cấu hình, các bạn tham khảo thêm ở trên mình sẽ không trình bày vì mục tiêu của mình không cần đến. Ngoài ra trên PortSwigger còn có rất nhiều bài lab để các bạn thực hành tấn công.</p>
+<h2 id="Mot-so-anh-huong-tu-cau-hinh-CORS-loi"><a href="#Mot-so-anh-huong-tu-cau-hinh-CORS-loi" class="headerlink" title="Một số ảnh hưởng từ cấu hình CORS lỗi"></a>Một số ảnh hưởng từ cấu hình CORS lỗi</h2><ul>
+<li>Đầu tiên phải kể đến đó là rò rỉ thông tin người dùng.</li>
+<li>Kẻ tấn công có thể lợi dụng lỗ hổng XSS trên các Origin được tin tưởng ,  chỉ định (CORS) để leo thang lỗ hổng. (Nhiều tiên hơn kk)</li>
+<li>Tăng khả năng bị tấn công CSRF.<img src="/images/CORS/CORS3.png" class="[class names]" title="[500] [500] " alt="title text">
+
+
+</li>
+</ul>
+<p>Ok xin chào và hẹn gặp lại các bạn ở bài viết sau. Phần trình bày của mình đến đây là hết chúc các bạn có thể kiếm thật nhiều bounty nhưng hãy nhớ kiến thức mới là gía trị nhất.</p>
+<h2 id="Link-tham-khao"><a href="#Link-tham-khao" class="headerlink" title="Link tham khảo"></a>Link tham khảo</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Simple_requests">https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Simple_requests</a></li>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/cors">https://portswigger.net/web-security/cors</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/@jeanpan/what-is-cors-cross-origin-resource-sharing-9f0c463621c6">https://medium.com/@jeanpan/what-is-cors-cross-origin-resource-sharing-9f0c463621c6</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/bugbountywriteup/think-outside-the-scope-advanced-cors-exploitation-techniques-dad019c68397">https://medium.com/bugbountywriteup/think-outside-the-scope-advanced-cors-exploitation-techniques-dad019c68397</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.hydrasky.ml/2020/07/23/CORS/" data-id="ckhqle8tb0001o7jm3mj5582e" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/11/28/DVWA-Part1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          DVWA (OWASP)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/15/CROSS%20SIDE%20REQUEST%20FORGERY/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Cross Side Request Forgery</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BugBoutyTip/" rel="tag">BugBoutyTip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lab/" rel="tag">Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pentest-Web/" rel="tag">Pentest Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/BugBoutyTip/" style="font-size: 13.33px;">BugBoutyTip</a> <a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/Lab/" style="font-size: 10px;">Lab</a> <a href="/tags/Pentest-Web/" style="font-size: 16.67px;">Pentest Web</a> <a href="/tags/Technology/" style="font-size: 20px;">Technology</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/11/29/OS%20command%20Injection/">Command Injection TIP</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/28/DVWA-Part1/">DVWA (OWASP)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/23/CORS/">Cross-Origin Resource Sharing</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/CROSS%20SIDE%20REQUEST%20FORGERY/">Cross Side Request Forgery</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/Oauth/">OAUTH</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Le Binh An<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

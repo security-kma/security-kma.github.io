@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Two-Factor Authentication &amp; Multil-Factor Authentication | Hydrasky</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Xin chào các bạn , trong bài viết này mình sẽ giới thiệu về 2 phương thức bảo mật được ưa dùng hiện nay, cách thức hoạt động và mức độ quan trọng hay ảnh hướng như nào đến người dùng khi không dùng">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Two-Factor Authentication &amp; Multil-Factor Authentication">
+<meta property="og:url" content="http://blog.hydrasky.ml/2020/06/14/Authentication/index.html">
+<meta property="og:site_name" content="Hydrasky">
+<meta property="og:description" content="Xin chào các bạn , trong bài viết này mình sẽ giới thiệu về 2 phương thức bảo mật được ưa dùng hiện nay, cách thức hoạt động và mức độ quan trọng hay ảnh hướng như nào đến người dùng khi không dùng">
+<meta property="og:locale">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/OAUTH/si-advanced-authentication-feature.webp">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/OAUTH/askaquestion_image.jpg">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/OAUTH/ss.jpg">
+<meta property="og:image" content="https://image.slidesharecdn.com/smspasscode-141101172311-conversion-gate02/95/welcome-to-the-3rd-generation-in-user-authentication-7-638.jpg?cb=1414931604">
+<meta property="og:image" content="https://www.secsign.com/wp-content/uploads/2017/08/2FA-icon.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/OAUTH/tpbank-etoken.jpg">
+<meta property="og:image" content="https://pbs.twimg.com/media/EW8vBWEX0AAxcVj?format=jpg&name=large">
+<meta property="article:published_time" content="2020-06-14T04:00:00.000Z">
+<meta property="article:modified_time" content="2020-06-14T04:00:00.000Z">
+<meta property="article:author" content="Le Binh An">
+<meta property="article:tag" content="Technology">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.hydrasky.ml/images/OAUTH/si-advanced-authentication-feature.webp">
+  
+    <link rel="alternate" href="/atom.xml" title="Hydrasky" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hydrasky</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.hydrasky.ml"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Authentication" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/Authentication/" class="article-date">
+  <time datetime="2020-06-14T04:00:00.000Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Two-Factor Authentication &amp; Multil-Factor Authentication
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+         <img src="/images/OAUTH/si-advanced-authentication-feature.webp" class="[class names]" title="[300] [200] " alt="Xác thực đa yếu tố">
+
+<p>Xin chào các bạn , trong bài viết này mình sẽ giới thiệu về 2 phương thức bảo mật được ưa dùng hiện nay, cách thức hoạt động và mức độ quan trọng hay ảnh hướng như nào đến người dùng khi không dùng hay bị bypass.</p>
+<p>Như các bạn đều biết việc xác thực cổ điển là dựa vào user/password (hay Basic Authentication) là một phương thức đã lỗi thời và rất dễ bị bẻ khóa.  Cùng với đó người dùng thường có thói quen dùng một mật khẩu cho nhiều tài khoản hay sử dụng mật khẩu đơn giản để dễ nhớ. Dẫn đến việc kể tấn công có thể đoán ra hay sử dụng các công cụ để thực hiện cuộc tấn công bruteforce hoặc diretory attack chiếm lấy tài khoản một cách dễ dàng. Vì vậy điều cần thiết được đặt ra  là cung cấp cho người dùng những cách bổ sung để bảo vệ tài khoản của họ.</p>
+<p>Xác thực hai yếu tố hay đa yếu tố (2FA hoặc MFA) là phương thức bảo mật mới đã được bổ sung vào quá trình xác thực  và ngày càng trở nên phổ biến.Vậy 2FA và MFA là gì và chúng có thể giúp bảo vệ người dùng như thế nào?</p>
+<img src="/images/OAUTH/askaquestion_image.jpg" class="[class names]" title="[500] [500] " alt="2FA VS MFA">
+
+
+<p>Two-Factor (2FA) và Multi-Factor Authentication hay còn gọi là Bảo mật nhiều lớp, là một phương thức để chứng thực user bằng việc combine 2 hoặc nhiều hơn các factors khác nhau.</p>
+<p>Bản chất Two-Factor Authentication (2FA) - cũng được coi là Multi-Factor authentication (MFA) nhưng MFA lại không phải là 2FA, Tại sao lại vậy ???</p>
+<img src="/images/OAUTH/ss.jpg" class="[class names]" title="[500] [500] " alt="Oauth2">
+
+
+
+<p>Sự khác biệt dễ thấy nhất giữa xác thực đa yếu tố và xác thực hai yếu tố là 2FA chỉ sử dụng hai trong số các yếu tố có sẵn để xác minh danh tính người dùng, trong khi MFA có thể sử dụng ba hoặc nhiều hơn để kiểm tra.</p>
+<p>Xét về tính bảo mật, mặc dù 2FA hiện vẫn đang là phương thức xác thực rất là hữu hiệu nhưng không phải là an toàn thực sự. Đã có rất nhiều cách bypass 2FA  được thực hiện, mặc dù hầu hến đến từ việc cấu hình của người quản trị hoặc đôi khi từ chính sự thiếu hiểu biết từ người dùng nhưng rõ ràng rằng 2FA không còn đủ để ngăn chặn hoàn toàn các vi phạm dữ liệu và đó là lí do sinh ra MFA. MFA không chỉ sử dụng nhiều yếu tố xác thực có sẵn mà nó còn bổ sung thêm các yếu tố  theo ngữ cảnh như thời gian,vị trí …</p>
+<figure class="wp-block-image"><img src="https://image.slidesharecdn.com/smspasscode-141101172311-conversion-gate02/95/welcome-to-the-3rd-generation-in-user-authentication-7-638.jpg?cb=1414931604" alt="Welcome to the 3rd generation in user authentication"/></figure>
+
+
+
+<p>Oh như  vậy tại sao vẫn sử dụng 2FA khi đã có MFA ? Dễ hiểu thôi , nhiều xác thực hơn có nghĩa là bảo mật hơn nhưng sẽ phức tạp hơn ,người dùng có thể thấy rất khó chịu với việc này nên các ứng dụng nhỏ và vừa thường sử dụng 2FA cùng với các yếu tố xác thực  mức độ tốt hơn thay vì sử dụng nhiều yếu tố để xác thực như MFA. Còn với các ông lớn như Facebook, Google … đều đã áp dụng MFA cho người dùng tùy chọn và MFA rất cần thiết cho lưu trữ đám mây (Cloud).</p>
+<h2>Các yếu tố xác thực chính</h2>
+
+
+
+<figure class="wp-block-image"><img src="https://www.secsign.com/wp-content/uploads/2017/08/2FA-icon.png" alt="Two-Factor Authentication (2FA) vs. Two-Step Authentication (2SA ..."/></figure>
+
+
+
+<p>Nếu không dựa vào mật khẩu vậy phương thức này sẽ sử dụng điều gì để xác thực ? Có thể kể đến 4 yếu tố :</p>
+<h4>Kiến thức hay sự hiểu biết</h4>
+
+
+
+<p>Ví dụ là sử dụng tính năng xác thực bằng bạn bè , như zalo sẽ yêu cầu bạn chọn dúng 3 tài khoản  trong danh sách bạn bè để xác thực đó chính là bạn. Kiến thức ở đây là một cái gì đó nằm trong kiến thức liên quan đến tài khoản của người dùng.Đây có thể là mật khẩu, tên người dùng,bạn bè, câu trả lời cho câu hỏi bảo mật mà bạn đặt sẵn, mã PIN hoặc địa chỉ. </p>
+<h4>Sở hữu</h4>
+
+
+
+<p>Loại yếu tố xác thực này đề cập đến thứ mà người dùng sở hữu, thiết bị (chỉ cho phép đăng nhập  ở điện thoại hoặc máy tính của bạn )hoặc đối tượng sẽ cung cấp thêm thông tin cần thiết để xác minh (email, sdt) . Ví dụ như mã OTP được gửi qua SMS hoặc các ừng dụng token, token secret qua email…</p>
+<img src="/images/OAUTH/tpbank-etoken.jpg" class="[class names]" title="[400] [400] " alt="Software tokens">
+
+
+<h4>Cố Hữu (Vốn có)</h4>
+
+
+
+<p>Đây là những yếu tố liên quan đến người dùng và thường là các phương pháp sinh trắc học như nhận dạng vân tay , khuôn mặt , giọng nói hoặc mống mắt . </p>
+<h4>Vị trí</h4>
+
+
+
+<p>Mặc dù yếu tố xác thực vị trí có thể không được sử dụng thường xuyên như các yếu tố khác, tuy nhiên nó vẫn tạo thành một yếu tố để xác thực hữu hiệu.Theo định nghĩa, nó đề cập đến bạn đang ở đâu.Vị trí của bạn được theo dõi và xác định bằng các công nghệ khác nhau theo dõi địa chỉ IP của bạn và họ thông báo cho bạn nếu họ phát hiện ra việc truy cập ở một vị trí bất thường (VD: bạn ở HN nhưng tài khoản lại được truy cập ở HCM) .Xác định vị trí của bạn cũng có thể được thực hiện bằng địa chỉ MAC hoặc thiết bị có trình theo dõi GPS.</p>
+<h2>Cơ chế hoạt động internally của 2FA</h2>
+
+
+<p>Khi bạn enable 2FA cho tài khoản của mình,mỗi lần yêu cầu xác thực 2fa, bạn sẽ nhận được một secret key based 32. Tùy vào mức độ security, độ dài của secret key có thể là 80, 128 hoặc 160 bit.</p>
+<p>Các authenticator application sẽ scan secret này dưới dạng QR code (hoặc manually) và dùng nó để generate ra một HMAC-SHA1. Chuỗi HMAC này có thể là một trong 2 dạng:</p>
+<ul><li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Time-based_One-time_Password_algorithm">TOTP</a></li><li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/HMAC-based_One-time_Password_algorithm">HOTP</a></li></ul>
+
+
+<p>Sau đó HMAC này sẽ được extracted và lấy ra 1 số int 4 byte, đó chính là code.</p>
+<p>Một mã code sẽ valid trong 30 giây. Tuy nhiên không phải ai cũng có clock synced giống nhau, vì network latency các kiểu nên thường mọi người hay cho phép ở phạm vi cộng trừ 1 code, tức là 1 code sẽ valid trong 1 phút 30 giây. Điều này có thể giảm tính an toàn, nhưng lại tăng sự trải nghiệm đáng kể.</p>
+<h3>Backup codes</h3>
+
+
+
+<p>Backup codes hay recovery codes sẽ được sử dụng trong trường hợp bạn không thể sử dụng điện thoại, bạn có thể dùng chúng để đăng nhập. Có 2 loại backup codes:</p>
+<ul><li>Multiple backup codes: Ví dụ github sẽ cho bạn 10 codes, và mỗi code sẽ được sử dụng 1 lần.</li><li>Single backup code: Bạn dùng cái code này đồng nghĩa với việc bạn có thể đăng nhập, nhưng phải setup lại 2FA (nó assume bạn bị mất điện thoại).</li></ul>
+
+
+<h3>Quy trình xác thực bằng 2FA</h3>
+
+
+<div class="video-container"><iframe src="https://www.youtube.com/embed/0mvCeNsTa1g" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+
+
+<p>Dưới đây là cách xác thực 2FA hoạt động:</p>
+<ol><li>Người dùng được nhắc đăng nhập bằng ứng dụng hoặc trang web.</li><li>Người dùng nhập những gì họ biết -  username/password ,email .Sau đó, máy chủ của trang web tìm thấy kết quả hợp lệ và định danh người dùng.</li><li>Trang web sau đó sẽ sử dụng các yếu tố sở hữu duy nhất  như email, sdt có liên kết với tài khoản của người dùng  để gửi one time code dưới dạng một token hoặc text message.</li><li>Sau đó, người dùng nhập mã một lần được tạo trong bước 3.</li><li>Sau khi cung cấp cả hai yếu tố, người dùng được xác thực và cấp quyền truy cập vào ứng dụng hoặc trang web.</li></ol>
+
+
+<h3> **Bypass xác thực ** 2FA</h3>
+
+<p>Dưới đây là  một số cách thồng thường mà các hacker hay sử dụng để vượt qua phương thức bảo mật này  :</p>
+<ul><li>Burteforce : Nó là biện pháp phổ biến và hay dùng nhất do các code thường chỉ có từ 3 dến 6 kĩ tự và hầu như chỉ là số. Vì vậy nếu khồng có giới hạn request thì việc sử dụng bruteforce tỷ lệ  thành công rất là cao.</li><li>Race conditions: Bằng việc sử dụng đồng thời nhiều request cùng một thời điểm khiến server không kịp xử lí đãn đến tạo ra các giá trị code đã sử dụng trước đó hoặc chưa sử dụng tại một thời điểm sau đó. Và kẻ tấn công có thể tái sử dụng nó. </li><li>Via Oauth: Tích hợp Oauth là một cơ chế đăng nhập của bên thứ ba cho phép người dùng đăng nhập bằng tài khoản bên thứ ba.Để bypass, kẻ tấn công phải có quyền truy cập vào tài khoản tích hợp Oauth để đăng nhập thay vì dùng tài khoản trực tiếp của người dùng.</li><li>Via session management :Phương pháp này dựa vào việc bỏ qua cơ chế xác thực hai yếu tố bằng cách sử dụng các chức năng như đặt lại mật khẩu, Về cơ bản,ngay sau khi sử dụng token để đặt lại mật khẩu nó sẽ  duy trì một phiên với ứng dụng  , dẫn đến việc bypass.</li></ul>
+
+
+<p>Ngoài ra còn rất nhiều cách khác đến từ vấn đề logic flow, người dùng … Bạn có thể tham khảo từ writeup, tip/trick của các hacker , bughunter …</p>
+<figure class="wp-block-image"><img src="https://pbs.twimg.com/media/EW8vBWEX0AAxcVj?format=jpg&name=large" alt="Image"/></figure>
+
+<p>Một tip bypass 2FA từ <a rel="noreferrer noopener" href="https://twitter.com/hackerscrolls/status/1256276376019230720/photo/1" target="_blank">@hackerscrolls</a></p>
+<p>Ok kết luận lại, với 2FA va MFA việc bảo mật sẽ tốt hơn rất nhiều nhưng yếu tố quan trọng nhất vẫn phụ thuộc vào con người. So với 2FA, thì MFA sẽ cố phần nhỉnh hơn về độ an toàn nhưng lại phức tạp, khá tốn chi phí, thời gian xác thực  vì vậy nên áp dụng mỗi phương thức vào môi trường hợp lệ. </p>
+<p>Cảm ơn các bạn đã đọc bài. Xin chào và hẹn gặp lại !!!   </p>
+<h2>Tham khảo </h2>
+
+
+
+<ul><li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Multi-factor_authentication">https://en.wikipedia.org/wiki/Multi-factor_authentication</a></li><li><a target="_blank" rel="noopener" href="https://kipalog.com/posts/Two-Factor-Authentication-va-ung-dung">https://kipalog.com/posts/Two-Factor-Authentication-va-ung-dung</a></li><li><a target="_blank" rel="noopener" href="https://shahmeeramir.com/4-methods-to-bypass-two-factor-authentication-2b0075d9eb5f">https://shahmeeramir.com/4-methods-to-bypass-two-factor-authentication-2b0075d9eb5f</a></li><li><a target="_blank" rel="noopener" href="https://securitytrails.com/blog/two-factor-auth-vs-multi-factor-auth">https://securitytrails.com/blog/two-factor-auth-vs-multi-factor-auth</a></li><li><a target="_blank" rel="noopener" href="https://www.loginradius.com/blog/2019/06/what-is-multi-factor-authentication/">https://www.loginradius.com/blog/2019/06/what-is-multi-factor-authentication/</a></li></ul>
+
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.hydrasky.ml/2020/06/14/Authentication/" data-id="ckhqle8t50000o7jme4vc14zn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/14/Same%20Origin%20Policy/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Same Origin Policy
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/14/CSP/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Content Security Policy</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BugBoutyTip/" rel="tag">BugBoutyTip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lab/" rel="tag">Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pentest-Web/" rel="tag">Pentest Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/BugBoutyTip/" style="font-size: 13.33px;">BugBoutyTip</a> <a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/Lab/" style="font-size: 10px;">Lab</a> <a href="/tags/Pentest-Web/" style="font-size: 16.67px;">Pentest Web</a> <a href="/tags/Technology/" style="font-size: 20px;">Technology</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/11/29/OS%20command%20Injection/">Command Injection TIP</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/28/DVWA-Part1/">DVWA (OWASP)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/23/CORS/">Cross-Origin Resource Sharing</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/CROSS%20SIDE%20REQUEST%20FORGERY/">Cross Side Request Forgery</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/Oauth/">OAUTH</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Le Binh An<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

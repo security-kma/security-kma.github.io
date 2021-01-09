@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Subdomain Takeover | Hydrasky</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Subdomain takeover được công bố vào năm 2014 là một kiểu tấn công vào tên miền phụ (Subdomain) của  một website và nguyên nhân dẫn đến là do việc cấu hình DNS . Bằng cách này hacker có thể chiếm được">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Subdomain Takeover">
+<meta property="og:url" content="http://blog.hydrasky.ml/2020/06/14/SUBDOMAIN%20TAKEOVER/index.html">
+<meta property="og:site_name" content="Hydrasky">
+<meta property="og:description" content="Subdomain takeover được công bố vào năm 2014 là một kiểu tấn công vào tên miền phụ (Subdomain) của  một website và nguyên nhân dẫn đến là do việc cấu hình DNS . Bằng cách này hacker có thể chiếm được">
+<meta property="og:locale">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/Sub/image-2.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/Sub/image-3.png">
+<meta property="og:image" content="http://blog.hydrasky.ml/images/Sub/image-4.png">
+<meta property="og:image" content="https://mamot.fr/system/media_attachments/files/007/727/655/original/8c42a00a677333d1.png?1577792038">
+<meta property="og:image" content="https://securitytrails.com/images/f/1/4/d/c/f14dc8034d6cf93efdf31c19c51b18bc97f19fa6-table.png">
+<meta property="og:image" content="https://www.researchgate.net/profile/S_M_Zia_Ur_Rashid/publication/332353497/figure/fig2/AS:746585789042693@1555011331203/Checking-DNS-Record-using-dig-command.png">
+<meta property="og:image" content="https://0xpatrik.com/content/images/2018/06/takeover_basic.png">
+<meta property="article:published_time" content="2020-06-14T04:00:00.000Z">
+<meta property="article:modified_time" content="2020-06-14T04:00:00.000Z">
+<meta property="article:author" content="Le Binh An">
+<meta property="article:tag" content="Pentest Web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.hydrasky.ml/images/Sub/image-2.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hydrasky" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hydrasky</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.hydrasky.ml"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-SUBDOMAIN TAKEOVER" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/14/SUBDOMAIN%20TAKEOVER/" class="article-date">
+  <time datetime="2020-06-14T04:00:00.000Z" itemprop="datePublished">2020-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Subdomain Takeover
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Subdomain takeover được công bố vào năm 2014 là một kiểu tấn công vào tên miền phụ (Subdomain) của  một website và nguyên nhân dẫn đến là do việc cấu hình DNS . Bằng cách này hacker có thể chiếm được full quyền kiểm soát của một subdomain từ đó thực hiện các cuộc tấn công giả mạo trang web (phishing) hoặc phát tán mã độc (malwares).</p>
+<p>Như các bạn đã biết ** ** Domain ** ** name là tên đại diện của một website hoạt động trên internet, đóng vai trò là một địa chỉ vật lý thay vì dùng địa chỉ ip (lí do tại sao chắc các bạn đều rõ ) . Còn Subdomain <strong>** là phần mở rộng của một tên miền.Subdomain **</strong> có thể được tạo hoàn toàn miễn phí và nó có thể hoạt động như một tên miền thực thụ.Subdomainra đời nhằm giải quyết về chi phí đăng ký tên miền cũng như giúp bạn tạo ra nhiều website trên các lĩnh vực khác nhau thuộc tên miền chính. Ví dụ :</p>
+<p>Domain: example.comSubdomain : hello.example.comDomain vs Subdomain</p>
+<p>Gỉa sử bạn ở hữu một domain example.com và server của bạn có ip là 1.2.3.4 . Bây giờ bạn muốn trỏ domain về địa chỉ ip của server , nhà cung cấp tên miền (DNS provider) sẽ có cách giúp bạn làm điều này. Nhà cung cấp sẽ cung cấp trình quản lý tên miền để bạn có thể thêm, sửa ,trỏ tên miền về địa chỉ bạn muốn.</p>
+<img src="/images/Sub/image-2.png" class="[class names]" title="[500] [500] " alt="Quản lí domain">
+
+
+<p>Trong phần cấu hình sẽ có mục bản ghi cho tên miền “record” dùng để dùng để mô tả các thông tin về cơ sở dữ liệu DNS, bạn có thể tham khảo <a href="https://en.wikipedia.org/wiki/List_of_DNS_record_types" target="_blank" rel="noreferrer noopener" aria-label="DNS_Record (opens in a new tab)">DNS_Record</a> . Đối với vấn đề này ta chỉ biết đến các bản ghi sau:</p>
+<ul><li>Bản ghi A hoặc AAAA</li><li>Bản ghi CNAME</li><li>Bản ghi bổ sung như ALIAS và URL </li></ul>
+
+
+<p>Bản ghi A vs AAAA: Đây là các bản ghi thường được dùng, dùng để trỏ một domain hoặc subdomain về một host hay ip tương ứng.</p>
+<p>Bản ghi CNAME : hay còn gọi là Bản ghi bí danh dành cho các tên miền phụ . Bản ghi CNAME cho phép một server có thể có nhiều tên. Nói cách khác bản ghi CNAME cho phép nhiều tên miền cùng trỏ đến một địa chỉ IP cho trước hoặc liên kết tới một bản ghi khác .Ví dụ : “hello.example.com hi.demo.com CNAME”</p>
+<p>Bản ghi bổ sung như ALIAS và URL : Đây là những bản ghi không có trong<a target="_blank" rel="noopener" href="https://www.ietf.org/rfc/rfc1035.txt">DNS RFC</a>, vì vậy chúng chỉ được hỗ trợ bởi một số nhà cung cấp DNS nhất định.ALIASlà một bản ghi giả hoạt động như mộtCNAMEnhưng có thể được sử dụng cho cả tên miền gốc và tên miền phụ.Bảnghi chuyển hướng URLđược sử dụng để chuyển hướng một tên miền sang một tên miền / URL khác.</p>
+<h4>SECOND-ORDER SUBDOMAIN TAKEOVERS</h4>
+
+
+
+<p>Quay trở lại vấn đề, việc hacker cơ tiếp quản subdomain là do cấu hình DNS. Thông thường các dịch vụ bên thứ 3 như Desk, Squarespace, Shopify, Github, Tumblr, và Heroku … khi người dùng đăng kí lấy ứng dụng, tài khoản thì sẽ được cấp một subdomain đi kèm để truy cập trực tiếp vào nội dung của mình như sau :</p>
+<img src="/images/Sub/image-3.png" class="[class names]" title="[500] [500] " alt="Quản lí domain">
+
+
+
+
+<p>Tuy nhiên mọi người thường muốn dùng tên miền của riêng mình thay vì tên miền của Provider cấp cho. Đơn giản họ chỉ cần cấu hình DNS trỏ tên miền của họ về tiên miền được cung cấp bởi bên thứ 3 : “shop.example.com”</p>
+<img src="/images/Sub/image-4.png" class="[class names]" title="[500] [500] " alt="Quản lí domain">
+
+
+
+
+<p>Và vấn đề ở đây xảy ra khi các subdomain do bên thứ 3 cung cấp đã hêt hạn đăng kí sẽ có hai trường hợp xảy ra là người dùng không muốn dùng nữa và quên đăng kí thêm thời gian. Cùng với đó người quản trị không bỏ , thay đổi cấu hình trong DNS .Hacker sẽ tìm các ra subdomain  của người dùng  bằng các công cụ như Subfinder, SubStack , Amass,crt.sh … </p>
+<figure class="wp-block-image"><img src="https://mamot.fr/system/media_attachments/files/007/727/655/original/8c42a00a677333d1.png?1577792038" alt="Kết quả hình ảnh cho subfinder"/></figure>
+
+
+
+<p>Sau đó hacker sẽ tìm những subdomain nào không còn sử dụng nữa và khả năng tiếp quản nó. Sử dụng các dấu hiệu như sau để nhận biết :</p>
+<figure class="wp-block-image"><img src="https://securitytrails.com/images/f/1/4/d/c/f14dc8034d6cf93efdf31c19c51b18bc97f19fa6-table.png" alt="tên miền phụ dễ bị chiếm đoạt tên miền phụ trong năm 2019"/></figure>
+
+
+
+<p>Thường hacker sẽ sử dụng các command linux như: host, dig để tìm kiếm tên của bên thứ 3 (provider)</p>
+<figure class="wp-block-image"><img src="https://www.researchgate.net/profile/S_M_Zia_Ur_Rashid/publication/332353497/figure/fig2/AS:746585789042693@1555011331203/Checking-DNS-Record-using-dig-command.png" alt="Kết quả hình ảnh cho dig command"/></figure>
+
+
+
+<p>Tìm các subdomain có sử dụng bản ghi CNAME sẽ có khả năng tiếp quản rất cao bởi vì bản ghi CNAME là để dùng để liên kết 1 domain khác. Hacker sẽ đăng kí với bên thứ 3 đó để có tên miền như tên miền người dùng đăng kí và sau đó chỉ cần cấu hình subdomain được cung cấp nhận subdomain, ip tương ứng với cấu hình DNS của người dùng . SUBDOMAIN TAKEOVER!!!!</p>
+<figure class="wp-block-image"><img src="https://0xpatrik.com/content/images/2018/06/takeover_basic.png" alt=""/></figure>
+
+
+
+<p>Chi tiết thực hiện các bạn có thể tham khảo trong rất nhiều writeup,bugbounty progam :</p>
+<ul><li><a target="_blank" rel="noopener" href="https://medium.com/@ajdumanhug/subdomain-takeover-through-external-services-f0f7ee2b93bd">https://medium.com/@ajdumanhug/subdomain-takeover-through-external-services-f0f7ee2b93bd</a></li><li><a target="_blank" rel="noopener" href="https://medium.com/@valeriyshevchenko/subdomain-takeover-with-shopify-heroku-and-something-more-6e9504da34a1">https://medium.com/@valeriyshevchenko/subdomain-takeover-with-shopify-heroku-and-something-more-6e9504da34a1</a></li><li><a target="_blank" rel="noopener" href="https://hackerone.com/hacktivity">https://hackerone.com/hacktivity</a></li></ul>
+
+
+<p> <strong>Làm thế nào để tránh những vấn đề như vậy?: -</strong> Luôn cập nhật hồ sơ DNS của bạn, xóa CNAME hoặc bất kỳ bản ghi DNS nào khác không được sử dụng.</p>
+<p>Link tham khảo :</p>
+<ul><li><a target="_blank" rel="noopener" href="https://securitytrails.com/blog/subdomain-takeover-tips">https://securitytrails.com/blog/subdomain-takeover-tips</a></li><li><a target="_blank" rel="noopener" href="https://blog.cystack.net/subdomain-takeover/">https://blog.cystack.net/subdomain-takeover/</a></li><li><a target="_blank" rel="noopener" href="https://github.com/EdOverflow/can-i-take-over-xyz">https://github.com/EdOverflow/can-i-take-over-xyz</a></li></ul>
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.hydrasky.ml/2020/06/14/SUBDOMAIN%20TAKEOVER/" data-id="ckhqle8tr000ho7jm04p60g0z" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Pentest-Web/" rel="tag">Pentest Web</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/14/SCSP/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          SCSP TIP
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/14/Server%20Side%20Request%20Forgery%20(Part1)/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Server Side Request Forgery (PART 1)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BugBoutyTip/" rel="tag">BugBoutyTip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lab/" rel="tag">Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pentest-Web/" rel="tag">Pentest Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Technology/" rel="tag">Technology</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/BugBoutyTip/" style="font-size: 13.33px;">BugBoutyTip</a> <a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/Lab/" style="font-size: 10px;">Lab</a> <a href="/tags/Pentest-Web/" style="font-size: 16.67px;">Pentest Web</a> <a href="/tags/Technology/" style="font-size: 20px;">Technology</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/11/29/OS%20command%20Injection/">Command Injection TIP</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/28/DVWA-Part1/">DVWA (OWASP)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/23/CORS/">Cross-Origin Resource Sharing</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/CROSS%20SIDE%20REQUEST%20FORGERY/">Cross Side Request Forgery</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/14/Oauth/">OAUTH</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Le Binh An<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
